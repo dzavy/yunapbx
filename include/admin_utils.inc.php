@@ -39,30 +39,32 @@ function admin_logout() {
 
 //preiau valoarea unei constante din tabela settings
 function pbx_var_get($name) {
+        global $mysqli;
 	$query = "
 		SELECT
 			Value
 		FROM
 			Settings
 		WHERE
-			Name = '".mysql_real_escape_string($name)."'
+			Name = '".$mysqli->real_escape_string($name)."'
 	";
 
-	$result = mysql_query($query) or die(__LINE__.__FILE__);
-	$row = mysql_fetch_object($result);
+	$result = $mysqli->query($query) or die(__LINE__.__FILE__);
+	$row = $result->fetch_object();
 	return $row->Value;
 }
 
 //atribui o valoare unei constante din tabela settings
 function pbx_var_set($name, $value) {
-		$query = "DELETE FROM Settings WHERE Name='".mysql_real_escape_string($name)."' LIMIT 1";
-		mysql_query($query) or die(__LINE__.__FILE__);
+    global $mysqli;
+		$query = "DELETE FROM Settings WHERE Name='".$mysqli->real_escape_string($name)."' LIMIT 1";
+		$mysqli->query($query) or die(__LINE__.__FILE__);
 
 		$query = "
 				INSERT INTO	Settings (Name,Value)
-				VALUES ('".mysql_real_escape_string($name)."','".mysql_real_escape_string($value)."')
+				VALUES ('".$mysqli->real_escape_string($name)."','".$mysqli->real_escape_string($value)."')
 		";
-		mysql_query($query) or die(__LINE__.__FILE__);
+		$mysqli->query($query) or die(__LINE__.__FILE__);
 }
 
 //adaugat mihai - obtine IP extern afisat in $url
