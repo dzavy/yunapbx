@@ -1,6 +1,8 @@
 <?php
+
 function Get_SipProviders() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			SipProviders.*,
 			DTMFModes.Name AS DTMFMode
@@ -10,15 +12,15 @@ function Get_SipProviders() {
 		ORDER BY
 			Name
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	$SipProviders = array();
-	while ($row = mysql_fetch_assoc($result)) {
-		$provider = $row;
+    $SipProviders = array();
+    while ($row = $result->fetch_assoc()) {
+        $provider = $row;
 
-		// Get allowed codecs
-		$codecs = array();
-		$query_codec = "
+        // Get allowed codecs
+        $codecs = array();
+        $query_codec = "
 			SELECT
 				Name
 			FROM
@@ -27,16 +29,16 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']}
 		";
-		$result_codec = mysql_query($query_codec) or die(mysql_error().$query_codec);
-		while ($row_codec = mysql_fetch_assoc($result_codec)) {
-			$codecs[] = $row_codec['Name'];
-		}
-		$provider['Codecs'] = implode(',', $codecs);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        while ($row_codec = $result_codec->fetch_assoc()) {
+            $codecs[] = $row_codec['Name'];
+        }
+        $provider['Codecs'] = implode(',', $codecs);
 
-		// Get hosts list
-		$provider['Hosts'][] = $provider['Host'];
-		$hosts = array();
-		$query_hosts = "
+        // Get hosts list
+        $provider['Hosts'][] = $provider['Host'];
+        $hosts = array();
+        $query_hosts = "
 			SELECT
 				Host
 			FROM
@@ -44,19 +46,20 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']}
 		";
-		$result_hosts = mysql_query($query_hosts) or die(mysql_error().$query_hosts);
-		while ($row_hosts = mysql_fetch_assoc($result_hosts)) {
-			$provider['Hosts'][] = $row_hosts['Host'];
-		}
+        $result_hosts = $mysqli->query($query_hosts) or die($mysqli->error() . $query_hosts);
+        while ($row_hosts = $result_hosts->fetch_assoc()) {
+            $provider['Hosts'][] = $row_hosts['Host'];
+        }
 
-		$SipProviders[] = $provider;
-	}
+        $SipProviders[] = $provider;
+    }
 
-	return $SipProviders;
+    return $SipProviders;
 }
 
 function Get_IaxProviders() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			IaxProviders.*
 		FROM
@@ -64,15 +67,15 @@ function Get_IaxProviders() {
 		ORDER BY
 			Name
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	$IaxProviders = array();
-	while ($row = mysql_fetch_assoc($result)) {
-		$provider = $row;
+    $IaxProviders = array();
+    while ($row = $result->fetch_assoc()) {
+        $provider = $row;
 
-		// Get allowed codecs
-		$codecs = array();
-		$query_codec = "
+        // Get allowed codecs
+        $codecs = array();
+        $query_codec = "
 			SELECT
 				Name
 			FROM
@@ -81,25 +84,32 @@ function Get_IaxProviders() {
 			WHERE
 				FK_IaxProvider = {$provider['PK_IaxProvider']}
 		";
-		$result_codec = mysql_query($query_codec) or die(mysql_error().$query_codec);
-		while ($row_codec = mysql_fetch_assoc($result_codec)) {
-			$codecs[] = $row_codec['Name'];
-		}
-		$provider['Codecs'] = implode(',', $codecs);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        while ($row_codec = $result_codec->fetch_assoc()) {
+            $codecs[] = $row_codec['Name'];
+        }
+        $provider['Codecs'] = implode(',', $codecs);
 
-		$provider['OutHosts'] = array();
-		if ($provider['PrOutbHost']   != "") { $provider['OutHosts'][] = $provider['PrOutbHost'];   }
-		if ($provider['SecOutbHost']  != "") { $provider['OutHosts'][] = $provider['SecOutbHost'];  }
-		if ($provider['TertOutbHost'] != "") { $provider['OutHosts'][] = $provider['TertOutbHost']; }
+        $provider['OutHosts'] = array();
+        if ($provider['PrOutbHost'] != "") {
+            $provider['OutHosts'][] = $provider['PrOutbHost'];
+        }
+        if ($provider['SecOutbHost'] != "") {
+            $provider['OutHosts'][] = $provider['SecOutbHost'];
+        }
+        if ($provider['TertOutbHost'] != "") {
+            $provider['OutHosts'][] = $provider['TertOutbHost'];
+        }
 
-		$IaxProviders[] = $provider;
-	}
+        $IaxProviders[] = $provider;
+    }
 
-	return $IaxProviders;
+    return $IaxProviders;
 }
 
 function Get_Ext_SipPhones() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			Ext_SipPhones.PK_Extension AS PK_Extension,
 			Extension,
@@ -118,15 +128,15 @@ function Get_Ext_SipPhones() {
 		ORDER BY
 			Extension
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	$Extensions = array();
-	while ($row = mysql_fetch_assoc($result)) {
-		$exten = $row;
+    $Extensions = array();
+    while ($row = $result->fetch_assoc()) {
+        $exten = $row;
 
-		// Get allowed codecs
-		$codecs = array();
-		$query_codec = "
+        // Get allowed codecs
+        $codecs = array();
+        $query_codec = "
 			SELECT
 				Name
 			FROM
@@ -135,15 +145,15 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-		$result_codec = mysql_query($query_codec) or die(mysql_error().$query_codec);
-		while ($row_codec = mysql_fetch_assoc($result_codec)) {
-			$codecs[] = $row_codec['Name'];
-		}
-		$exten['Codecs'] = implode(',', $codecs);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        while ($row_codec = $result_codec->fetch_assoc()) {
+            $codecs[] = $row_codec['Name'];
+        }
+        $exten['Codecs'] = implode(',', $codecs);
 
-		// Get available features
-		$exten['Features'] = array();
-		$query_features = "
+        // Get available features
+        $exten['Features'] = array();
+        $query_features = "
 			SELECT
 				ShortName
 			FROM
@@ -152,19 +162,20 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-		$result_features = mysql_query($query_features) or die(mysql_error().$query_codec);
-		while ($row_feature = mysql_fetch_assoc($result_features)) {
-			$exten['Features'][] = $row_feature['ShortName'];
-		}
+        $result_features = $mysqli->query($query_features) or die($mysqli->error() . $query_codec);
+        while ($row_feature = $result_features->fetch_assoc()) {
+            $exten['Features'][] = $row_feature['ShortName'];
+        }
 
-		$Extensions[] = $exten;
-	}
+        $Extensions[] = $exten;
+    }
 
-	return $Extensions;
+    return $Extensions;
 }
 
 function Get_Ext_Queues() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			Extensions.PK_Extension,
 			Ext_Queues.*,
@@ -190,13 +201,13 @@ function Get_Ext_Queues() {
 		ORDER BY
 			Extension
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	$Queues = array();
-	while ($row = mysql_fetch_assoc($result)) {
-		$queue = $row;
+    $Queues = array();
+    while ($row = $result->fetch_assoc()) {
+        $queue = $row;
 
-		$query  = "
+        $query = "
 			SELECT
 				Ext_Queue_Members.*,
 				Extensions.*
@@ -206,24 +217,25 @@ function Get_Ext_Queues() {
 			WHERE
 				FK_Extension = {$queue['PK_Extension']}
 		";
-		$result = mysql_query($query) or die(mysql_error().$query);
-		while ($member = mysql_fetch_assoc($result)) {
-			$queue['Members'][] = $member;
-		}
+        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        while ($member = $result->fetch_assoc()) {
+            $queue['Members'][] = $member;
+        }
 
-		foreach (array_keys($queue) as $field) {
-			if (preg_match('/^Sound_.*/', $field)) {
-				$queue[$field] = preg_replace('/^(.*)\.[^.]*$/','$1', $queue[$field]);
-			}
-		}
+        foreach (array_keys($queue) as $field) {
+            if (preg_match('/^Sound_.*/', $field)) {
+                $queue[$field] = preg_replace('/^(.*)\.[^.]*$/', '$1', $queue[$field]);
+            }
+        }
 
-		$Queues[] = $queue;
-	}
-	return $Queues;
+        $Queues[] = $queue;
+    }
+    return $Queues;
 }
 
 function Get_Ext_Parking() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			Extensions.Extension,
 			Extensions.PK_Extension,
@@ -234,62 +246,66 @@ function Get_Ext_Parking() {
 		ORDER BY
 			Extension
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	$Parking = mysql_fetch_assoc($result);
+    $Parking = $result->fetch_assoc();
 
-	return $Parking;
+    return $Parking;
 }
 
 function Get_Ext_ConfCenter_Rooms() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			*
 		FROM
 			Ext_ConfCenter_Rooms
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	while ($row = mysql_fetch_assoc($result)) {
-		$Rooms[] = $row;
-	}
+    while ($row = $result->fetch_assoc()) {
+        $Rooms[] = $row;
+    }
 
-	return $Rooms;
+    return $Rooms;
 }
 
 function Get_Moh_Groups() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			*
 		FROM
 			Moh_Groups
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	while ($row = mysql_fetch_assoc($result)) {
-		$Groups[] = $row;
-	}
+    while ($row = $result->fetch_assoc()) {
+        $Groups[] = $row;
+    }
 
-	return $Groups;
+    return $Groups;
 }
 
 function Get_Settings() {
-	$query = "
+    global $mysqli;
+    $query = "
 		SELECT
 			*
 		FROM
 			Settings
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
 
-	while ($row = mysql_fetch_assoc($result)) {
-		if (in_array($row['Name'],array('Network_Additional_LAN', 'Network_Interfaces_LAN'))) {
-			$Settings[$row['Name']] = explode(';', $row['Value']);
-		} else {
-			$Settings[$row['Name']] = $row['Value'];
-		}
-	}
+    while ($row = $result->fetch_assoc()) {
+        if (in_array($row['Name'], array('Network_Additional_LAN', 'Network_Interfaces_LAN'))) {
+            $Settings[$row['Name']] = explode(';', $row['Value']);
+        } else {
+            $Settings[$row['Name']] = $row['Value'];
+        }
+    }
 
-	return $Settings;
+    return $Settings;
 }
+
 ?>
