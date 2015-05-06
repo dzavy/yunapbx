@@ -128,12 +128,6 @@ function ChangeListView() {
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 120px"></th>
 	</tr>
 	</thead>
@@ -165,7 +159,6 @@ function ChangeListView() {
 			{elseif $Extension.Type == 'FC_Intercom'      } Personal Intercom
 			{/if}
 		</td>
-		<td>{$Extension.DateCreated_Formated}</td>
 		<td style="width: 120px">
 			<form method="get" action="Extensions_{$Extension.Type}_Modify.php" style="display: inline;">
 				<input type="hidden" name="PK_Extension" value="{$Extension._PK_}" />

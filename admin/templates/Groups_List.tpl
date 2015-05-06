@@ -33,12 +33,6 @@
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 130px"></th>
 	</tr>
 
@@ -46,7 +40,6 @@
 	<tr class="{if $Hilight == $Group._PK_}hilight{/if} {cycle values="odd,even"}">
 		<td>{$Group.Name}</td>
 		<td>{$Group.Members}</td>
-		<td>{$Group.DateCreated}</td>
 		<td>
 			<form method="get" action="Groups_Modify.php" style="display: inline;">
 				<input type="hidden" name="PK_Group" value="{$Group._PK_}" />

@@ -22,8 +22,8 @@
 	{foreach from=$IVR_Tree.Actions item=IVR_Action}
 		<br />
 		<img src='images/tree_icons/{$IVR_Action.Type}.gif' alt="{$IVR_Action.Type}"/>
-		{include file=IVR_Actions_Display.tpl Display='Name' Action=$IVR_Action}
-		({include file=IVR_Actions_Display.tpl Display='Desc' Action=$IVR_Action})
+		{include file="IVR_Actions_Display.tpl" Display='Name' Action=$IVR_Action}
+		({include file="IVR_Actions_Display.tpl" Display='Desc' Action=$IVR_Action})
 	{foreachelse}
 		<br />
 		You currently do not have any actions for this context.

@@ -14,9 +14,9 @@ function ViewAdd() {
 
 {if $Message!= ""}
 <p class="success_message">
-{if     $Message == "CREATE_FOLDER" } Successfully created a new sound folder.
-{elseif $Message == "MODIFY_FOLDER" } Successfully modified the sound folder. 
-{elseif $Message == "DELETE_FOLDER" } Successfully deleted sound folder.
+{if     $Message == "CREATE_LANGUAGE" } Successfully created a new sound language.
+{elseif $Message == "MODIFY_LANGUAGE" } Successfully modified the sound language. 
+{elseif $Message == "DELETE_LANGUAGE" } Successfully deleted sound language.
 {/if}
 </p>
 {/if}
@@ -71,12 +71,6 @@ function ViewAdd() {
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 230px"></th>
 	</tr>
 	
@@ -84,19 +78,18 @@ function ViewAdd() {
 	<tr class="{if $Hilight == $Language._PK_}hilight{/if} {cycle values="odd,even"}">
 		<td>{$Language.Name}</td>
 		<td>{$Language.Type}</td>
-		<td>{$Language.DateCreated}</td>
 		<td>
 			{if $Language.Type == 'User'}
-			<form method="get" action="SoundFolders_Modify.php" style="display: inline;">
-				<input type="hidden" name="PK_SoundFolder" value="{$Folder._PK_}" />
+			<form method="get" action="SoundLanguages_Modify.php" style="display: inline;">
+				<input type="hidden" name="PK_SoundLanguage" value="{$Language._PK_}" />
 				<button type="submit" name="submit" value="modify">Modify</button>
 			</form>
 			{else}
 				<button class="disabled">Modify</button>
 			{/if}
 			{if $Language.Type == 'User'}
-			<form method="get" action="SoundFolders_Delete.php" style="display: inline;">
-				<input type="hidden" name="PK_SoundFolder" value="{$Folder._PK_}" />
+			<form method="get" action="SoundLanguages_Delete.php" style="display: inline;">
+				<input type="hidden" name="PK_SoundLanguage" value="{$Language._PK_}" />
 				<button type="submit" name="submit" value="delete" class="important">Delete</button>
 			</form>
 			{else}
