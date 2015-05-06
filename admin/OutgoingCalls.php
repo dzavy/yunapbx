@@ -1,25 +1,27 @@
 <?php
+
 header("Cache-Control: no-cache");
 
-include_once(dirname(__FILE__).'/../include/db_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/smarty_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/admin_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function OutgoingCalls() {
-	session_start();
-	$session = &$_SESSION['OutgoingCalls'];
-	$smarty  = smarty_init(dirname(__FILE__).'/templates');
+    global $mysqli;
+    
+    $session = &$_SESSION['OutgoingCalls'];
+    $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-	// Init message (Message)
-	$Message = $_REQUEST['msg'];
+    // Init message (Message)
+    $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
 
-	if (isset($_REQUEST['submit']) && ($_REQUEST['submit'] == 'add_cid_rule' || $_REQUEST['submit'] == 'add_cids_rule')) {
-		$query = "
+    if (isset($_REQUEST['submit']) && ($_REQUEST['submit'] == 'add_cid_rule' || $_REQUEST['submit'] == 'add_cids_rule')) {
+        $query = "
 			INSERT INTO
 				OutgoingCIDRules
 			SET
 
-				Type            = '".($_REQUEST['submit']=='add_cid_rule'?'Single':'Multiple')."',
+				Type            = '" . ($_REQUEST['submit'] == 'add_cid_rule' ? 'Single' : 'Multiple') . "',
 				ExtensionStart  = 0,
 				ExtensionEnd    = 0,
 				FK_OutgoingRule = 0,
@@ -28,14 +30,14 @@ function OutgoingCalls() {
 				Name            = '',
 				Number          = ''
 		";
-		mysql_query($query) or die(mysql_error().$query);
+        $mysqli->query($query) or die($mysqli->error() . $query);
 
-		$HiligthRule = mysql_insert_id();
-	}
+        $HiligthRule = $mysqli->insert_id;
+    }
 
-	// Outgoing Rules (OutgoingRules)
-	$OutgoingRules = array();
-	$query  = "
+    // Outgoing Rules (OutgoingRules)
+    $OutgoingRules = array();
+    $query = "
 		SELECT
 			PK_OutgoingRule,
 			RuleOrder,
@@ -53,14 +55,14 @@ function OutgoingCalls() {
 		ORDER BY
 			RuleOrder ASC
 	";
-	$result = mysql_query($query) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
-		$OutgoingRules[] = $row;
-	}
+    $result = $mysqli->query($query) or die($mysqli->error());
+    while ($row = $result->fetch_assoc()) {
+        $OutgoingRules[] = $row;
+    }
 
-	// Outgoing Rules (OutgoingCIDRules)
-	$OutgoingCIDRules = array();
-	$query  = "
+    // Outgoing Rules (OutgoingCIDRules)
+    $OutgoingCIDRules = array();
+    $query = "
 		SELECT
 				*
 		FROM
@@ -68,17 +70,17 @@ function OutgoingCalls() {
 		ORDER BY
 			Type
 	";
-	$result = mysql_query($query) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
-		$OutgoingCIDRules[] = $row;
-	}
+    $result = $mysqli->query($query) or die($mysqli->error());
+    while ($row = $result->fetch_assoc()) {
+        $OutgoingCIDRules[] = $row;
+    }
 
-	$smarty->assign('OutgoingRules'   , $OutgoingRules);
-	$smarty->assign('OutgoingCIDRules', $OutgoingCIDRules);
-	$smarty->assign('Message'         , $Message);
-	$smarty->assign('Hilight'         , $_REQUEST['hilight']);
+    $smarty->assign('OutgoingRules', $OutgoingRules);
+    $smarty->assign('OutgoingCIDRules', $OutgoingCIDRules);
+    $smarty->assign('Message', $Message);
+    $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 
-	return $smarty->fetch('OutgoingCalls.tpl');
+    return $smarty->fetch('OutgoingCalls.tpl');
 }
 
 admin_run('OutgoingCalls', 'Admin.tpl');

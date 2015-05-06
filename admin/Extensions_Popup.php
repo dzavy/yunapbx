@@ -1,14 +1,16 @@
 <?php
-include_once(dirname(__FILE__).'/../include/db_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/smarty_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/admin_utils.inc.php');
+
+include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Groups_Popup_Create() {
-	session_start();
-	$smarty  = smarty_init(dirname(__FILE__).'/templates');
+    global $mysqli;
+    
+    $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-	// Set 'Extensions'
-	$query  = "
+    // Set 'Extensions'
+    $query = "
 		SELECT
 			Extension,
 			LPAD(Extension,5,' ') AS Extension_Pad,
@@ -33,16 +35,16 @@ function Groups_Popup_Create() {
 		ORDER BY
 			Extension_Pad ASC
 	";
-	$result = mysql_query($query) or die(mysql_error());
+    $result = $mysqli->query($query) or die($mysqli->error());
 
-	$Extensions = array();
-	while ($row = mysql_fetch_assoc($result)) {
-		$Extensions[] = $row;
-	}
+    $Extensions = array();
+    while ($row = $result->fetch_assoc()) {
+        $Extensions[] = $row;
+    }
 
-	$smarty->assign('FillID'    , $_REQUEST['FillID']);
-	$smarty->assign('Extensions', $Extensions);
-	return $smarty->fetch('Extensions_Popup.tpl');
+    $smarty->assign('FillID', $_REQUEST['FillID']);
+    $smarty->assign('Extensions', $Extensions);
+    return $smarty->fetch('Extensions_Popup.tpl');
 }
 
 admin_run('Groups_Popup_Create', 'AdminPopup.tpl');
