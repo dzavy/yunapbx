@@ -1,34 +1,36 @@
 <?php
-include_once(dirname(__FILE__).'/../include/db_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/smarty_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/admin_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/asterisk_utils.inc.php');
+
+include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Extensions_Queue_Delete() {
-	$smarty  = smarty_init(dirname(__FILE__).'/templates');
+    global $mysqli;
+    $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-	$PK_Extension = $_REQUEST['PK_Extension'];
+    $PK_Extension = $_REQUEST['PK_Extension'];
 
-	// In confirmed, do the actual delete
-	if (@$_REQUEST['submit'] == 'delete_confirm') {
-		$query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
-		mysql_query($query) or die(mysql_error());
+    // In confirmed, do the actual delete
+    if (@$_REQUEST['submit'] == 'delete_confirm') {
+        $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
+        $mysqli->query($query) or die($mysqli->error());
 
-		$query = "DELETE FROM Ext_Queues WHERE PK_Extension = $PK_Extension LIMIT 1";
-		mysql_query($query) or die(mysql_error());
+        $query = "DELETE FROM Ext_Queues WHERE PK_Extension = $PK_Extension LIMIT 1";
+        $mysqli->query($query) or die($mysqli->error());
 
-		$query = "DELETE FROM Ext_Queue_Members WHERE FK_Extension = $PK_Extension";
-		mysql_query($query) or die(mysql_error());
+        $query = "DELETE FROM Ext_Queue_Members WHERE FK_Extension = $PK_Extension";
+        $mysqli->query($query) or die($mysqli->error());
 
-		asterisk_UpdateConf('queues.conf');
-		asterisk_Reload();
+        asterisk_UpdateConf('queues.conf');
+        asterisk_Reload();
 
-		header('Location: Extensions_List.php?msg=DELETE_QUEUE_EXTENSION');
-		die();
-	}
+        header('Location: Extensions_List.php?msg=DELETE_QUEUE_EXTENSION');
+        die();
+    }
 
-	// Init extension info (Extension)
-	$query = "
+    // Init extension info (Extension)
+    $query = "
 		SELECT
 			PK_Extension,
 			Name
@@ -38,12 +40,12 @@ function Extensions_Queue_Delete() {
 			PK_Extension = $PK_Extension
 		LIMIT 1
 	";
-	$result = mysql_query($query) or die(mysql_error());
-	$Queue  = mysql_fetch_assoc($result);
+    $result = $mysqli->query($query) or die($mysqli->error());
+    $Queue = $result->fetch_assoc();
 
-	$smarty->assign('Queue' , $Queue);
+    $smarty->assign('Queue', $Queue);
 
-	return $smarty->fetch('Extensions_Queue_Delete.tpl');
+    return $smarty->fetch('Extensions_Queue_Delete.tpl');
 }
 
 admin_run('Extensions_Queue_Delete', 'Admin.tpl');

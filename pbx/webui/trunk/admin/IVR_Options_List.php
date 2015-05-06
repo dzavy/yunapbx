@@ -1,30 +1,32 @@
 <?php
-include_once(dirname(__FILE__).'/../include/db_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/smarty_utils.inc.php');
-include_once(dirname(__FILE__).'/../include/admin_utils.inc.php');
+
+include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
+include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Options_List() {
-	session_start();
-	$session = &$_SESSION['IVR_Options_List'];
-	$smarty  = smarty_init(dirname(__FILE__).'/templates');
+    global $mysqli;
+    
+    $session = &$_SESSION['IVR_Options_List'];
+    $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-	$PK_Menu = $_REQUEST['PK_Menu'];
-	$Message = $_REQUEST['msg'];
+    $PK_Menu = $_REQUEST['PK_Menu'];
+    $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
 
-	if (!empty($_REQUEST['submit'])) {
-		$IVR_Menu = formdata_from_post();
-		$Errors   = formdata_validate($IVR_Menu);
+    if (!empty($_REQUEST['submit'])) {
+        $IVR_Menu = formdata_from_post();
+        $Errors = formdata_validate($IVR_Menu);
 
-		if (count($Errors) == 0) {
-			$id = formdata_save($IVR_Menu);
-		}
-	} else {
-		$IVR_Menu = formdata_from_db($_REQUEST['PK_Menu']);
-	}
+        if (count($Errors) == 0) {
+            $id = formdata_save($IVR_Menu);
+        }
+    } else {
+        $IVR_Menu = formdata_from_db($_REQUEST['PK_Menu']);
+    }
 
-	// Init available options
-	$IVR_Options = array();
-	$query  = "
+    // Init available options
+    $IVR_Options = array();
+    $query = "
 		SELECT
 			PK_Option         AS `PK_Option`,
 			`Key`             AS `Key`,
@@ -40,14 +42,14 @@ function IVR_Options_List() {
 		ORDER BY
 			`Key`
 	";
-	$result = mysql_query($query) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
-		$IVR_Options[] = $row;
-	}
+    $result = $mysqli->query($query) or die($mysqli->error());
+    while ($row = $result->fetch_assoc()) {
+        $IVR_Options[] = $row;
+    }
 
-	// Init Folders (SoundFolders)
-	$SoundFolders = array();
-	$query = "
+    // Init Folders (SoundFolders)
+    $SoundFolders = array();
+    $query = "
 		SELECT
 			PK_SoundFolder,
 			Name
@@ -55,14 +57,14 @@ function IVR_Options_List() {
 			SoundFolders
 		ORDER BY Name
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_assoc($result)) {
-		$SoundFolders[] = $row;
-	}
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    while ($row = $result->fetch_assoc()) {
+        $SoundFolders[] = $row;
+    }
 
-	// Init SoundLanguages
-	$SoundLanguages = array();
-	$query = "
+    // Init SoundLanguages
+    $SoundLanguages = array();
+    $query = "
 		SELECT
 			PK_SoundLanguage,
 			`Default`,
@@ -71,27 +73,29 @@ function IVR_Options_List() {
 			SoundLanguages
 		ORDER BY Name
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_assoc($result)) {
-		$SoundLanguages[] = $row;
-		if ($row['Default']) {
-			$SoundLanguage_Default = $row;
-		}
-	}
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    while ($row = $result->fetch_assoc()) {
+        $SoundLanguages[] = $row;
+        if ($row['Default']) {
+            $SoundLanguage_Default = $row;
+        }
+    }
 
-	// Init SoundEntries
-	$SoundEntries = array();
-	foreach ($SoundLanguages as $SoundLanguage) {
-		$lid = $SoundLanguage['PK_SoundLanguage'];
-		$query_select .= "
+    // Init SoundEntries
+    $SoundEntries = array();
+    $query_select = "";
+    $query_from = "";
+    foreach ($SoundLanguages as $SoundLanguage) {
+        $lid = $SoundLanguage['PK_SoundLanguage'];
+        $query_select .= "
 			SoundFiles_{$lid}.Name        AS Name_{$lid}       ,
 			SoundFiles_{$lid}.Description AS Description_{$lid},
 		";
-		$query_from .= "
+        $query_from .= "
 			LEFT JOIN SoundFiles SoundFiles_{$lid} ON SoundFiles_{$lid}.FK_SoundEntry = PK_SoundEntry AND SoundFiles_{$lid}.FK_SoundLanguage = {$lid}
 		";
-	}
-	$query = "
+    }
+    $query = "
 		SELECT
 			$query_select
 			PK_SoundEntry,
@@ -103,117 +107,118 @@ function IVR_Options_List() {
 			PK_SoundEntry
 	";
 
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_assoc($result)) {
-		$SoundEntry = $row;
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    while ($row = $result->fetch_assoc()) {
+        $SoundEntry = $row;
 
-		foreach ($SoundLanguages as $SoundLanguage) {
-			$lid   = $SoundLanguage['PK_SoundLanguage'];
+        foreach ($SoundLanguages as $SoundLanguage) {
+            $lid = $SoundLanguage['PK_SoundLanguage'];
 
-			$SoundEntry['Name'][$lid]        = $SoundEntry["Name_$lid"];
-			$SoundEntry['Description'][$lid] = $SoundEntry["Description_$lid"];
+            $SoundEntry['Name'][$lid] = $SoundEntry["Name_$lid"];
+            $SoundEntry['Description'][$lid] = $SoundEntry["Description_$lid"];
 
-			if ($SoundEntry["Name_$lid"] != "") {
-				$SoundEntry['Name']['Default'] = "{$SoundEntry['Name'][$SoundLanguage['PK_SoundLanguage']]}";
-			}
-		}
+            if ($SoundEntry["Name_$lid"] != "") {
+                $SoundEntry['Name']['Default'] = "{$SoundEntry['Name'][$SoundLanguage['PK_SoundLanguage']]}";
+            }
+        }
 
-		if ($SoundEntry['Name'][$SoundLanguage_Default['PK_SoundLanguage']] != "") {
-			$SoundEntry['Name']['Default'] = "{$SoundEntry['Name'][$SoundLanguage_Default['PK_SoundLanguage']]}";
-		}
+        if ($SoundEntry['Name'][$SoundLanguage_Default['PK_SoundLanguage']] != "") {
+            $SoundEntry['Name']['Default'] = "{$SoundEntry['Name'][$SoundLanguage_Default['PK_SoundLanguage']]}";
+        }
 
-		$SoundEntries[] = $SoundEntry;
-	}
+        $SoundEntries[] = $SoundEntry;
+    }
 
-	// Get available menus
-	$Menus = array();
-	$query  = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_assoc($result)) {
-		$menu = $row;
+    // Get available menus
+    $Menus = array();
+    $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    while ($row = $result->fetch_assoc()) {
+        $menu = $row;
 
-		$query2  = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-		$result2 = mysql_query($query2) or die(mysql_error().$query2);
-		while ($row2 = mysql_fetch_assoc($result2)) {
-			$action = $row2;
+        $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
+        $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+        while ($row2 = $result2->fetch_assoc()) {
+            $action = $row2;
 
-			$query3  = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-			$result3 = mysql_query($query3) or die(mysql_error().$query3);
-			while ($row3 = mysql_fetch_assoc($result3)) {
-				$action['Param'][$row3['Name']] = $row3['Value'];
-				$action['Var'][$row3['Name']] = $row3['Variable'];
-			}
+            $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
+            $result3 = $mysqli->query($query3) or die($mysqli->error() . $query3);
+            while ($row3 = $result3->fetch_assoc()) {
+                $action['Param'][$row3['Name']] = $row3['Value'];
+                $action['Var'][$row3['Name']] = $row3['Variable'];
+            }
 
-			$menu['Actions'][] = $action;
-		}
+            $menu['Actions'][] = $action;
+        }
 
-		$Menus[] = $menu;
-	}
+        $Menus[] = $menu;
+    }
 
-	$smarty->assign('IVR_Menu'             , $IVR_Menu);
-	$smarty->assign('IVR_Options'          , $IVR_Options);
-	$smarty->assign('PK_Menu'              , $PK_Menu);
-	$smarty->assign('Message'              , $Message);
-	$smarty->assign('Hilight'              , $_REQUEST['hilight']);
-	$smarty->assign('History'              , $_SESSION['IVR_HISTORY']);
-	$smarty->assign('SoundEntries'         , $SoundEntries);
-	$smarty->assign('SoundFolders'         , $SoundFolders);
-	$smarty->assign('SoundLanguages'       , $SoundLanguages);
-	$smarty->assign('SoundLanugage_Default', $SoundLanguage_Default );
-	$smarty->assign('Menus'                , $Menus);
+    $smarty->assign('IVR_Menu', $IVR_Menu);
+    $smarty->assign('IVR_Options', $IVR_Options);
+    $smarty->assign('PK_Menu', $PK_Menu);
+    $smarty->assign('Message', $Message);
+    $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
+    $smarty->assign('History', $_SESSION['IVR_HISTORY']);
+    $smarty->assign('SoundEntries', $SoundEntries);
+    $smarty->assign('SoundFolders', $SoundFolders);
+    $smarty->assign('SoundLanguages', $SoundLanguages);
+    $smarty->assign('SoundLanugage_Default', $SoundLanguage_Default);
+    $smarty->assign('Menus', $Menus);
 
-	return $smarty->fetch('IVR_Options_List.tpl');
+    return $smarty->fetch('IVR_Options_List.tpl');
 }
 
 function formdata_from_post() {
-	$data =  $_REQUEST;
+    $data = $_REQUEST;
 
-	empty($data['ExtensionDialing'])?$data['ExtensionDialing']=0:null;
+    empty($data['ExtensionDialing']) ? $data['ExtensionDialing'] = 0 : null;
 
-	return $data;
+    return $data;
 }
 
 function formdata_save($data) {
-	// Update 'Ext_IVR'
-	$query = "
+    global $mysqli;
+    // Update 'Ext_IVR'
+    $query = "
 		UPDATE
 			IVR_Menus
 		SET
-			ExtensionDialing = ".mysql_real_escape_string($data['ExtensionDialing']).",
+			ExtensionDialing = " . $mysqli->real_escape_string($data['ExtensionDialing']) . ",
 			
-			FK_SoundLanguage_Invalid = ".intval($data['FK_SoundLanguage_Invalid']).",
-			FK_SoundEntry_Invalid    = ".intval($data['FK_SoundEntry_Invalid']).",
-			FK_Menu_Invalid          = ".intval($data['FK_Menu_Invalid']).",
-			FK_Action_Invalid        = ".intval($data['FK_Action_Invalid']).",
+			FK_SoundLanguage_Invalid = " . intval($data['FK_SoundLanguage_Invalid']) . ",
+			FK_SoundEntry_Invalid    = " . intval($data['FK_SoundEntry_Invalid']) . ",
+			FK_Menu_Invalid          = " . intval($data['FK_Menu_Invalid']) . ",
+			FK_Action_Invalid        = " . intval($data['FK_Action_Invalid']) . ",
 			
-			Timeout                  = ".intval($data['Timeout']).",
-			FK_SoundLanguage_Timeout = ".intval($data['FK_SoundLanguage_Timeout']).",
-			FK_SoundEntry_Timeout    = ".intval($data['FK_SoundEntry_Timeout']).",
-			FK_Menu_Timeout          = ".intval($data['FK_Menu_Timeout']).",
-			FK_Action_Timeout        = ".intval($data['FK_Action_Timeout']).",
+			Timeout                  = " . intval($data['Timeout']) . ",
+			FK_SoundLanguage_Timeout = " . intval($data['FK_SoundLanguage_Timeout']) . ",
+			FK_SoundEntry_Timeout    = " . intval($data['FK_SoundEntry_Timeout']) . ",
+			FK_Menu_Timeout          = " . intval($data['FK_Menu_Timeout']) . ",
+			FK_Action_Timeout        = " . intval($data['FK_Action_Timeout']) . ",
 			
-			Retry                    = ".intval($data['Retry']).",
-			FK_SoundLanguage_Retry   = ".intval($data['FK_SoundLanguage_Retry']).",
-			FK_SoundEntry_Retry      = ".intval($data['FK_SoundEntry_Retry']).",
-			FK_Menu_Retry            = ".intval($data['FK_Menu_Retry']).",
-			FK_Action_Retry          = ".intval($data['FK_Action_Retry'])."
+			Retry                    = " . intval($data['Retry']) . ",
+			FK_SoundLanguage_Retry   = " . intval($data['FK_SoundLanguage_Retry']) . ",
+			FK_SoundEntry_Retry      = " . intval($data['FK_SoundEntry_Retry']) . ",
+			FK_Menu_Retry            = " . intval($data['FK_Menu_Retry']) . ",
+			FK_Action_Retry          = " . intval($data['FK_Action_Retry']) . "
 
 		WHERE
-			PK_Menu                  = ".mysql_real_escape_string($data['PK_Menu'])."
+			PK_Menu                  = " . $mysqli->real_escape_string($data['PK_Menu']) . "
 		LIMIT 1
 	";
-	mysql_query($query) or die(mysql_error().$query);
-
+    $mysqli->query($query) or die($mysqli->error() . $query);
 }
 
 function formdata_validate($data) {
-	$errors = array();
+    $errors = array();
 
-	return $errors;
+    return $errors;
 }
 
 function formdata_from_db($id) {
-	$query  = "
+    global $mysqli;
+    $query = "
 		SELECT
 			*
 		FROM
@@ -222,9 +227,10 @@ function formdata_from_db($id) {
 			PK_Menu = '$id'
 		LIMIT 1
 	";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	$data   = mysql_fetch_assoc($result);
-	return $data;
+    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $data = $result->fetch_assoc();
+    return $data;
 }
+
 admin_run('IVR_Options_List', 'Admin.tpl');
 ?>

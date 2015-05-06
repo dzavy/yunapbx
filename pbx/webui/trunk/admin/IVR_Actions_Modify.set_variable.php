@@ -5,7 +5,7 @@ include_once(dirname(__FILE__).'/../include/admin_utils.inc.php');
 
 
 function Extensions_Action_Modify() {
-	session_start();
+	
 	$session = &$_SESSION['IVR_Action_Modify_set_variable'];
 	$smarty  = smarty_init(dirname(__FILE__).'/templates');
 
@@ -28,8 +28,8 @@ function Extensions_Action_Modify() {
 
 	// Get available vars
 	$query  = "SELECT DISTINCT(Variable) FROM IVR_Action_Params";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_row($result)) {
+	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	while ($row = $mysqli->fetch_row($result)) {
 		if (!empty($row[0])) {
 			$Variables[] = $row[0];
 		}
@@ -43,12 +43,12 @@ function Extensions_Action_Modify() {
 
 function formdata_from_db($id) {
 	$query  = "SELECT * FROM IVR_Actions WHERE PK_Action = '$id' LIMIT 1";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	$data   = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$data   = $result->fetch_assoc();
 
 	$query  = "SELECT * FROM IVR_Action_Params WHERE FK_Action = '$id'";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	while ($row = mysql_fetch_assoc($result)) {
+	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	while ($row = $result->fetch_assoc()) {
 		$data['Param'][$row['Name']] = $row['Value'];
 	}
 
@@ -70,17 +70,17 @@ function formdata_from_post() {
 function formdata_save($data) {
 	if ($data['PK_Action'] == "") {
 		$query  = "SELECT COUNT(*) FROM IVR_Actions WHERE FK_Menu={$data['FK_Menu']}";
-		$result = mysql_query($query) or die(mysql_error().$query);
-		$row    = mysql_fetch_row($result);
+		$result = $mysqli->query($query) or die($mysqli->error().$query);
+		$row    = $mysqli->fetch_row($result);
 		$data['Order'] = $row[0]+1;
 
 		$query = "INSERT INTO IVR_Actions (FK_Menu, `Order`, Type) VALUES({$data['FK_Menu']}, {$data['Order']}, 'set_variable')";
-		mysql_query($query) or die(mysql_error().$query);
-		$data['PK_Action'] = mysql_insert_id();
+		$mysqli->query($query) or die($mysqli->error().$query);
+		$data['PK_Action'] = $mysqli->insert_id;
 	}
 
 	$query = "DELETE FROM IVR_Action_Params WHERE FK_Action = {$data['PK_Action']}";
-	mysql_query($query) or die(mysql_error().$query);
+	$mysqli->query($query) or die($mysqli->error().$query);
 
 	if (is_array($data['Param'])) {
 		foreach ($data['Param'] as $Name => $Value) {
@@ -88,11 +88,11 @@ function formdata_save($data) {
 				INSERT INTO
 					IVR_Action_Params
 				SET
-					`Name`      = '".mysql_real_escape_string($Name)."',
-					`Value`     = '".mysql_real_escape_string($Value)."',
+					`Name`      = '".$mysqli->real_escape_string($Name)."',
+					`Value`     = '".$mysqli->real_escape_string($Value)."',
 					`FK_Action` = {$data['PK_Action']}
 			";
-			mysql_query($query) or die(mysql_error().$query);
+			$mysqli->query($query) or die($mysqli->error().$query);
 
 			if ($Name == 'Name') {
 				$query = "
@@ -100,10 +100,10 @@ function formdata_save($data) {
 						IVR_Action_Params
 					SET
 						`Name`      = 'Null',
-						`Variable`  = '".mysql_real_escape_string($Value)."',
+						`Variable`  = '".$mysqli->real_escape_string($Value)."',
 						`FK_Action` = {$data['PK_Action']}
 				";
-				mysql_query($query) or die(mysql_error().$query);
+				$mysqli->query($query) or die($mysqli->error().$query);
 			}
 		}
 	}

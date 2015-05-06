@@ -1,2 +1,3 @@
 <?php
- header('Location: Extensions_List.php'); 
+
+header('Location: Extensions_List.php');
