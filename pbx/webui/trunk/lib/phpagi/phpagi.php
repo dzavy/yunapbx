@@ -1769,8 +1769,8 @@ class AGI
         $subject = "$basefile/$line/$level: $message";
         $message = "$level: $message in $file on line $line\n\n";
 
-        if(function_exists('mysql_errno') && strpos(' '.strtolower($message), 'mysql'))
-          $message .= 'MySQL error ' . mysql_errno() . ": " . mysql_error() . "\n\n";
+        if(function_exists('$mysqli->errno') && strpos(' '.strtolower($message), 'mysql'))
+          $message .= 'MySQL error ' . $mysqli->errno() . ": " . $mysqli->error() . "\n\n";
 
         // figure out who we are
         if(function_exists('socket_create'))

@@ -1,51 +1,57 @@
 <?php
+
 class AsteriskManagerMessage {
-	protected $Keys;
-	protected $Variables;
 
-	function __construct($response = ""	) {
-		$this->Keys = array();
-		$this->Variables= array();
+    protected $Keys;
+    protected $Variables;
 
-		if ($response != "") {
-			$lines = explode("\r\n", $response);
-			foreach ($lines as $line) {
-				$elements = explode(": ", $line, 2);
-				$this->SetKey($elements[0], $elements[1]);
-			}
-		}
-	}
+    function __construct($response = "") {
+        $this->Keys = array();
+        $this->Variables = array();
 
-	function GetKeys() {
-		return $this->Keys;
-	}
+        if ($response != "") {
+            $lines = explode("\r\n", $response);
+            foreach ($lines as $line) {
+                if (substr_count($line, ":") > 0) {
+                    $elements = explode(": ", $line, 2);
+                    $this->SetKey($elements[0], $elements[1]);
+                }
+            }
+        }
+    }
 
-	function SetKey($Key, $Value) {
-		$this->Keys["$Key"] = $Value;
-	}
+    function GetKeys() {
+        return $this->Keys;
+    }
 
-	function GetKey($Key) {
-		return $this->Keys["$Key"];
-	}
+    function SetKey($Key, $Value) {
+        $this->Keys["$Key"] = $Value;
+    }
 
-	function SetVar($Var, $Value) {
-		$this->Variables["$Var"] = $Value;
-	}
+    function GetKey($Key) {
+        return $this->Keys["$Key"];
+    }
 
-	public function ToString() {
-		$message = "";
+    function SetVar($Var, $Value) {
+        $this->Variables["$Var"] = $Value;
+    }
 
-		foreach ($this->Keys as $key=>$value) {
-			$message .= "$key: $value\r\n";
-		}
+    public function ToString() {
+        $message = "";
 
-		foreach ($this->Variables as $var=>$value) {
-			$message .= "Variable: $var=$value\r\n";
-		}
+        foreach ($this->Keys as $key => $value) {
+            $message .= "$key: $value\r\n";
+        }
 
-		$message .= "\r\n";
+        foreach ($this->Variables as $var => $value) {
+            $message .= "Variable: $var=$value\r\n";
+        }
 
-		return $message;
-	}
+        $message .= "\r\n";
+
+        return $message;
+    }
+
 }
+
 ?>
