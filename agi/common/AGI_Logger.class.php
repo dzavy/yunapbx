@@ -35,7 +35,7 @@ class AGI_Logger {
 
 		$this->agi->verbose("{$prefix}{$message}", 1);
 		$this->agi->verbose("{$prefix}{$query}", 1);
-		$this->agi->verbose("{$prefix}".mysql_error(), 1);
+		$this->agi->verbose("{$prefix}".$mysqli->error(), 1);
 
 		die();
 	}

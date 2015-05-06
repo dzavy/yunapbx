@@ -26,26 +26,26 @@ function get_callerid($agi, $FK_OugoingRule, $Extension) {
 				(
 					`Type` = 'Single'
 					AND
-					ExtensionStart = '".mysql_real_escape_string($Extension)."'
+					ExtensionStart = '".$mysqli->real_escape_string($Extension)."'
 				) OR (
 					`Type` = 'Multiple'
 					AND
-					ExtensionStart <= '".mysql_real_escape_string($Extension)."'
+					ExtensionStart <= '".$mysqli->real_escape_string($Extension)."'
 					AND
-					ExtensionEnd   >= '".mysql_real_escape_string($Extension)."'
+					ExtensionEnd   >= '".$mysqli->real_escape_string($Extension)."'
 				)
 			) AND (
 				FK_OutgoingRule = 0
 				OR
-				FK_OutgoingRule = '".mysql_real_escape_string($FK_OugoingRule)."'
+				FK_OutgoingRule = '".$mysqli->real_escape_string($FK_OugoingRule)."'
 			)
 		ORDER BY
 			PK_OutgoingCIDRule ASC
 		LIMIT 1
 	";
-	$result = mysql_query($query) or $agi->verbose(mysql_error().$query);
-	if (mysql_numrows($result) == 1) {
-		$rule = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	if ($mysqli->numrows($result) == 1) {
+		$rule = $result->fetch_assoc();
 		if ($rule['Type'] == 'Single') {
 			if( !empty($rule['Name'])   ) { $callerid['Name']   = $rule['Name'];   }
 			if( !empty($rule['Number']) ) { $callerid['Number'] = $rule['Number']; }
@@ -87,8 +87,8 @@ $cdr->push_event("DIAL", $called_ext);
 
 // See if we can match any outgoing rule
 $query = "SELECT * FROM OutgoingRules ORDER BY RuleOrder";
-$result = mysql_query($query) or $agi->verbose(mysql_error().$query);
-while ($rule = mysql_fetch_assoc($result)) {
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+while ($rule = $result->fetch_assoc()) {
 	// Check if rule matches
 	$regex = "/^{$rule['BeginWith']}[0-9]{{$rule['RestBetweenLow']},{$rule['RestBetweenHigh']}}$/";
 	if (! preg_match($regex, $called_ext)) {
@@ -121,11 +121,11 @@ if ($rule['ProviderType'] == 'SIP') {
 
 	// Get the needed information about this sip provider
 	$query = "SELECT * FROM `SipProviders` WHERE PK_SipProvider = '{$rule['ProviderID']}' LIMIT 1";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	if (mysql_num_rows($result) != '1') {
+	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	if ($mysqli->num_rows($result) != '1') {
 		exit(0);
 	}
-	$SipProvider = mysql_fetch_assoc($result);
+	$SipProvider = $result->fetch_assoc();
 
 	// If providers requires the P-Asserted-Identity for caller id setup
 	if ($SipProvider['CallerIDMethod'] == 'P-Asserted-Identity') {
@@ -146,11 +146,11 @@ if ($rule['ProviderType'] == 'SIP') {
 
 	// Get the needed information about this sip provider
 	$query = "SELECT * FROM `IaxProviders` WHERE PK_IaxProvider = '{$rule['ProviderID']}' LIMIT 1";
-	$result = mysql_query($query) or die(mysql_error().$query);
-	if (mysql_num_rows($result) != '1') {
+	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	if ($mysqli->num_rows($result) != '1') {
 		exit(0);
 	}
-	$IaxProvider = mysql_fetch_assoc($result);
+	$IaxProvider = $result->fetch_assoc();
 
 	$cdr->push_event("OUTPROVIDER", "IAX,{$IaxProvder['Name']},$new_number");
 

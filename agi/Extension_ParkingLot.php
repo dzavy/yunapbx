@@ -29,15 +29,15 @@ if ($Extension_D['Type'] == 'ParkingLot') {
 	// See if the extension is alowed to unpark calls
 	if ($Extension_S['Type'] == 'SipPhone') {
 		$query = "SELECT * FROM Ext_SipPhones_Features WHERE FK_Extension  = {$Extension_S['PK_Extension']} AND FK_Feature = 6";
-		$result = mysql_query($query) or $agi->verbose($query);
+		$result = $mysqli->query($query) or $agi->verbose($query);
 	} else {
 		$query = "SELECT * FROM Ext_Virtual_Features   WHERE FK_Extension  = {$Extension_S['PK_Extension']} AND FK_Feature = 6";
-		$result = mysql_query($query) or $agi->verbose($query);
+		$result = $mysqli->query($query) or $agi->verbose($query);
 	}
 
 	$agi->verbose($query);
 	// Unpark calls if allowed
-	if (mysql_num_rows($result) == 1) {
+	if ($mysqli->num_rows($result) == 1) {
 		$agi->exec_goto('park_call', $Extension_D['Extension'], 1);
 	}
 }

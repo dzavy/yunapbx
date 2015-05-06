@@ -37,9 +37,9 @@ while ($conf_no == '') {
 	$conf_no = $result['result'];
 	
 	$query  = "SELECT * FROM Ext_ConfCenter_Rooms WHERE Number='$conf_no' LIMIT 1";
-	$result = mysql_query($query) or $logger->error_sql(mysql_error(), $query, __FILE__, __LINE__);
-	if (mysql_numrows($result) == 1) {
-		$Room = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $logger->error_sql($mysqli->error(), $query, __FILE__, __LINE__);
+	if ($mysqli->numrows($result) == 1) {
+		$Room = $result->fetch_assoc();
 	} else {
 		$agi->stream_file('conf-invalid');
 		$conf_no = '';
@@ -58,8 +58,8 @@ $query = "
 	WHERE
 		FK_Room = '{$Room['PK_Room']}'
 ";
-$result = mysql_query($query) or $logger->error_sql(mysql_error(), $query, __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($result)) {
+$result = $mysqli->query($query) or $logger->error_sql($mysqli->error(), $query, __FILE__, __LINE__);
+while ($row = $result->fetch_assoc()) {
 	$Admins[] = $row['Extension'];
 }
 

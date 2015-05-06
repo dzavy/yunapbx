@@ -27,8 +27,8 @@ if($agi->request['agi_type'] == 'SIP') {
 	$PK_SipProvider = $matches[1];
 
 	$query  = "SELECT Name FROM SipProviders WHERE PK_SipProvider=$PK_SipProvider LIMIT 1";
-	$result = mysql_query($query) or $agi->verbose(mysql_error().$query);
-	$prov   = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$prov   = $result->fetch_assoc();
 
 	$cdr->push_event("INPROVIDER", "SIP,{$prov['Name']}");
 
@@ -37,8 +37,8 @@ if($agi->request['agi_type'] == 'SIP') {
 	$PK_IaxProvider = $matches[1];
 
 	$query  = "SELECT Name FROM IaxProviders WHERE PK_IaxProvider=$PK_IaxProvider LIMIT 1";
-	$result = mysql_query($query) or $agi->verbose(mysql_error().$query);
-	$prov   = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$prov   = $result->fetch_assoc();
 
 	$cdr->push_event("INPROVIDER", "IAX,{$prov['Name']}");
 }
@@ -80,10 +80,10 @@ function run_incoming_call_rules($agi) {
 			RuleOrder ASC
 		LIMIT 1
 	";
-	$res = mysql_query($query) or $agi->verbose(mysql_error().$query);
+	$res = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
 
 	/* Iterate the matching rules */
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = $mysqli->fetch_assoc($res)) {
 		$agi->verbose('Incoming Rule : '.$row['PK_IncomingRule']);
 
 		/* If the rule requested a block */
@@ -116,16 +116,16 @@ function run_callback_extension($agi) {
 		preg_match('/^sip_provider_(\d+)/', $agi->request['agi_context'], $matches);
 		$PK_SipProvider = $matches[1];
 		$query = "SELECT CallbackExtension FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
-		$res   = mysql_query($query) or die(mysql_error());
-		$row   = mysql_fetch_assoc($res);
+		$res   = $mysqli->query($query) or die($mysqli->error());
+		$row   = $mysqli->fetch_assoc($res);
 		$CallbackExtension = $row['CallbackExtension'];
 
 	} elseif ($agi->request['agi_type'] == 'IAX2') {
 		preg_match('/^iax_provider_(\d+)/', $agi->request['agi_context'], $matches);
 		$PK_IaxProvider = $matches[1];
 		$query = "SELECT CallbackExtension FROM IaxProviders WHERE PK_IaxProvider = $PK_IaxProvider LIMIT 1";
-		$res   = mysql_query($query) or die(mysql_error());
-		$row   = mysql_fetch_assoc($res);
+		$res   = $mysqli->query($query) or die($mysqli->error());
+		$row   = $mysqli->fetch_assoc($res);
 		$CallbackExtension = $row['CallbackExtension'];
 	}
 
