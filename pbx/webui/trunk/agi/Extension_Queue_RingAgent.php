@@ -22,24 +22,24 @@ $queue_id    = $ext[1];
 
 // Get 'Extension' table info for the agent
 $query           = "SELECT PK_Extension, Extension, Type FROM Extensions WHERE Extension = '{$agent_exten}' LIMIT 1";
-$result          = mysql_query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$Extension_Agent = mysql_fetch_assoc($result);
+$result          = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$Extension_Agent = $result->fetch_assoc();
 
 // Get 'Extension' table info for the queue
 $query           = "SELECT PK_Extension, Extension, Type FROM Extensions WHERE PK_Extension = '{$queue_id}' LIMIT 1";
-$result          = mysql_query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$Extension_Queue = mysql_fetch_assoc($result);
+$result          = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$Extension_Queue = $result->fetch_assoc();
 
 // See if agent requires login
 $query       = "SELECT * FROM Ext_Queue_Members WHERE FK_Extension_Member = '{$Extension_Agent['PK_Extension']}' AND FK_Extension = '{$Extension_Queue['PK_Extension']}' LIMIT 1";
-$result      = mysql_query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$row         = mysql_fetch_assoc($result);
+$result      = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$row         = $result->fetch_assoc();
 $agent_login = $row[0];
 
 if ($agent_login) {
 	$query  = "SELECT * FROM Ext_Queue_Members_Status WHERE FK_Extension = {$Extension_Agent['PK_Extension']} LIMIT 1";
-	$result = mysql_query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-	$row    = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+	$row    = $result->fetch_assoc();
 	
 	$agent_exten = $row['From'];
 }

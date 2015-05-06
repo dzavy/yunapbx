@@ -58,9 +58,9 @@ function agent_auth_ok($agent_number, $agent_password) {
 
 	// Find out the PK_Extension and Type for the agent_number
 	$query  = "SELECT PK_Extension, Type FROM Extensions WHERE Extension = '$agent_number' LIMIT 1";
-	$result = mysql_query($query) or $logger->error_sql("",$query, __LINE__, __FILE__);
-	if (mysql_num_rows($result) == 0) { return false; }
-	$row    = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or $logger->error_sql("",$query, __LINE__, __FILE__);
+	if ($mysqli->num_rows($result) == 0) { return false; }
+	$row    = $result->fetch_assoc();
 	$PK_Extension = $row['PK_Extension'];
 	$Type         = $row['Type'];
 
@@ -77,8 +77,8 @@ function agent_auth_ok($agent_number, $agent_password) {
 			break;
 	}
 
-	$result = mysql_query($query) or $logger->error_sql("", $query, __LINE__, __FILE__);
-	if (mysql_num_rows($result) == 1) {
+	$result = $mysqli->query($query) or $logger->error_sql("", $query, __LINE__, __FILE__);
+	if ($mysqli->num_rows($result) == 1) {
 		return true;
 	} else {
 		return false;
@@ -98,10 +98,10 @@ function agent_logout($agent_number) {
 			Extension = '$agent_number'
 		LIMIT 1
 	";
-	$result = mysql_query($query) or die(mysql_error());
+	$result = $mysqli->query($query) or die($mysqli->error());
 
-	if (mysql_numrows($result) == 1) {
-		$row = mysql_fetch_assoc($result);
+	if ($mysqli->numrows($result) == 1) {
+		$row = $result->fetch_assoc();
 		$agent_phone_number_old = $row['From'];
 	}
 
@@ -120,10 +120,10 @@ function agent_logout($agent_number) {
 			Extension = '$agent_number'
 	";
 
-	$result = mysql_query($query) or die(mysql_error());
+	$result = $mysqli->query($query) or die($mysqli->error());
 
 	// Remove it from every queue
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = $result->fetch_assoc()) {
 		$QueueName = "queue-{$row['FK_Extension']}";
 		$Interface_Old = "Local/{$agent_phone_number_old}-{$row['FK_Extension']}@Extension_Queue_RingAgent/n";
 
@@ -132,12 +132,12 @@ function agent_logout($agent_number) {
 
 	// Delete from Active Table
 	$query  = "SELECT PK_Extension FROM Extensions WHERE Extension = '$agent_number' LIMIT 1";
-	$result = mysql_query($query) or die(mysql_error());
-	$row    = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or die($mysqli->error());
+	$row    = $result->fetch_assoc();
 	$PK_Extension = $row['PK_Extension'];
 
 	$query = "DELETE FROM Ext_Queue_Members_Status WHERE FK_Extension = '$PK_Extension'";
-	mysql_query($query) or die(mysql_error());
+	$mysqli->query($query) or die($mysqli->error());
 
 	return true;
 }
@@ -155,10 +155,10 @@ function agent_login($agent_number, $agent_phone_number) {
 		WHERE
 			Extension = '$agent_number'
 	";
-	$result = mysql_query($query) or die(mysql_error());
+	$result = $mysqli->query($query) or die($mysqli->error());
 
 	// Add it to every queue
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = $result->fetch_assoc()) {
 		$QueueName = "queue-{$row['FK_Extension']}";
 		$Interface = "Local/$agent_phone_number-{$row['FK_Extension']}@Extension_Queue_RingAgent/n";
 
@@ -167,12 +167,12 @@ function agent_login($agent_number, $agent_phone_number) {
 
 	// Add it to Active Table
 	$query  = "SELECT PK_Extension FROM Extensions WHERE Extension = '$agent_number' LIMIT 1";
-	$result = mysql_query($query) or die(mysql_error());
-	$row    = mysql_fetch_assoc($result);
+	$result = $mysqli->query($query) or die($mysqli->error());
+	$row    = $result->fetch_assoc();
 	$PK_Extension = $row['PK_Extension'];
 
 	$query = "INSERT INTO Ext_Queue_Members_Status (FK_Extension, `From`) VALUES($PK_Extension, '$agent_phone_number')";
-	mysql_query($query) or die(mysql_error());
+	$mysqli->query($query) or die($mysqli->error());
 }
 
 
