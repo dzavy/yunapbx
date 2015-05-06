@@ -6,8 +6,8 @@ include_once(dirname(__FILE__)."/tables.inc.php");
 $smarty = smarty_init(dirname(__FILE__));
 
 $query  = "SELECT * FROM Settings";
-$result = mysql_query($query) or $agi->verbose(mysql_error().$query);
-while ($row = mysql_fetch_assoc($result)) {
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+while ($row = $result->fetch_assoc()) {
 	$Settings[$row['Name']] = $row['Value'];
 }
 
