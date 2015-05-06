@@ -22,17 +22,17 @@ function popUp(url,inName,width,height)
 <br />
 <p>
 	<form action="Recordings_ModifyRule.php" method="get" style="display:inline">
-		<button type="submit">Schedule a New Call Recording</button>
+		<button type="submit">Create a New Call Recording Rule</button>
 	</form>
 </p>
 
 <br />
 <br />
 <table class="listing fullwidth">
-	<caption>Scheduled Call Recordings ( {$Rules.Start+1} to {$Rules.End} ) of {$Rules.Total}</caption>
+	<caption>Call Recording Rules ( {$Rules.Start+1} to {$Rules.End} ) of {$Rules.Total}</caption>
 	<tr>
 		<th>
-			<a href="?Rules[Sort]=Label">Recording Tag</a>
+			<a href="?Rules[Sort]=Label">Rule Name</a>
 			{if $Rules.Sort == "Label"}
 				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
@@ -52,12 +52,6 @@ function popUp(url,inName,width,height)
 		<th>
 			<a href="?Rules[Sort]=Keep">Keep For</a>
 			{if $Rules.Sort == "Keep"}
-				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
-			{/if}
-		</th>
-		<th>
-			<a href="?Rules[Sort]=DateCreated">Date Created</a>
-			{if $Rules.Sort == "DateCreated"}
 				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
@@ -84,7 +78,6 @@ function popUp(url,inName,width,height)
 				Forever
 			{/if}
 		</td>
-		<td>{$Rule.DateCreated}</td>
 		<td style="width: 120px;">
 			<form style="display:inline" method="get" action="Recordings_ModifyRule.php">
 				<input type="hidden" name="PK_Rule" value="{$Rule.PK_Rule}" />

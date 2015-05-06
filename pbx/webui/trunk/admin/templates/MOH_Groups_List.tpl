@@ -73,12 +73,6 @@ function AddNew() {
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 120px"></th>
 	</tr>
 	
@@ -87,7 +81,6 @@ function AddNew() {
 		<td>{$Group.Name}</td>
 		<td>{$Group.Volume}%</td>
 		<td>{if $Group.Ordered == "1"}normal{else}random{/if}</td>
-		<td>{$Group.DateCreated}</td>
 		<td style="width: 120px">
 			<form method="get" action="MOH_Groups_Modify.php" style="display:inline">
 				<input type="hidden" name="PK_Group" value="{$Group.PK_Group}" />

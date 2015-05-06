@@ -77,12 +77,6 @@ function ViewAdd() {
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 130px"></th>
 	</tr>
 	
@@ -91,7 +85,6 @@ function ViewAdd() {
 		<td>{$Folder.Name}</td>
 		<td>{$Folder.Quantity}</td>
 		<td>{$Folder.Type}</td>
-		<td>{$Folder.DateCreated}</td>
 		<td>
 			{if $Folder.Type == 'User'}
 			<form method="get" action="SoundFolders_Modify.php" style="display: inline;">

@@ -32,18 +32,11 @@
 				<img src="images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
-		<th>
-			<a href="?Sort=DateCreated">Date Created</a>
-			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
 		<th style="width: 130px"></th>
 	</tr>
 	{foreach from=$Templates item=Template}
 	<tr class="{if $Hilight == $Template._PK_}hilight{/if} {cycle values="odd,even"}">
 		<td>{$Template.Name}</td>
-		<td>{$Template.DateCreated}</td>
 		<td>
 			<form method="get" action="Templates_Modify.php" style="display: inline;">
 				<input type="hidden" name="PK_Template" value="{$Template._PK_}" />

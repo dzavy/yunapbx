@@ -120,8 +120,6 @@ $(document).ready(
 
 <h2>Call Recording</h2>
 
-<p>Schedule a Recording Job</p>
-
 <!-- Error Messages -->
 {if $Errors.Label.Invalid}
 <p class="error_message">A recording tag is required and must be 1-30 characters in length. May only contain alphanumeric characters, spaces, and dashes.</p>
@@ -145,7 +143,7 @@ $(document).ready(
 <form action="Recordings_ModifyRule.php" method="post" >
 <input type="hidden" name="PK_Rule" value="{$Rule.PK_Rule}" />
 <table class="formtable fullwidth">
-	<tr><td colspan="2"><b>What do you want to label these call recordings?</b></td></tr>
+	<tr><td colspan="2"><b>What do you want to label this rule?</b></td></tr>
 	<tr><td>&nbsp;</td>
 		<td>
 			<input type="text" name="Label" value="{$Rule.Label}" {if $Errors.Label}class="error"{/if} />
@@ -229,9 +227,6 @@ $(document).ready(
 	</tr>
 
 	<tr><td colspan="2">
-		{if $Rule.PK_Rule}
-		<p class="warning_message">Changing the next option may result in the deletion of previously recorded calls</p>
-		{/if}
 		<b>How long do you want to keep the recordings?</b>
 	</td></tr>
 	<tr><td>&nbsp;</td>
@@ -263,6 +258,9 @@ $(document).ready(
 					<option {if $Rule.KeepSize  > 0 }selected="selected"{/if} value="size" >Megabytes</option>
 				</select>
 			</div>
+		{if $Rule.PK_Rule}
+		<p class="warning_message">Changing this option may result in deletion of previously recorded calls</p>
+		{/if}
 
 			<br />
 			<input type="hidden" name="KeepCount" id="KeepCount" value="{$Rule.KeepCount}" />
@@ -271,7 +269,7 @@ $(document).ready(
 		</td>
 	</tr>
 
-	<tr><td colspan="2"><b>What is the minimum recording lenght?</b></td></tr>
+	<tr><td colspan="2"><b>What is the minimum recording length?</b></td></tr>
 	<tr><td>&nbsp;</td>
 		<td>
 			<div id="MinLength_Container">
@@ -286,9 +284,9 @@ $(document).ready(
 	<tr>
 		<td colspan="2">
 			{if $Rule.PK_Rule != "" }
-				<button type="submit" name="submit" value="save">Modify Call Recording</button>
+				<button type="submit" name="submit" value="save">Modify Call Recording Rule</button>
 			{else}
-				<button type="submit" name="submit" value="save">Create Call Recording</button>
+				<button type="submit" name="submit" value="save">Create Call Recording Rule</button>
 			{/if}
 		</td>
 	</tr>

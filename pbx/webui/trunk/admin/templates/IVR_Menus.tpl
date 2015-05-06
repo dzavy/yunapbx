@@ -86,7 +86,7 @@ $(document).ready(function(){
 			<table class="ivrtable">
 				<tr><th>IVR Tree</th></tr>
 				<td id="IVR_Tree">
-					{include file=IVR_Menus_treeview.tpl IVR_Tree=$IVR_Tree}
+					{include file="IVR_Menus_treeview.tpl" IVR_Tree=$IVR_Tree}
 				</td>
 			</table>
 		</td>

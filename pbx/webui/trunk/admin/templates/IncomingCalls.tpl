@@ -451,11 +451,11 @@ input, select {
 		<td>&nbsp;</td>
 	</tr>
 	{/foreach}
-	{foreach from=$IaxProviders item=IaxProviders}
+	{foreach from=$IaxProviders item=IaxProvider}
 	<tr class="{cycle values="even,odd"}">
 		<td>{counter}</td>
 		<td style="padding: 10px 0px;">
-			<strong>Route All</strong> unmatched numbers from IAX Provider "{$IaxProviders.Name}" to extension {$IaxProviders.CallbackExtension}
+			<strong>Route All</strong> unmatched numbers from IAX Provider "{$IaxProvider.Name}" to extension {$IaxProvider.CallbackExtension}
 			<br />
 			Click
 				<a href="VoipProviders_Iax_Modify.php?PK_IaxProvider={$IaxProvider.PK_IaxProvider}">here</a>
