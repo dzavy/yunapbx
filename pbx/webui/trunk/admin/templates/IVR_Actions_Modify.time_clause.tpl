@@ -75,7 +75,7 @@ $(document).ready(function() {
 				<option value="0">IVR Menu Begining</option>
 				{foreach from=$Menu.Actions item=IVR_Action}
 				<option value="{$IVR_Action.PK_Action}">
-					{$IVR_Action.Order}.{include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Name'} ({include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Desc'})
+					{$IVR_Action.Order}.{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"} ({include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Desc"})
 				</option>
 				{/foreach}
 			</select>

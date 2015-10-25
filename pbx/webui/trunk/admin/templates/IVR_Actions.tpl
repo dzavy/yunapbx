@@ -121,10 +121,10 @@ $(document).ready(
 					<img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle" />
 				</td>
 				<td style="width: 230px;">
-					{include file=IVR_Actions_Display.tpl Display='Name' Action=$Action}
+					{include file="IVR_Actions_Display.tpl" Display="Name" Action=$Action}
 				</td>
 				<td>
-					{include file=IVR_Actions_Display.tpl Display='Desc' Action=$Action}
+					{include file="IVR_Actions_Display.tpl" Display="Desc" Action=$Action}
 				</td>
 
 				<td style="text-align: right; width: 120px">

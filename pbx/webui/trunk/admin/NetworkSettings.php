@@ -8,11 +8,11 @@ include_once(dirname(__FILE__) . '/../include/validation_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function NetworkSettings() {
-    
+
     $session = &$_SESSION['NetworkSettings'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-    $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
+    $Message = (isset($_REQUEST['msg']) ? $_REQUEST['msg'] : "");
 
     if (!empty($_REQUEST['submit'])) {
         $Settings = formdata_from_post();
@@ -21,12 +21,12 @@ function NetworkSettings() {
         if (count($Errors) == 0) {
             $Message = 'SAVED_NETWORK_SETTINGS';
             formdata_save($Settings);
-            set_network_interfaces($Settings['Interfaces']);
+            set_network_interfaces($Settings);
             asterisk_UpdateConf('sip.conf');
-            asterisk_Reload();
+            //asterisk_Reload();
         }
 
-        $OldSettings = formdata_from_db();
+        $OldSettings = array_merge(formdata_from_db(), get_network_interfaces());
         foreach ($OldSettings as $variable => $value) {
             if (!isset($Settings[$variable])) {
                 $Settings[$variable] = $value;
@@ -36,12 +36,11 @@ function NetworkSettings() {
         $Settings = formdata_from_db();
     }
 
-    $Interfaces = get_network_interfaces();
+    $Interface = get_network_interfaces();
 
     $smarty->assign('Errors', $Errors);
     $smarty->assign('Message', $Message);
-    $smarty->assign('Settings', $Settings);
-    $smarty->assign('Interfaces', $Interfaces);
+    $smarty->assign('Settings', array_merge($Settings, $Interface));
 
     return $smarty->fetch('NetworkSettings.tpl');
 }
@@ -56,11 +55,6 @@ function formdata_from_db() {
         'Network_Additional_LAN',
         'Network_UseNAT',
         'Network_ExternalAddress',
-        'Network_Gateway',
-        'Network_DNS',
-        'Network_Address',
-        'Network_Mask',
-        'Network_Protocol',
     );
 
     foreach ($variables as $name) {
@@ -72,7 +66,6 @@ function formdata_from_db() {
     } else {
         $data['Network_Additional_LAN'] = array();
     }
-    $data['Network_DNS'] = @explode(';', $data['Network_DNS']);
 
     return $data;
 }
@@ -80,26 +73,11 @@ function formdata_from_db() {
 function formdata_save($data) {
     $variables = array(
         'Network_Additional_LAN',
-        'Network_Interfaces_LAN',
         'Network_UseNAT',
         'Network_ExternalAddress',
-        'Network_Gateway',
-        'Network_DNS',
-        'Network_Address',
-        'Network_Mask',
-        'Network_Protocol',
     );
 
-    $data['Network_Interfaces_LAN'] = array();
-    foreach ($data['Interfaces'] as $Interface) {
-        if ($Interface['ip'] != "") {
-            $data['Network_Interfaces_LAN'][] = "{$Interface['ip']}/{$Interface['netmask']}";
-        }
-    }
-
     $data['Network_Additional_LAN'] = @implode(';', $data['Network_Additional_LAN']);
-    $data['Network_Interfaces_LAN'] = @implode(';', $data['Network_Interfaces_LAN']);
-    $data['Network_DNS'] = @implode(';', $data['Network_DNS']);
 
     if (is_array($data)) {
         foreach ($data as $name => $value) {
@@ -113,14 +91,16 @@ function formdata_save($data) {
 function formdata_validate($data) {
     $errors = array();
 
-    if (!validateIpAddress($data['Network_Gateway'])) {
-        $errors['Network_Gateway'] = true;
-    }
+    if($data['Network_Protocol']=="static") {
+        if (!validateIpAddress($data['Network_Gateway'])) {
+            $errors['Network_Gateway'] = true;
+        }
 
-    for ($i = 0; $i < 2; $i++) {
-        if ($data['dns' . $i]) {
-            if (!validateIpAddress($data['dns' . $i])) {
-                $errors['Network_DNS' . $i] = true;
+        for ($i = 0; $i < 2; $i++) {
+            if ($data['dns' . $i]) {
+                if (!validateIpAddress($data['dns' . $i])) {
+                    $errors['Network_DNS' . $i] = true;
+                }
             }
         }
     }

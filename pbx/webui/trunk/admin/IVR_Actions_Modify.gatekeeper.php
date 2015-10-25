@@ -28,7 +28,7 @@ function Extensions_Action_Modify() {
     // Get available vars
     $query = "SELECT DISTINCT(Variable) FROM IVR_Action_Params";
     $result = $mysqli->query($query) or die($mysqli->error() . $query);
-    while ($row = $mysqli->fetch_row($result)) {
+    while ($row = $result->fetch_row()) {
         if (!empty($row[0])) {
             $Variables[] = $row[0];
         }
@@ -72,7 +72,7 @@ function formdata_save($data) {
     if ($data['PK_Action'] == "") {
         $query = "SELECT COUNT(*) FROM IVR_Actions WHERE FK_Menu={$data['FK_Menu']}";
         $result = $mysqli->query($query) or die($mysqli->error() . $query);
-        $row = $mysqli->fetch_row($result);
+        $row = $result->fetch_row();
         $data['Order'] = $row[0] + 1;
 
         $query = "INSERT INTO IVR_Actions (FK_Menu, `Order`, Type) VALUES({$data['FK_Menu']}, {$data['Order']}, 'gatekeeper')";

@@ -12,7 +12,7 @@ function HardwareMonitor() {
     exec('lsusb', $Output['lsusb']);
     $Output['lsusb'] = implode("\n", $Output['lsusb']);
 
-    $Output['interrupts'] = implode("", file('/proc/interrupts'));
+    $Output['interrupts'] = file_get_contents('/proc/interrupts');
 
     exec('free', $Output['free']);
     $Output['free'] = implode("\n", $Output['free']);
@@ -20,16 +20,16 @@ function HardwareMonitor() {
     exec('df -h', $Output['df']);
     $Output['df'] = implode("\n", $Output['df']);
 
-    exec('/sbin/ifconfig', $Output['ifconfig']);
+    exec('ifconfig', $Output['ifconfig']);
     $Output['ifconfig'] = implode("\n", $Output['ifconfig']);
 
-    exec('/usr/sbin/arp -n', $Output['arp']);
+    exec('arp -n', $Output['arp']);
     $Output['arp'] = implode("\n", $Output['arp']);
 
-    exec('/sbin/route -n', $Output['route']);
+    exec('route -n', $Output['route']);
     $Output['route'] = implode("\n", $Output['route']);
 
-    $Output['resolv_conf'] = implode("", file('/etc/resolv.conf'));
+    $Output['resolv_conf'] = file_get_contents('/etc/resolv.conf');
 
     $Output['uptime'] = exec('uptime');
 
