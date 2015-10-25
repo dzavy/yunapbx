@@ -192,7 +192,7 @@ $(document).ready(function() {
 					$IVR_Action['Type'] = $Option['Action_Type'];
 					$this->assign('IVR_Action', $IVR_Action);
 				{/php}
-				{include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Name'}
+				{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"}
 			{else}
 				IVR Menu Begining
 			{/if}
@@ -308,7 +308,7 @@ $(document).ready(function() {
 			<option value="0">IVR Menu Begining</option>
 			{foreach from=$Menu.Actions item=IVR_Action}
 			<option value="{$IVR_Action.PK_Action}">
-				{$IVR_Action.Order}.{include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Name'} ({include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Desc'})
+				{$IVR_Action.Order}.{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"} ({include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Desc"})
 			</option>
 			{/foreach}
 		</select>
@@ -404,7 +404,7 @@ $(document).ready(function() {
 			<option value="0">IVR Menu Begining</option>
 			{foreach from=$Menu.Actions item=IVR_Action}
 			<option value="{$IVR_Action.PK_Action}">
-				{$IVR_Action.Order}.{include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Name'} ({include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Desc'})
+				{$IVR_Action.Order}.{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"} ({include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Desc"})
 			</option>
 			{/foreach}
 		</select>
@@ -496,7 +496,7 @@ $(document).ready(function() {
 			<option value="0">IVR Menu Begining</option>
 			{foreach from=$Menu.Actions item=IVR_Action}
 			<option value="{$IVR_Action.PK_Action}">
-				{$IVR_Action.Order}.{include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Name'} ({include file=IVR_Actions_Display.tpl Action=$IVR_Action Display='Desc'})
+				{$IVR_Action.Order}.{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"} ({include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Desc"})
 			</option>
 			{/foreach}
 		</select>

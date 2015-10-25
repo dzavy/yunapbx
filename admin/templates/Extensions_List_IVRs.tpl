@@ -72,7 +72,7 @@ function ChangeListView() {
 			{$Extension.Name}
 		</td>
 		<td>
-			{include file=IVR_Actions_Display.tpl Display='Name' Action=$Extension.Action}
+			{include file="IVR_Actions_Display.tpl" Display="Name" Action=$Extension.Action}
 		</td>
 		<td>{$Extension.DateCreated_Formated}</td>
 		<td style="width: 120px">

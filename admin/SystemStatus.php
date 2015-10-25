@@ -210,7 +210,7 @@ function update_Ext_SipPhones_Statuses() {
 
     while ($row = $result->fetch_assoc()) {
         $response = asterisk_Cmd('sip show peer ' . $row['Extension']);
-        $response = split("\n", $response);
+        $response = explode("\n", $response);
 
         $status = array();
         foreach ($response as $line) {
@@ -278,7 +278,7 @@ function iax_get_status($IaxProvider) {
       ......
      */
     $response = asterisk_Cmd("iax2 show peer {$IaxProvider['Label']}");
-    $response = split("\n", $response);
+    $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
         if (ereg(' *Addr->IP *: *([0-9.]*) Port ([0-9]*)', $line, $regs)) {
@@ -309,7 +309,7 @@ function iax_get_status($IaxProvider) {
       70.183.85.70:4569     N       switchvoxp  <Unregistered>             60  Rejected
      */
     $response = asterisk_Cmd('iax2 show registry');
-    $response = split("\n", $response);
+    $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
         if (ereg("^{$IaxProvider['IP']}:{$IaxProvider['Port']} *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]*) *(.*)$", $line, $regs)) {
@@ -334,7 +334,7 @@ function sip_get_status($SipProvider) {
       ......
      */
     $response = asterisk_Cmd("sip show peer sip_provider_{$SipProvider['PK_SipProvider']}");
-    $response = split("\n", $response);
+    $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
         if (ereg(' *Status *: OK \(([0-9]*) ms\)', $line, $regs)) {
@@ -359,7 +359,7 @@ function sip_get_status($SipProvider) {
       sip_provider_9:5060             40336560020        105 Registered           Mon, 18 May 2009 17:31:13
      */
     $response = asterisk_Cmd('sip show registry');
-    $response = split("\n", $response);
+    $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
         if (ereg("^sip_provider_{$SipProvider['PK_SipProvider']}:([0-9]*) *[^ ]* *([^ ]*) *([0-9]*) *(.*[^ ]{1})[ ]{2} *(.*)$", $line, $regs)) {

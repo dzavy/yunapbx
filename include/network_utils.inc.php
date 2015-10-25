@@ -1,25 +1,41 @@
 <?php
 
 function get_network_interfaces() {
-    $output = shell_exec(dirname(__FILE__) . '/../cli/get_network_settings.sh 2<&1');
-
-    $output = explode("\n", $output);
-    foreach ($output as $line) {
-        $line = explode(',', $line);
-        if (count($line) != 4) {
-            continue;
-        }
-
-        $data[$line[0]] = array(
-            'protocol' => "{$line[3]}",
-            'ip' => "{$line[1]}",
-            'netmask' => "{$line[2]}"
-        );
+    $data = array();
+    
+    exec('uci -q get network.lan.proto', $data['Network_Protocol']);
+    exec('uci -q get network.lan.ipaddr', $data['Network_Address']);
+    exec('uci -q get network.lan.netmask', $data['Network_Mask']);
+    exec('uci -q get network.lan.gateway', $data['Network_Gateway']);
+    exec('uci -q get network.lan.dns', $data['Network_DNS']);
+    
+    foreach ($data as $field => $value) {
+        $data[$field] = implode("\n", $value);
     }
+    $data['Network_DNS'] = explode(" ", $data['Network_DNS']);
 
     return $data;
 }
 
 function set_network_interfaces($data) {
-    
+    switch($data['Network_Protocol']) {
+        case "dhcp":
+            exec('uci set network.lan.proto=dhcp');
+            exec('uci -q delete network.lan.ipaddr');
+            exec('uci -q delete network.lan.netmask');
+            exec('uci -q delete network.lan.gateway');
+            exec('uci -q delete network.lan.dns');
+            exec('uci commit');
+          
+            break;
+        case "static":
+            exec('uci set network.lan.proto=static');
+            exec('uci set network.lan.ipaddr=' . $data['Network_Address']);
+            exec('uci set network.lan.netmask=' . $data['Network_Mask']);
+            exec('uci set network.lan.gateway=' . $data['Network_Gateway']);
+            exec('uci set network.lan.dns="' . implode(" ", $data['Network_DNS']) . '"');
+            exec('uci commit');
+            
+            break;
+    }
 }

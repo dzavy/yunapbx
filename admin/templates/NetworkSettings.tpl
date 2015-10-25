@@ -50,15 +50,6 @@ function UpdateNatFields(nat_enabled) {
 	}
 }
 
-function AddLAN() {
-		$("#Network_Additional_LAN").addOption($("#LAN").val(), $("#LAN").val(), false);
-		$("#LAN").val('');
-}
-
-function DeleteLAN() {
-		$("#Network_Additional_LAN").removeOption(/./, true);
-}
-
 function PreSubmit() {
 	$("#Network_Additional_LAN").selectOptions(/./, true);
 }

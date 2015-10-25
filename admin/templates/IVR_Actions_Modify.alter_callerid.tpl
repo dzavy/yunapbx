@@ -46,9 +46,9 @@ $(document).ready(function() {
 			<select name="Param[Method]">
 				<option value="prepend" {if $Action.Param.Method=='prepend'}selected="selected"{/if} >prepending</option>
 				<option value="append"  {if $Action.Param.Method=='append' }selected="selected"{/if} >appending</option>
-				<option value="replace" {if $Action.Param.Method=='replace'}selected="selected"{/if} >repalcing it with</option>
+				<option value="replace" {if $Action.Param.Method=='replace'}selected="selected"{/if} >replacing</option>
 			</select>
-			the text :
+			the text with:
 		</td>
 	</tr>
 	<tr>

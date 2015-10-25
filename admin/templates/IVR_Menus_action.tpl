@@ -1,7 +1,7 @@
 <br />
 <p>
 	<strong>Action Type:</strong>
-	{include file=IVR_Actions_Display.tpl Display='Name' Action=$IVR_Action}
+	{include file="IVR_Actions_Display.tpl" Display="Name" Action=$IVR_Action}
 </p>
 
 <br />

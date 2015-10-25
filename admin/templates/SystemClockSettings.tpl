@@ -62,7 +62,7 @@ print ("</pre>");
 <table class="nostyle">
 	<tr >
 		<td > Your Current System Time: 	&nbsp;</td>
-		<td > {php}echo date("F j, Y, g:i a");   {/php}	<br></td>
+		<td > echo date("F j, Y, g:i a");   	<br></td>
 	</tr>
 	<tr>
 		<td> Your Current Timezone:	</td>
