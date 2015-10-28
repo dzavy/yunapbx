@@ -23,8 +23,7 @@ function HardwareMonitor() {
     exec('ifconfig', $Output['ifconfig']);
     $Output['ifconfig'] = implode("\n", $Output['ifconfig']);
 
-    exec('arp -n', $Output['arp']);
-    $Output['arp'] = implode("\n", $Output['arp']);
+    $Output['arp'] = file_get_contents('/proc/net/arp');
 
     exec('route -n', $Output['route']);
     $Output['route'] = implode("\n", $Output['route']);
