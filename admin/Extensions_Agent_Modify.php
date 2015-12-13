@@ -60,7 +60,7 @@ function formdata_from_db($id) {
 			Extensions.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -74,11 +74,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Extension,Type) VALUES('" . $mysqli->real_escape_string($data['Extension']) . "', 'Agent')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_Agent(PK_Extension) VALUES('" . $mysqli->real_escape_string($data['PK_Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Extensions'
@@ -96,7 +96,7 @@ function formdata_save($data) {
 			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update Password if requested
     if ($data['Password'] != '') {
@@ -109,7 +109,7 @@ function formdata_save($data) {
 				PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     return $data['PK_Extension'];
@@ -136,7 +136,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

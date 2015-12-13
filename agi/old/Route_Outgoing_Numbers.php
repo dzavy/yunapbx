@@ -43,7 +43,7 @@ function get_callerid($agi, $FK_OugoingRule, $Extension) {
 			PK_OutgoingCIDRule ASC
 		LIMIT 1
 	";
-	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 	if ($mysqli->numrows($result) == 1) {
 		$rule = $result->fetch_assoc();
 		if ($rule['Type'] == 'Single') {
@@ -90,7 +90,7 @@ $cdr->push_event("DIAL", $called_ext);
 
 // See if we can match any outgoing rule
 $query = "SELECT * FROM OutgoingRules ORDER BY RuleOrder";
-$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 while ($rule = $result->fetch_assoc()) {
 	// Check if rule matches
 	$regex = "/^{$rule['BeginWith']}[0-9]{{$rule['RestBetweenLow']},{$rule['RestBetweenHigh']}}/";
@@ -121,7 +121,7 @@ if ($rule['ProviderType'] == 'SIP') {
 
 	// Get the needed information about this sip provider
 	$query = "SELECT * FROM `SipProviders` WHERE PK_SipProvider = '{$rule['ProviderID']}' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	if ($mysqli->num_rows($result) != '1') {
 		exit(0);
 	}
@@ -147,7 +147,7 @@ if ($rule['ProviderType'] == 'SIP') {
 
 	// Get the needed information about this sip provider
 	$query = "SELECT * FROM `IaxProviders` WHERE PK_IaxProvider = '{$rule['ProviderID']}' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	if ($mysqli->num_rows($result) != '1') {
 		exit(0);
 	}

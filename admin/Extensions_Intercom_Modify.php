@@ -17,7 +17,7 @@ function Extensions_Intercom_Modify() {
 
     // Groups
     $query = "SELECT PK_Group, Name FROM Groups";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Groups = array();
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
@@ -38,7 +38,7 @@ function Extensions_Intercom_Modify() {
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Accounts = array();
     while ($row = $result->fetch_assoc()) {
         $Accounts[] = $row;
@@ -54,7 +54,7 @@ function Extensions_Intercom_Modify() {
 			SoundFolders
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundFolders[] = $row;
     }
@@ -70,7 +70,7 @@ function Extensions_Intercom_Modify() {
 			SoundLanguages
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundLanguages[] = $row;
         if ($row['Default']) {
@@ -104,7 +104,7 @@ function Extensions_Intercom_Modify() {
 			PK_SoundEntry
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundEntry = $row;
 
@@ -144,7 +144,7 @@ function Extensions_Intercom_Modify() {
 			SoundLanguages.Name ASC,
 			SoundFiles.Name     ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $SoundFiles = array();
     while ($row = $result->fetch_assoc()) {
         $SoundFiles[$row['Language']][$row['PK_SoundFile']] = $row['Name'];
@@ -197,13 +197,13 @@ function formdata_from_db($id) {
 			Ext_Intercom.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     // Init data from 'Intercom_Memebers'
     $data['Members'] = array();
     $query = "SELECT FK_Ext_Member, FK_Ext_Group FROM Ext_Intercom_Members WHERE FK_Extension = $id";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_array()) {
         $data['Members'][] = $row[0];
         if ($row[1] != 0) {
@@ -214,7 +214,7 @@ function formdata_from_db($id) {
     // Init data from 'Intercom_Admins'
     $data['Admins'] = array();
     $query = "SELECT FK_Ext_Admin, FK_Ext_Group FROM Ext_Intercom_Admins WHERE FK_Extension = $id";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_array()) {
         $data['Admins'][] = $row[0];
         if ($row[1] != 0) {
@@ -233,11 +233,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('Intercom', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_Intercom(PK_Extension) VALUES('" . $mysqli->real_escape_string($data['PK_Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Ext_Intercom'
@@ -258,38 +258,38 @@ function formdata_save($data) {
 			PK_Extension       = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Ext_Intercom_Members'
     $query = "DELETE FROM Ext_Intercom_Members WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     if (is_array($data['Members'])) {
         if ($data['Use_Members_ByAccount']) {
             foreach ($data['Members'] as $member) {
                 $query = "INSERT INTO Ext_Intercom_Members (FK_Extension, FK_Ext_Member,FK_Ext_Group) VALUES ({$data['PK_Extension']}, {$member}, 0)";
-                $mysqli->query($query) or die($mysqli->error() . $query);
+                $mysqli->query($query) or die($mysqli->error . $query);
             }
         }
     } else {
         $query = "INSERT INTO Ext_Intercom_Members (FK_Extension, FK_Ext_Member,FK_Ext_Group) VALUES ({$data['PK_Extension']}, 0, {$data['GroupsM']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Ext_Intercom_Admins'
     $query = "DELETE FROM Ext_Intercom_Admins WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     if (is_array($data['Admins'])) {
         if ($data['Use_Admins_ByAccount']) {
             foreach ($data['Admins'] as $admin) {
                 $query = "INSERT INTO Ext_Intercom_Admins (FK_Extension, FK_Ext_Admin,FK_Ext_Group) VALUES ({$data['PK_Extension']}, {$admin}, 0)";
-                $mysqli->query($query) or die($mysqli->error() . $query);
+                $mysqli->query($query) or die($mysqli->error . $query);
             }
         }
     } else {
         $query = "INSERT INTO Ext_Intercom_Admins (FK_Extension, FK_Ext_Admin,FK_Ext_Group) VALUES ({$data['PK_Extension']}, 0, {$data['GroupsA']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
 
@@ -317,7 +317,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

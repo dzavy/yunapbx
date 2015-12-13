@@ -41,12 +41,12 @@ function VoipProviders_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_array();
     $Total = $row[0];
 
     $query = "SELECT COUNT(*) FROM IaxProviders";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_array();
     $Total += $row[0];
 
@@ -77,7 +77,7 @@ function VoipProviders_List() {
 			$Sort $Order
 		LIMIT $Start, $PageSize
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Providers[] = $row;
     }
@@ -89,7 +89,7 @@ function VoipProviders_List() {
 
     //Init RSAKey_Name
     $query = "SELECT Value FROM Settings WHERE Name = 'RSAKey_Name'";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_assoc();
 
     $RSAKey_Name = $row['Value'];
@@ -109,7 +109,7 @@ function VoipProviders_List() {
 					WHERE 
 						Name = 'RSAKey_Name'
 		";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         rename($path_key . $RSAKey_Name, $path_key . $sanitized_name);
         $RSAKey_Name = $sanitized_name;
     } else if ($_REQUEST['submit'] == "rtp") {

@@ -68,7 +68,7 @@ function Extensions_List_Phones() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $Total = $result->num_rows;
     $entries_allowed = $PageSize;

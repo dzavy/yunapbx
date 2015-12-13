@@ -29,13 +29,13 @@ function SoundFiles_Modify() {
     }
 
     $query = "SELECT PK_SoundFolder, Name FROM SoundFolders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SoundFolders[] = $row;
     }
 
     $query = "SELECT PK_SoundLanguage, Name FROM SoundLanguages ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SoundLanguages[] = $row;
     }
@@ -54,7 +54,7 @@ function SoundFiles_Modify() {
 
     if ($PK_SoundEntry != "") {
         $query = "SELECT FK_SoundFolder FROM SoundEntries WHERE PK_SoundEntry = $PK_SoundEntry LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $row = $result->fetch_array();
 
         $PK_SoundFolder = $row[0];
@@ -76,7 +76,7 @@ function SoundFiles_Modify() {
 function formdata_from_db($id) {
     global $mysqli;
     $query = "SELECT * FROM SoundFiles WHERE PK_SoundFile = $id LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -97,7 +97,7 @@ function formdata_save($data) {
 				FK_SoundFolder = " . $mysqli->real_escape_string($data['FK_SoundFolder']) . ",
 				Type           = 'User'
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['FK_SoundEntry'] = $mysqli->insert_id;
     }
@@ -105,7 +105,7 @@ function formdata_save($data) {
     // Insert 'SoundFiles'
     if (empty($data['PK_SoundFile'])) {
         $query = "INSERT INTO SoundFiles() VALUES()";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_SoundFile'] = $mysqli->insert_id;
     }
@@ -139,7 +139,7 @@ function formdata_save($data) {
 			PK_SoundFile   = " . $mysqli->real_escape_string($data['PK_SoundFile']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_SoundFile'];
 }

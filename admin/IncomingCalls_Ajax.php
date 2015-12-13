@@ -16,7 +16,7 @@ function IncomingCalls_Ajax() {
     switch ($data['Action']) {
         case 'DeleteRule':
             $query = "DELETE FROM IncomingRules WHERE PK_IncomingRule = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
             $response['ID'] = $data['ID'];
             break;
         case 'SaveRule':
@@ -58,7 +58,7 @@ function IncomingCalls_Ajax() {
 					LIMIT 1
 				";
 
-                $mysqli->query($query) or die($mysqli->error());
+                $mysqli->query($query) or die($mysqli->error);
             }
 
             $response['ID'] = $data['ID'];
@@ -72,14 +72,14 @@ function IncomingCalls_Ajax() {
 
                 $response['test'] .= "$order-$PK_Rule , ";
                 $query = "UPDATE IncomingRules SET RuleOrder = $order WHERE PK_IncomingRule = $PK_Rule LIMIT 1";
-                $mysqli->query($query) or die($mysqli->error());
+                $mysqli->query($query) or die($mysqli->error);
 
                 $order++;
             }
             break;
         case 'DeleteRoute':
             $query = "DELETE FROM IncomingRoutes WHERE PK_IncomingRoute = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
             $response['ID'] = $data['ID'];
             break;
         case 'SaveRoute':
@@ -146,7 +146,7 @@ function IncomingCalls_Ajax() {
 					LIMIT 1
 				";
 
-                $mysqli->query($query); # or die($mysqli->error());
+                $mysqli->query($query); # or die($mysqli->error);
             }
             $response['ID'] = $data['ID'];
             $response['Errors'] = $errors;

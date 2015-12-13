@@ -34,7 +34,7 @@ function Extensions_Popup() {
 		ORDER BY
 			Extension_Pad ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $Extensions = array();
     while ($row = $result->fetch_assoc()) {

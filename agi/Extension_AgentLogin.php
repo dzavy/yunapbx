@@ -98,7 +98,7 @@ function agent_logout($agent_number) {
 			Extension = '$agent_number'
 		LIMIT 1
 	";
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 
 	if ($mysqli->numrows($result) == 1) {
 		$row = $result->fetch_assoc();
@@ -120,7 +120,7 @@ function agent_logout($agent_number) {
 			Extension = '$agent_number'
 	";
 
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 
 	// Remove it from every queue
 	while ($row = $result->fetch_assoc()) {
@@ -132,12 +132,12 @@ function agent_logout($agent_number) {
 
 	// Delete from Active Table
 	$query  = "SELECT PK_Extension FROM Extensions WHERE Extension = '$agent_number' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 	$row    = $result->fetch_assoc();
 	$PK_Extension = $row['PK_Extension'];
 
 	$query = "DELETE FROM Ext_Queue_Members_Status WHERE FK_Extension = '$PK_Extension'";
-	$mysqli->query($query) or die($mysqli->error());
+	$mysqli->query($query) or die($mysqli->error);
 
 	return true;
 }
@@ -155,7 +155,7 @@ function agent_login($agent_number, $agent_phone_number) {
 		WHERE
 			Extension = '$agent_number'
 	";
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 
 	// Add it to every queue
 	while ($row = $result->fetch_assoc()) {
@@ -167,12 +167,12 @@ function agent_login($agent_number, $agent_phone_number) {
 
 	// Add it to Active Table
 	$query  = "SELECT PK_Extension FROM Extensions WHERE Extension = '$agent_number' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 	$row    = $result->fetch_assoc();
 	$PK_Extension = $row['PK_Extension'];
 
 	$query = "INSERT INTO Ext_Queue_Members_Status (FK_Extension, `From`) VALUES($PK_Extension, '$agent_phone_number')";
-	$mysqli->query($query) or die($mysqli->error());
+	$mysqli->query($query) or die($mysqli->error);
 }
 
 

@@ -60,9 +60,9 @@ print ("</pre>");
 
 <form action="SystemClockSettings.php" method="post" name="SystemClock">
 <table class="nostyle">
-	<tr >
-		<td > Your Current System Time: 	&nbsp;</td>
-		<td > echo date("F j, Y, g:i a");   	<br></td>
+	<tr>
+		<td> Your Current System Time: 	&nbsp;</td>
+		<td> {$CurrentTime}<br></td>
 	</tr>
 	<tr>
 		<td> Your Current Timezone:	</td>

@@ -21,7 +21,7 @@ function Extensions_FC_CallMonitor_Modify() {
 						FC_CallMonitor_Members
 					WHERE
 						FK_Extension = '" . $mysqli->escape_string($pk_ext) . "' ORDER BY FK_Ext_Member, FK_Ext_Group";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $Members = array();
         while ($row = $result->fetch_assoc()) {
             $Members[] = $row;
@@ -34,7 +34,7 @@ function Extensions_FC_CallMonitor_Modify() {
 						FC_CallMonitor_Admins
 					WHERE
 						FK_Extension = '" . $mysqli->escape_string($pk_ext) . "' ORDER BY FK_Ext_Admin, FK_Ext_Group";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $Admins = array();
         while ($row = $result->fetch_assoc()) {
             $Admins[] = $row;
@@ -46,7 +46,7 @@ function Extensions_FC_CallMonitor_Modify() {
 					FROM
 						FC_CallMonitor_Admins
 					ORDER BY ConnectionID";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $IDs = array();
         while ($row = $result->fetch_assoc()) {
             $IDs[] = $row['ConnectionID'];
@@ -60,7 +60,7 @@ function Extensions_FC_CallMonitor_Modify() {
 
     // Groups
     $query = "SELECT PK_Group, Name FROM Groups";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Groups = array();
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
@@ -81,7 +81,7 @@ function Extensions_FC_CallMonitor_Modify() {
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Accounts = array();
     while ($row = $result->fetch_assoc()) {
         $Accounts[] = $row;
@@ -154,7 +154,7 @@ function formdata_from_db($id) {
 			FC_CallMonitor.FK_Extension = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -177,11 +177,11 @@ function formdata_save($data) {
 						Extensions(Feature, Type, Extension)
 					VALUES
 						(1, 'FC_CallMonitor', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO FC_CallMonitor(FK_Extension) VALUES({$data['PK_Extension']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'FC_CallMonitor'
@@ -194,7 +194,7 @@ function formdata_save($data) {
       FK_Extension       = ".$mysqli->real_escape_string($data['PK_Extension'])."
       LIMIT 1
       ";
-      $mysqli->query($query) or die($mysqli->error().$query); */
+      $mysqli->query($query) or die($mysqli->error.$query); */
 
 
     // Update 'FC_CallMonitor_Admins'
@@ -202,7 +202,7 @@ function formdata_save($data) {
 					FC_CallMonitor_Admins
 		      WHERE
 					FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     foreach (array_keys($data['Admin']) as $connectionId) {
         $ExtOrGroup = array_keys($data['Admin'][$connectionId]);
@@ -222,7 +222,7 @@ function formdata_save($data) {
 						FC_CallMonitor_Admins (FK_Extension, ConnectionID, FK_Ext_Admin, FK_Ext_Group)
 					VALUES
 						({$data['PK_Extension']}, {$connectionId}, {$FK_Ext_Admin}, {$FK_Ext_Group} )";
-                $mysqli->query($query) or die($mysqli->error() . $query);
+                $mysqli->query($query) or die($mysqli->error . $query);
             }
         }
     }
@@ -233,7 +233,7 @@ function formdata_save($data) {
 					FC_CallMonitor_Members
 			   WHERE
 					FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     foreach (array_keys($data['Member']) as $connectionId) {
         $ExtOrGroup = array_keys($data['Member'][$connectionId]);
@@ -251,7 +251,7 @@ function formdata_save($data) {
 						FC_CallMonitor_Members (FK_Extension, ConnectionID, FK_Ext_Member, FK_Ext_Group)
 					VALUES
 						({$data['PK_Extension']}, {$connectionId}, {$FK_Ext_Member}, {$FK_Ext_Group} )";
-                $mysqli->query($query) or die($mysqli->error() . $query);
+                $mysqli->query($query) or die($mysqli->error . $query);
             }
         }
     }
@@ -279,7 +279,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

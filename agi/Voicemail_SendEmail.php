@@ -17,7 +17,7 @@ function freadline($handle) {
 function generate_mail_body($vars) {
         global $mysqli;
 	$query  = "SELECT Value FROM Settings WHERE Name = 'Voicemail_EmailTemplate'";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	$row    = $result->fetch_row();
 	$Body   = $row[0];
 

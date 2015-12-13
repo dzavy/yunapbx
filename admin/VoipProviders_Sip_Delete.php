@@ -14,20 +14,20 @@ function VoipProviders_Sip_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         if ($mysqli->affected_rows() != 1) {
             return;
         }
 
         $query = "DELETE FROM SipProvider_Codecs WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $query = "DELETE FROM SipProvider_Hosts WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         asterisk_UpdateConf('sip.conf');
         asterisk_UpdateConf('extensions.conf');
@@ -48,7 +48,7 @@ function VoipProviders_Sip_Delete() {
 			PK_SipProvider = $PK_SipProvider
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Provider = $result->fetch_assoc();
 
     $smarty->assign('Provider', $Provider);

@@ -190,7 +190,7 @@ function popUp(url,inName,width,height)
 				{$Call.CalledNumber}
 			{/if}
 		</td>
-		<td>{if $Call.Duration/60 > 1}{$Call.Duration/60|intval}m, {/if}{$Call.Duration%60}s</td>
+		<td>{if $Call.Duration/60 > 1}{$Call.Duration/60|string_format:"%0d"}m, {/if}{$Call.Duration%60}s</td>
 		<td>{$Call.DateCreated}</td>
 		<td>
 			<button type="button" onclick="javacript:popUp('Recordings_Play.php?ID={$Call.FK_CallLog}','Play Recordings File',350,200);">Play</button>

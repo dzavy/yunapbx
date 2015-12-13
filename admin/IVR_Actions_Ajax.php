@@ -16,10 +16,10 @@ function IVR_Actions_Ajax() {
     switch ($data['Action']) {
         case 'DeleteAction':
             $query = "DELETE FROM IVR_Actions WHERE PK_Action = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $query = "DELETE FROM IVR_Action_Params WHERE FK_Action = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $response['ID'] = $data['ID'];
             break;
@@ -30,7 +30,7 @@ function IVR_Actions_Ajax() {
                 $PK_Action = $PK_Action[1];
 
                 $query = "UPDATE IVR_Actions SET `Order` = $order WHERE PK_Action = $PK_Action LIMIT 1";
-                $mysqli->query($query) or die($mysqli->error());
+                $mysqli->query($query) or die($mysqli->error);
 
                 $order++;
             }

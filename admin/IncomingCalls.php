@@ -18,7 +18,7 @@ function IncomingCalls() {
     // Add Incoming Rule
     if (isset($_REQUEST['add_rule']) && ($_REQUEST['Type'] == 'block' || $_REQUEST['Type'] == 'transfer')) {
         $query = "SELECT MAX(RuleOrder) FROM IncomingRules";
-        $result = $mysqli->query($query) or die($mysqli->error());
+        $result = $mysqli->query($query) or die($mysqli->error);
         $row = $result->fetch_row();
         $RuleOrder = $row[0] + 1;
 
@@ -34,7 +34,7 @@ function IncomingCalls() {
 				Extension = '000',
 				FK_Timeframe = 0
 		";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $HiligthRule = $mysqli->insert_id;
     }
@@ -50,7 +50,7 @@ function IncomingCalls() {
 				Extension    = '000'
 		";
 
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $HiligthRoute = $mysqli->insert_id;
     }
@@ -58,7 +58,7 @@ function IncomingCalls() {
     // Incoming Rules (IncomingRules)
     $IncomingRules = array();
     $query = "SELECT * FROM IncomingRules ORDER BY RuleOrder ASC";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IncomingRules[] = $row;
     }
@@ -66,7 +66,7 @@ function IncomingCalls() {
     // Incoming Routes (IncomingRoutes)
     $IncomingRoutes = array();
     $query = "SELECT * FROM IncomingRoutes ORDER BY RouteOrder DESC";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IncomingRoutes[] = $row;
     }
@@ -74,7 +74,7 @@ function IncomingCalls() {
     // Timeframes
     $Timeframes = array();
     $query = "SELECT PK_Timeframe, Name FROM Timeframes WHERE FK_Extension = 0 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Timeframes[] = $row;
     }
@@ -82,7 +82,7 @@ function IncomingCalls() {
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders WHERE ApplyIncomingRules = 1 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SipProviders[] = $row;
     }
@@ -90,7 +90,7 @@ function IncomingCalls() {
     // IaxProviders
     $IaxProviders = array();
     $query = "SELECT * FROM IaxProviders WHERE ApplyIncomingRules = 1 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IaxProviders[] = $row;
     }

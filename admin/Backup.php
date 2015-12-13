@@ -41,25 +41,14 @@ function Backup() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM Backups";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_array();
     $Total = $row[0];
 
     // Init table fields (Backups)
     $Backups = array();
-    $query = "
-			SELECT
-				PK_Backup,         
-				Optionals, 
-				Size,
-				Date           
-			FROM
-				Backups		
-		ORDER BY
-			$Sort $Order
-		LIMIT $Start, $PageSize
-	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $query = "SELECT PK_Backup, Optionals, Size, Date FROM Backups ORDER BY $Sort $Order LIMIT $Start, $PageSize";
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Backups[] = $row;
     }

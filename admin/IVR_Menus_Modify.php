@@ -40,7 +40,7 @@ function IVR_Menus_Modify() {
 function formdata_from_db($id) {
     global $mysqli;
     $query = "SELECT * FROM IVR_Menus WHERE PK_Menu = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -60,7 +60,7 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Menu'] == "") {
         $query = "INSERT INTO IVR_Menus() VALUES()";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Menu'] = $mysqli->insert_id;
     }
 
@@ -74,7 +74,7 @@ function formdata_save($data) {
 			PK_Menu = {$data['PK_Menu']}
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Menu'];
 }

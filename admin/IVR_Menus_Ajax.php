@@ -19,25 +19,25 @@ function IVR_Menus_Ajax() {
 
             // Get IVR_Tree['Name'|'PK_Menu'|'Description']
             $query = "SELECT PK_Menu, Name, Description FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             $row = $result->fetch_assoc();
             $IVR_Tree = $row;
 
             // Get IVR_Tree['Actions']
             $query = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$PK_Menu}' ORDER BY `Order`";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             while ($row = $result->fetch_assoc()) {
                 $action = $row;
 
                 $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-                $result3 = $mysqli->query($query3) or die($mysqli->error() . $query3);
+                $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
                 while ($row3 = $result3->fetch_assoc()) {
                     $action['Param'][$row3['Name']] = $row3['Value'];
                     $action['Var'][$row3['Name']] = $row3['Variable'];
 
                     if ($row3['Name'] == 'FK_SoundEntry') {
                         $query_snd_name = "SELECT Name, Description FROM SoundFiles WHERE FK_SoundEntry = '{$row3['Value']}' LIMIT 1";
-                        $result_snd_name = $mysqli->query($query_snd_name) or die($mysqli->error() . $query_snd_name);
+                        $result_snd_name = $mysqli->query($query_snd_name) or die($mysqli->error . $query_snd_name);
                         $row_snd_name = $result_snd_name->fetch_assoc();
                         $action['Sound'][$row3['Name']] = $row_snd_name['Name'];
                         $action['Description'][$row3['Name']] = $row_snd_name['Description'];
@@ -64,7 +64,7 @@ function IVR_Menus_Ajax() {
 					ORDER BY
 						`Key`
 				";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             while ($row = $result->fetch_assoc()) {
                 $IVR_Tree['Options'][] = $row;
             }
@@ -76,7 +76,7 @@ function IVR_Menus_Ajax() {
         case 'action':
             $PK_Action = $data['id'];
             $query = "SELECT PK_Action, Type FROM IVR_Actions WHERE PK_Action = $PK_Action LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             $row = $result->fetch_assoc();
             $IVR_Action = $row;
 

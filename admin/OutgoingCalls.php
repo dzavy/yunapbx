@@ -30,7 +30,7 @@ function OutgoingCalls() {
 				Name            = '',
 				Number          = ''
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $HiligthRule = $mysqli->insert_id;
     }
@@ -55,7 +55,7 @@ function OutgoingCalls() {
 		ORDER BY
 			RuleOrder ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $OutgoingRules[] = $row;
     }
@@ -70,7 +70,7 @@ function OutgoingCalls() {
 		ORDER BY
 			Type
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $OutgoingCIDRules[] = $row;
     }

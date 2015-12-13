@@ -12,7 +12,7 @@ function Recordings_Download() {
     $ID = $mysqli->real_escape_string($_REQUEST['ID']);
 
     $query = "SELECT * FROM RecordingLog WHERE FK_CallLog = '{$ID}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $File = $result->fetch_assoc();
 
 //	system("ffmpeg -f wav -i {$GLOBALS['config']['monitor_dir']}/{$File['PK_CallLog']}.wav {$GLOBALS['config']['monitor_dir']}/{$File['PK_CallLog']}.flv");

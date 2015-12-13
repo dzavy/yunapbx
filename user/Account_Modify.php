@@ -67,7 +67,7 @@ function formdata_from_db($id) {
 			Extensions.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -93,7 +93,7 @@ function formdata_save($data) {
 			FirstName_Editable = 1
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Last Name'
     $query = "
@@ -109,7 +109,7 @@ function formdata_save($data) {
 			LastName_Editable = 1
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Email'
     $query = "
@@ -125,7 +125,7 @@ function formdata_save($data) {
 			Email_Editable = 1
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update Password if requested
     if ($data['Password'] != '') {
@@ -142,7 +142,7 @@ function formdata_save($data) {
 				Password_Editable = 1
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     return $_SESSION['_USER']['PK_Extension'];

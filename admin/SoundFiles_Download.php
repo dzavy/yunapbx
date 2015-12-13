@@ -11,7 +11,7 @@ function SoundFiles_Download() {
     $PK_SoundFile = $_REQUEST['PK_SoundFile'];
 
     $query = "SELECT Filename FROM SoundFiles WHERE PK_SoundFile = $PK_SoundFile LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_assoc();
     $Filename = $row['Filename'];
 

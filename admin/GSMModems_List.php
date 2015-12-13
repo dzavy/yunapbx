@@ -41,7 +41,7 @@ function GSMModems_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM GSMModems";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -60,7 +60,7 @@ function GSMModems_List() {
 			$Sort $Order
 		LIMIT $Start, $PageSize
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Modems[] = $row;
     }

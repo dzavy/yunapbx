@@ -17,18 +17,18 @@ function SoundEntries_Delete() {
 
         // Delete Sound Entry
         $query = "DELETE FROM SoundEntries WHERE PK_SoundEntry IN ($PK_SoundEntries)";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         // Delete Sound Files from Disk
         $query = "SELECT PK_SoundFile,Filename FROM SoundFiles WHERE FK_SoundEntry IN ($PK_SoundEntries)";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         while ($row = $result->fetch_assoc()) {
             @unlink($row['Filename']);
         }
 
         // Delete Sound Files from Disk
         $query = "DELETE FROM SoundFiles WHERE FK_SoundEntry IN ($PK_SoundEntries)";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: SoundEntries_List.php?msg=DELETE_ENTRY');
         die();
@@ -55,7 +55,7 @@ function SoundEntries_Delete() {
 		GROUP BY
 			PK_SoundEntry
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $SoundEntries = array();
     while ($row = $result->fetch_assoc()) {

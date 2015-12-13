@@ -43,7 +43,7 @@ function SystemStatus() {
 
     // Init P_Total entries (P_Total)
     $query = "SELECT COUNT(PK_SipProvider) FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $P_Total = $row[0];
 
@@ -81,7 +81,7 @@ function SystemStatus() {
 			$P_Sort $P_Order
 		LIMIT $P_Start, $P_PageSize
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Providers[] = $row;
     }
@@ -131,7 +131,7 @@ function SystemStatus() {
 
     // Init total entries (C_Total)
     $query = "SELECT COUNT(PK_Extension) FROM Ext_SipPhones;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $C_Total = $row[0];
 
@@ -154,7 +154,7 @@ function SystemStatus() {
 		LIMIT $C_Start, $C_PageSize
 
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Extensions[] = $row;
     }
@@ -177,7 +177,7 @@ function update_provider_statuses() {
     global $mysqli;
     $mysqli->query("DELETE FROM SipProvider_Statuses");
     $query = "SELECT * FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($provider = $result->fetch_assoc()) {
         $Status = sip_get_status($provider);
         $query = "INSERT INTO SipProvider_Statuses SET
@@ -185,13 +185,13 @@ function update_provider_statuses() {
 			Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
 			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     /////////////////////
     $mysqli->query("DELETE FROM IaxProvider_Statuses");
     $query = "SELECT * FROM IaxProviders";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($provider = $result->fetch_assoc()) {
         $Status = iax_get_status($provider);
         $query = "INSERT INTO IaxProvider_Statuses SET
@@ -199,14 +199,14 @@ function update_provider_statuses() {
 			Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
 			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 }
 
 function update_Ext_SipPhones_Statuses() {
     global $mysqli;
     $query = "SELECT Extension FROM Extensions WHERE Type = 'SipPhone'";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
         $response = asterisk_Cmd('sip show peer ' . $row['Extension']);
@@ -214,7 +214,7 @@ function update_Ext_SipPhones_Statuses() {
 
         $status = array();
         foreach ($response as $line) {
-            $line = ereg('[ *]*([A-Z].*[a-z]) *: (.*)', $line, $regs);
+            $line = preg_match('/[ *]*([A-Z].*[a-z]) *: (.*)/', $line, $regs);
             $status[$regs['1']] = $regs['2'];
         }
 
@@ -223,7 +223,7 @@ function update_Ext_SipPhones_Statuses() {
         // User Agent
         $UserAgent = $status['Useragent'];
         // IPAddress
-        ereg('.*@([0-9.]*).*', $status['Reg. Contact'], $regs);
+        preg_match('/.*@([0-9.]*).*/', $status['Reg. Contact'], $regs);
         if (ip2long($regs[1]) == true) {
             $IPAddress = $regs[1];
         } else {
@@ -253,7 +253,7 @@ function update_Ext_SipPhones_Statuses() {
 				)
 			";
             $mysqli->query("DELETE FROM Ext_SipPhones_Status WHERE Extension = $Extension LIMIT 1");
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         } else {
             $mysqli->query("UPDATE Ext_SipPhones_Status SET Status='TIMEOUT' WHERE Extension = $Extension LIMIT 1");
         }
@@ -281,19 +281,19 @@ function iax_get_status($IaxProvider) {
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
-        if (ereg(' *Addr->IP *: *([0-9.]*) Port ([0-9]*)', $line, $regs)) {
+        if (preg_match('/ *Addr->IP *: *([0-9.]*) Port ([0-9]*)/', $line, $regs)) {
             $IaxProvider['IP'] = $regs[1];
             $IaxProvider['Port'] = $regs[2];
         }
 
         unset($regs);
-        if (ereg(' *Status *: OK \(([0-9]*) ms\)', $line, $regs)) {
+        if (preg_match('/ *Status *: OK \(([0-9]*) ms\)/', $line, $regs)) {
             $Status['Latency'] = $regs['1'];
         }
 
         unset($regs);
         if ($IaxProvider['RegisterType'] == 'Client' || $IaxProvider['RegisterType'] == 'Peer') {
-            if (ereg(' *Status *: ([0-9a-zA-Z]*)', $line, $regs)) {
+            if (preg_match('/ *Status *: ([0-9a-zA-Z]*)/', $line, $regs)) {
                 if ($regs[1] == 'OK') {
                     $Status['Status'] = 'Registered';
                 } else {
@@ -312,7 +312,7 @@ function iax_get_status($IaxProvider) {
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
-        if (ereg("^{$IaxProvider['IP']}:{$IaxProvider['Port']} *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]*) *(.*)$", $line, $regs)) {
+        if (preg_match("/^{$IaxProvider['IP']}:{$IaxProvider['Port']} *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]*) *(.*)$/", $line, $regs)) {
             $Status['Status'] = $regs['5'];
         }
     }
@@ -337,13 +337,13 @@ function sip_get_status($SipProvider) {
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
-        if (ereg(' *Status *: OK \(([0-9]*) ms\)', $line, $regs)) {
+        if (preg_match('/ *Status *: OK \(([0-9]*) ms\)/', $line, $regs)) {
             $Status['Latency'] = $regs['1'];
         }
 
         if ($SipProvider['HostType'] == 'Peer') {
             unset($regs);
-            if (ereg(' *Status *: ([0-9a-zA-Z]*)', $line, $regs)) {
+            if (preg_match('/ *Status *: ([0-9a-zA-Z]*)/', $line, $regs)) {
                 if ($regs[1] == 'OK') {
                     $Status['Status'] = 'Registered';
                 } else {
@@ -362,7 +362,7 @@ function sip_get_status($SipProvider) {
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
-        if (ereg("^sip_provider_{$SipProvider['PK_SipProvider']}:([0-9]*) *[^ ]* *([^ ]*) *([0-9]*) *(.*[^ ]{1})[ ]{2} *(.*)$", $line, $regs)) {
+        if (preg_match("/^sip_provider_{$SipProvider['PK_SipProvider']}:([0-9]*) *[^ ]* *([^ ]*) *([0-9]*) *(.*[^ ]{1})[ ]{2} *(.*)$/", $line, $regs)) {
             $Status['Status'] = $regs['4'];
         }
     }

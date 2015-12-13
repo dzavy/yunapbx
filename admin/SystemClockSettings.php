@@ -40,6 +40,7 @@ function SystemClockSettings() {
     $smarty->assign('Message', $Message);
     $smarty->assign('Settings', $Settings);
     $smarty->assign('TimeZones', $TimeZones);
+    $smarty->assign('CurrentTime', date("F j, Y, g:i a"));
 
     return $smarty->fetch('SystemClockSettings.tpl');
 }
@@ -92,18 +93,15 @@ function formdata_validate($data) {
 }
 
 function get_timezone_list() {
-    global $mysqli;
+    $path = realpath('/usr/share/zoneinfo');
 
-    $query = "SELECT * FROM Timezones";
-    $result = $mysqli->query($query) or die(__LINE__ . __FILE__);
-    $row = array();
-    for ($i = 0; $row[$i] = $result->fetch_array(); $i++)
-        ;
-
-    $data = array();
-    for ($i = 0; $row[$i][0]; $i++) {
-        $data[$i] = $row[$i][0];
-    };
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::LEAVES_ONLY);
+    foreach($objects as $name => $object){
+        if($name != $path . "/zone.tab") {
+            $data[] = str_replace($path . "/", "", $name);
+        }
+    }
+    sort($data);
     return $data;
 }
 

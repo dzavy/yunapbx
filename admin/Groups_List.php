@@ -41,7 +41,7 @@ function Groups_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Group) FROM Groups;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -63,7 +63,7 @@ function Groups_List() {
 		LIMIT $Start, $PageSize
 
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
     }

@@ -76,7 +76,7 @@ function MOH_Files_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_File) FROM Moh_Files;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -99,7 +99,7 @@ function MOH_Files_List() {
 		LIMIT $Start, $PageSize
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Files[] = $row;
     }
@@ -109,7 +109,7 @@ function MOH_Files_List() {
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
     }

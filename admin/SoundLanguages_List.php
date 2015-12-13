@@ -41,7 +41,7 @@ function SoundLanguages_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM SoundLanguages";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -59,7 +59,7 @@ function SoundLanguages_List() {
 		GROUP BY PK_SoundFolder
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundFolders[] = $row;
     }
@@ -79,7 +79,7 @@ function SoundLanguages_List() {
 			$Sort $Order
 		LIMIT $Start, $PageSize
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundLanguages[] = $row;
     }

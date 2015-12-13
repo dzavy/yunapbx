@@ -19,7 +19,7 @@ function MOH_Groups_Delete() {
 
         //delete files from database
         $query = "DELETE FROM Moh_Files  WHERE FK_Group = $PK_Group";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         //delete files from hdd
         $handle = @opendir($path . "/group_" . str_pad($PK_Group, 10, "0", STR_PAD_LEFT) . "/");
@@ -35,7 +35,7 @@ function MOH_Groups_Delete() {
 
         //delete directories from database
         $query = "DELETE FROM Moh_Groups WHERE PK_Group = '$PK_Group'";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         asterisk_UpdateConf('musiconhold.conf');
         asterisk_Reload();
@@ -45,7 +45,7 @@ function MOH_Groups_Delete() {
     }
 
     $query = "SELECT * FROM Moh_Groups WHERE PK_Group =  $PK_Group;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Group = $result->fetch_assoc();
 
     $smarty->assign('Group', $Group);

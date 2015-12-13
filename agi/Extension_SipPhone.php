@@ -46,7 +46,7 @@ if ($DIALSTATUS != 'ANSWER') {
 	// Exit if voicemail is not defined for this extension
 	$query = "SELECT * FROM Ext_SipPhones_Features WHERE FK_Extension = {$SipPhone['PK_Extension']} AND FK_Feature=1 LIMIT 1";
 	$agi->verbose($query);
-	$result = $mysqli->query($query) or $agi->verbose($mysqli->error());
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error);
 	if ($mysqli->numrows($result) != 1) { exit(0); }
 
 	// CDR: Push VOICEMAIL

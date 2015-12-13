@@ -27,7 +27,7 @@ function Extensions_Action_Modify() {
 
     // Get available vars
     $query = "SELECT DISTINCT(Variable) FROM IVR_Action_Params ORDER BY Variable";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_row()) {
         if (!empty($row[0])) {
             $Variables[] = $row[0];
@@ -44,11 +44,11 @@ function formdata_from_db($id) {
     global $mysqli;
     
     $query = "SELECT * FROM IVR_Actions WHERE PK_Action = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     $query = "SELECT Name,Value,Variable FROM IVR_Action_Params WHERE FK_Action = '$id'";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $data['Param'][$row['Name']] = $row['Value'];
         $data['Var'][$row['Name']] = $row['Variable'];
@@ -74,17 +74,17 @@ function formdata_save($data) {
     
     if ($data['PK_Action'] == "") {
         $query = "SELECT COUNT(*) FROM IVR_Actions WHERE FK_Menu={$data['FK_Menu']}";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $row = $result->fetch_row();
         $data['Order'] = $row[0] + 1;
 
         $query = "INSERT INTO IVR_Actions (FK_Menu, `Order`, Type) VALUES({$data['FK_Menu']}, {$data['Order']}, 'play_digits')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Action'] = $mysqli->insert_id;
     }
 
     $query = "DELETE FROM IVR_Action_Params WHERE FK_Action = {$data['PK_Action']}";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Param'])) {
         foreach ($data['Param'] as $Name => $Value) {
@@ -99,7 +99,7 @@ function formdata_save($data) {
 					`Value`     = '" . $mysqli->real_escape_string($Value) . "',
 					`FK_Action` = {$data['PK_Action']}
 			";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 
@@ -117,7 +117,7 @@ function formdata_save($data) {
 					`Variable`  = '" . $mysqli->real_escape_string($Value) . "',
 					`FK_Action` = {$data['PK_Action']}
 			";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 

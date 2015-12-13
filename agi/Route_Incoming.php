@@ -27,7 +27,7 @@ if($agi->request['agi_type'] == 'SIP') {
 	$PK_SipProvider = $matches[1];
 
 	$query  = "SELECT Name FROM SipProviders WHERE PK_SipProvider=$PK_SipProvider LIMIT 1";
-	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 	$prov   = $result->fetch_assoc();
 
 	$cdr->push_event("INPROVIDER", "SIP,{$prov['Name']}");
@@ -37,7 +37,7 @@ if($agi->request['agi_type'] == 'SIP') {
 	$PK_IaxProvider = $matches[1];
 
 	$query  = "SELECT Name FROM IaxProviders WHERE PK_IaxProvider=$PK_IaxProvider LIMIT 1";
-	$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 	$prov   = $result->fetch_assoc();
 
 	$cdr->push_event("INPROVIDER", "IAX,{$prov['Name']}");
@@ -80,7 +80,7 @@ function run_incoming_call_rules($agi) {
 			RuleOrder ASC
 		LIMIT 1
 	";
-	$res = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+	$res = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 
 	/* Iterate the matching rules */
 	while ($row = $mysqli->fetch_assoc($res)) {
@@ -116,7 +116,7 @@ function run_callback_extension($agi) {
 		preg_match('/^sip_provider_(\d+)/', $agi->request['agi_context'], $matches);
 		$PK_SipProvider = $matches[1];
 		$query = "SELECT CallbackExtension FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
-		$res   = $mysqli->query($query) or die($mysqli->error());
+		$res   = $mysqli->query($query) or die($mysqli->error);
 		$row   = $mysqli->fetch_assoc($res);
 		$CallbackExtension = $row['CallbackExtension'];
 
@@ -124,7 +124,7 @@ function run_callback_extension($agi) {
 		preg_match('/^iax_provider_(\d+)/', $agi->request['agi_context'], $matches);
 		$PK_IaxProvider = $matches[1];
 		$query = "SELECT CallbackExtension FROM IaxProviders WHERE PK_IaxProvider = $PK_IaxProvider LIMIT 1";
-		$res   = $mysqli->query($query) or die($mysqli->error());
+		$res   = $mysqli->query($query) or die($mysqli->error);
 		$row   = $mysqli->fetch_assoc($res);
 		$CallbackExtension = $row['CallbackExtension'];
 	}

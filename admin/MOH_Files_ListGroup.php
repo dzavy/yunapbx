@@ -80,7 +80,7 @@ function MOH_Files_ListGroup() {
 					Moh_Files 
 				WHERE 
 					FK_Group = $selectedGroup";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $row = $result->fetch_row();
     $Total = $row[0];
@@ -106,7 +106,7 @@ function MOH_Files_ListGroup() {
 		LIMIT $Start, $PageSize
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
         $Files[] = $row;
@@ -117,7 +117,7 @@ function MOH_Files_ListGroup() {
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
     }

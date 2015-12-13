@@ -329,7 +329,7 @@ function ivr_run(&$menu, &$step, &$vars, &$key) {
 	/* Get Params for action */
 	$param  = array();
 	$query  = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-	$result = $mysqli->query($query) or die($mysqli->error());
+	$result = $mysqli->query($query) or die($mysqli->error);
 	while ($row = $result->fetch_assoc()) {
 		$param[$row['Name']]        = $row['Value'];
 		$param["__{$row['Name']}"]  = $row['Variable'];

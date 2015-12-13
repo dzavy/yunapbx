@@ -28,7 +28,7 @@ function TimeFrames_Modify() {
     // Delete if requested
     if (isset($_REQUEST['del'])) {
         $query = "DELETE FROM Timeframe_Intervals WHERE PK_Interval = {$_REQUEST['PK_Interval']} LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         if ($mysqli->affected_rows()) {
             $Message = "DELETE_INTERVAL";
         }
@@ -47,7 +47,7 @@ function TimeFrames_Modify() {
 		ORDER BY
 			OrderDummy
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Intervals = array();
     while ($row = $result->fetch_assoc()) {
         $Intervals[] = $row;
@@ -169,7 +169,7 @@ function formdata_validate($data) {
 function formdata_save($data) {
     global $mysqli;
     $query = "INSERT INTO Timeframe_Intervals() VALUES()";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
     $data['PK_Interval'] = $mysqli->insert_id;
 
     $query = "
@@ -188,7 +188,7 @@ function formdata_save($data) {
 		WHERE
 			PK_Interval = {$data['PK_Interval']}
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 }
 
 admin_run('TimeFrames_Modify', 'Admin.tpl');

@@ -26,7 +26,7 @@ function SoundEntries_Modify() {
 			LEFT JOIN SoundFiles ON PK_SoundLanguage = FK_SoundLanguage AND FK_SoundEntry = $PK_SoundEntry
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SoundFiles[] = $row;
     }

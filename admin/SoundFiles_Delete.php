@@ -12,7 +12,7 @@ function SoundFiles_Delete() {
 
     // Detect Filename and PK_SoundEntry
     $query = "SELECT FK_SoundEntry, Filename FROM SoundFiles WHERE PK_SoundFile = $PK_SoundFile LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_assoc();
     $Filename = $row['Filename'];
     $PK_SoundEntry = $row['FK_SoundEntry'];
@@ -22,17 +22,17 @@ function SoundFiles_Delete() {
 
     // Delete SoundFile from db
     $query = "DELETE FROM SoundFiles WHERE PK_SoundFile = $PK_SoundFile LIMIT 1";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // See if the SoundEntry is orphat now
     $query = "SELECT COUNT(*) FROM SoundFiles WHERE FK_SoundEntry = $PK_SoundEntry";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_row();
     $SoundFilesLeft = $row[0];
 
     if ($SoundFilesLeft == 0) {
         $query = "DELETE FROM SoundEntries WHERE PK_SoundEntry = $PK_SoundEntry LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     header('Location: SoundEntries_List.php?msg=DELETE_ENTRY&hilight=' . $PK_SoundEntry);

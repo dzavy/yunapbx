@@ -14,7 +14,7 @@ function MOH_Files_Play() {
     $PK_File = intval($_REQUEST['PK_File']);
 
     $query = "SELECT * FROM Moh_Files WHERE PK_File = '{$PK_File}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $File = $result->fetch_assoc();
 
     $smarty->assign('File', $File);

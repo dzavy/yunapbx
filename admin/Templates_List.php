@@ -53,7 +53,7 @@ function Templates_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Template) FROM Templates;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -72,7 +72,7 @@ function Templates_List() {
 		LIMIT $Start, $PageSize
 
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Templates[] = $row;
     }
@@ -99,7 +99,7 @@ function create_new_template($Name) {
     }
 
     $query = "INSERT INTO Templates() VALUES()";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     $PK_Template = $mysqli->insert_id;
 
     $query = "
@@ -117,13 +117,13 @@ function create_new_template($Name) {
 			PK_Template = $PK_Template
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     $query = "INSERT INTO Template_Codecs (FK_Template, FK_Codec) (SELECT $PK_Template, PK_Codec FROM Codecs WHERE Recomended = 1)";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     $query = "INSERT INTO Template_Features (FK_Template, FK_Feature) (SELECT $PK_Template, PK_Feature FROM Features WHERE Recomended = 1)";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $PK_Template;
 }

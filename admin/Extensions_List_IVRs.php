@@ -67,7 +67,7 @@ function Extensions_List_IVRs() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $Total = $result->num_rows;
     $entries_allowed = $PageSize;
@@ -77,7 +77,7 @@ function Extensions_List_IVRs() {
         $extension = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE PK_Action = {$extension['FK_Action']} LIMIT 1";
-        $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
         $extension['Action'] = $result2->fetch_assoc();
 
         $Extensions[] = $extension;

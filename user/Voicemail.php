@@ -78,7 +78,7 @@ function Voicemail() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $Folders = vm_folders($_SESSION['_USER']['Extension']);
     $Messages = vm_files($_SESSION['_USER']['Extension'], $Path);

@@ -17,7 +17,7 @@ function SoundLanguages_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM SoundLanguages WHERE PK_SoundLanguage = $PK_SoundLanguage LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         if ($mysqli->affected_rows != 1) {
             return;
@@ -29,7 +29,7 @@ function SoundLanguages_Delete() {
 
     // Init extension info (Extension)
     $query = "SELECT * FROM SoundLanguages WHERE PK_SoundLanguage = $PK_SoundLanguage LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $SoundLanguage = $result->fetch_assoc();
 
     $smarty->assign('SoundLanguage', $SoundLanguage);

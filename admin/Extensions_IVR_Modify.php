@@ -37,17 +37,17 @@ function Extensions_IVR_Modify() {
     // Get available menus
     $Menus = array();
     $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $menu = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-        $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
         while ($row2 = $result2->fetch_assoc()) {
             $action = $row2;
 
             $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-            $result3 = $mysqli->query($query3) or die($mysqli->error() . $query3);
+            $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
             while ($row3 = $result3->fetch_assoc()) {
                 $action['Param'][$row3['Name']] = $row3['Value'];
                 $action['Var'][$row3['Name']] = $row3['Variable'];
@@ -78,7 +78,7 @@ function formdata_from_db($id) {
 			Ext_IVR.PK_Extension = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
     return $data;
 }
@@ -97,11 +97,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('IVR', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_IVR(PK_Extension) VALUES({$data['PK_Extension']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Ext_IVR'
@@ -116,11 +116,11 @@ function formdata_save($data) {
 		LIMIT 1
 	";
 
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'IVRDial"
     $query = "UPDATE Extensions SET IVRDial = " . ($data['IVRDial'] == 1 ? '1' : '0') . " WHERE PK_Extension = {$data['PK_Extension']}";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Extension'];
 }
@@ -146,7 +146,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

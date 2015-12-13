@@ -24,7 +24,7 @@ function CallLog_Details() {
 		ORDER BY
 			Date
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $row['Data_CSV'] = $row['Data'];
         $row['Data'] = explode(',', $row['Data_CSV']);

@@ -15,7 +15,7 @@ function Backup_Delete() {
 
         $query = "DELETE FROM Backups WHERE PK_Backup = '" . $PK . "' LIMIT 1";
 
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         header('Location: Backup.php?msg=DELETE_BACKUP');
         die();

@@ -47,7 +47,7 @@ function CallLog() {
 			AND
 			DATE(StartDate) <= STR_TO_DATE('" . $mysqli->real_escape_string($Filter['EndDate']) . "','%m/%d/%Y')
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -68,7 +68,7 @@ function CallLog() {
 		LIMIT $Start, $PageSize
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $CDRs[] = $row;
     }

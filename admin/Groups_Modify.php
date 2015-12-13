@@ -43,7 +43,7 @@ function Groups_Modify() {
 		ORDER BY
 			Extension ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Extensions = array();
     while ($row = $result->fetch_assoc()) {
@@ -69,7 +69,7 @@ function formdata_from_db($id) {
 			PK_Group = {$data['PK_Group']}
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     $query = "
@@ -80,7 +80,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Group = {$data['PK_Group']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $data['Extensions'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -98,7 +98,7 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Group'] == "") {
         $query = "INSERT INTO Groups () VALUES()";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_Group'] = $mysqli->insert_id;
     }
@@ -112,15 +112,15 @@ function formdata_save($data) {
 			PK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     $query = "DELETE FROM Extension_Groups WHERE FK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Extensions'])) {
         foreach ($data['Extensions'] as $FK_Extension) {
             $query = "INSERT INTO Extension_Groups (FK_Group, FK_Extension) VALUES ({$data['PK_Group']}, $FK_Extension )";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 

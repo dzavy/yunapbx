@@ -48,8 +48,9 @@ class auc {
                 if (!mkdir($dir)) {
                     $status = false;
                 } else {
-                    if (!chmod($dir, 0777))
+                    if (!chmod($dir, 0777)) {
                         $status = false;
+                    }
                 }
             } else {
                 $status = false;
@@ -72,8 +73,9 @@ class auc {
      * @return true or false
      */
     public function check_dir($dir) {
-        if (!is_dir($dir) || !is_writable($dir))
+        if (!is_dir($dir) || !is_writable($dir)) {
             return false;
+        }
         return true;
     }
 
@@ -97,9 +99,10 @@ class auc {
         $errors = & $this->errors;
 
         if (empty($errors['general'])) {
-            if (empty($this->upload_dir))
+            if (empty($this->upload_dir)) {
                 $this->upload_dir = dirname(__FILE__) . '/'; //if no default upload_dir has been specified used the current dir.
-
+            }
+            
             if ($this->check_dir($this->upload_dir)) {
                 $files = $_FILES[$object];
                 $count = count($files['name']) - 1;
@@ -131,12 +134,14 @@ class auc {
                             default : $error = 'Unidentified Error, caused by ' . $files['name'][$current];
                                 break;
                         }
-                        if ($error)
+                        if ($error) {
                             throw new TrigerErrorException($error, $files['name'][$current]);
+                        }
 
                         //check that the file is not empty
-                        if ($files['size'][$current] <= 0)
+                        if ($files['size'][$current] <= 0) {
                             throw new TrigerErrorException($files['name'][$current] . ' is empty', $files['name'][$current]);
+                        }
 
                         //check that the file does not exceed the defined max_file_size
                         if ($this->max_file_size) {
@@ -151,12 +156,14 @@ class auc {
                         }
 
                         //if make_safe is true call make safe function		
-                        if ($this->make_safe)
+                        if ($this->make_safe) {
                             $files['name'][$current] = $this->make_safe($files['name'][$current]);
+                        }
 
                         //if overwrite is false and the file exists error
-                        if (!$this->overwrite && file_exists($this->upload_dir . $files['name'][$current]))
+                        if (!$this->overwrite && file_exists($this->upload_dir . $files['name'][$current])) {
                             throw new TrigerErrorException($files['name'][$current] . ' already exsists', $files['name'][$current]);
+                        }
 
                         //if rename is true, rename file name
                         if ($this->rename) {
@@ -164,8 +171,9 @@ class auc {
                             //$files['name'][$current] = disk_file_name;	
                         }
                         //move the uploaded file, error if anything goes wrong.
-                        if (!move_uploaded_file($files['tmp_name'][$current], $this->upload_dir . $files['name'][$current]))
+                        if (!move_uploaded_file($files['tmp_name'][$current], $this->upload_dir . $files['name'][$current])) {
                             throw new TrigerErrorException($files['name'][$current] . ' could not be moved', $files['name'][$current]);
+                        }
                     } catch (TrigerErrorException $e) {
                         $errors[$files['name'][$current]][] = $e->Message();
                     }

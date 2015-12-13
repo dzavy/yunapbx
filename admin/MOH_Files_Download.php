@@ -12,13 +12,13 @@ function MOH_Files_Download() {
     $PK_File = intval($_REQUEST['PK_File']);
 
     $query = "SELECT * FROM Moh_Files WHERE PK_File = '{$PK_File}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $File = $result->fetch_assoc();
 
     $Filename = moh_filename($PK_File);
 
     if (file_exists($Filename)) {
-        header("Content-type: " . mime_content_type($Filename));
+        //header("Content-type: " . mime_content_type($Filename));
         header("Content-Disposition: attachment; filename=\"" . basename($File['Filename'] . "." . $File['Extension']) . "\"");
         $handle = fopen($Filename, 'r');
         while (!feof($handle)) {

@@ -6,7 +6,6 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function NetworkSettings_Ajax() {
     
-    $session = &$_SESSION['NetworkSettingsAjax'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $data = $_REQUEST;

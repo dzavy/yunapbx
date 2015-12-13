@@ -45,7 +45,7 @@ function ConferenceSetup() {
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Accounts = array();
     while ($row = $result->fetch_assoc()) {
         $Accounts[] = $row;
@@ -62,11 +62,11 @@ function ConferenceSetup() {
 function formdata_from_db($id) {
     global $mysqli;
     $query = "SELECT * FROM Ext_ConfCenter_Rooms WHERE FK_Extension_Owner = '{$_SESSION['_USER']['PK_Extension']}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     $query = "SELECT FK_Extension FROM Ext_ConfCenter_Admins WHERE FK_Room = '{$data['PK_Room']}'";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $data['Admins'][] = $row['FK_Extension'];
     }
@@ -95,10 +95,10 @@ function formdata_save($data) {
 			FK_Extension_Owner = '{$_SESSION['_USER']['PK_Extension']}' 
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     $query = "SELECT PK_Room FROM Ext_ConfCenter_Rooms WHERE FK_Extension_Owner = '{$_SESSION['_USER']['PK_Extension']}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_assoc();
     $PK_Room = $row['PK_Room'];
 
@@ -108,7 +108,7 @@ function formdata_save($data) {
         foreach ($data['Admins'] as $FK_Extension) {
             $FK_Extension = intval($FK_Extension);
             $query = "INSERT INTO Ext_ConfCenter_Admins (FK_Room, FK_Extension) VALUES('{$PK_Room}','$FK_Extension')";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 }

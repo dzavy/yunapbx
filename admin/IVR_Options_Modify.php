@@ -34,17 +34,17 @@ function IVR_Options_Modify() {
     // Get available menus
     $Menus = array();
     $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $menu = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-        $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
         while ($row2 = $result2->fetch_assoc()) {
             $action = $row2;
 
             $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-            $result3 = $mysqli->query($query3) or die($mysqli->error() . $query3);
+            $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
             while ($row3 = $result3->fetch_assoc()) {
                 $action['Param'][$row3['Name']] = $row3['Value'];
                 $action['Var'][$row3['Name']] = $row3['Variable'];
@@ -59,7 +59,7 @@ function IVR_Options_Modify() {
     // Get used keys
     $UsedKeys = array();
     $query = "SELECT `Key` FROM IVR_Options WHERE PK_Option != '{$Option['PK_Option']}' AND FK_Menu={$Option['FK_Menu']}";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $UsedKeys[] = $row['Key'];
     }
@@ -74,7 +74,7 @@ function IVR_Options_Modify() {
 function formdata_from_db($id) {
     global $mysqli;
     $query = "SELECT * FROM IVR_Options WHERE PK_Option = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -96,7 +96,7 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Option'] == "") {
         $query = "INSERT INTO IVR_Options (FK_Menu) VALUES({$data['FK_Menu']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Option'] = $mysqli->insert_id;
     }
 
@@ -112,7 +112,7 @@ function formdata_save($data) {
 			PK_Option = {$data['PK_Option']}
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Option'];
 }

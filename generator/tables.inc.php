@@ -12,7 +12,7 @@ function Get_SipProviders() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $SipProviders = array();
     while ($row = $result->fetch_assoc()) {
@@ -29,7 +29,7 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']}
 		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
         while ($row_codec = $result_codec->fetch_assoc()) {
             $codecs[] = $row_codec['Name'];
         }
@@ -46,7 +46,7 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']}
 		";
-        $result_hosts = $mysqli->query($query_hosts) or die($mysqli->error() . $query_hosts);
+        $result_hosts = $mysqli->query($query_hosts) or die($mysqli->error . $query_hosts);
         while ($row_hosts = $result_hosts->fetch_assoc()) {
             $provider['Hosts'][] = $row_hosts['Host'];
         }
@@ -67,7 +67,7 @@ function Get_IaxProviders() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $IaxProviders = array();
     while ($row = $result->fetch_assoc()) {
@@ -84,7 +84,7 @@ function Get_IaxProviders() {
 			WHERE
 				FK_IaxProvider = {$provider['PK_IaxProvider']}
 		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
         while ($row_codec = $result_codec->fetch_assoc()) {
             $codecs[] = $row_codec['Name'];
         }
@@ -128,7 +128,7 @@ function Get_Ext_SipPhones() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Extensions = array();
     while ($row = $result->fetch_assoc()) {
@@ -145,7 +145,7 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error() . $query_codec);
+        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
         while ($row_codec = $result_codec->fetch_assoc()) {
             $codecs[] = $row_codec['Name'];
         }
@@ -162,7 +162,7 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-        $result_features = $mysqli->query($query_features) or die($mysqli->error() . $query_codec);
+        $result_features = $mysqli->query($query_features) or die($mysqli->error . $query_codec);
         while ($row_feature = $result_features->fetch_assoc()) {
             $exten['Features'][] = $row_feature['ShortName'];
         }
@@ -201,7 +201,7 @@ function Get_Ext_Queues() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Queues = array();
     while ($row = $result->fetch_assoc()) {
@@ -217,7 +217,7 @@ function Get_Ext_Queues() {
 			WHERE
 				FK_Extension = {$queue['PK_Extension']}
 		";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         while ($member = $result->fetch_assoc()) {
             $queue['Members'][] = $member;
         }
@@ -246,7 +246,7 @@ function Get_Ext_Parking() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Parking = $result->fetch_assoc();
 
@@ -261,7 +261,7 @@ function Get_Ext_ConfCenter_Rooms() {
 		FROM
 			Ext_ConfCenter_Rooms
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
         $Rooms[] = $row;
@@ -278,7 +278,7 @@ function Get_Moh_Groups() {
 		FROM
 			Moh_Groups
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
@@ -295,7 +295,7 @@ function Get_Settings() {
 		FROM
 			Settings
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
         if (in_array($row['Name'], array('Network_Additional_LAN', 'Network_Interfaces_LAN'))) {

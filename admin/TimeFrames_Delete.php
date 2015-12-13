@@ -13,10 +13,10 @@ function TimeFrames_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Timeframes WHERE PK_Timeframe = $PK_Timeframe LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Timeframe_Intervals WHERE FK_Timeframe = $PK_Timeframe";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: TimeFrames.php?msg=DELETE_TIMEFRAME');
         die();
@@ -24,7 +24,7 @@ function TimeFrames_Delete() {
 
     // Init template info (Template)
     $query = "SELECT * FROM Timeframes WHERE PK_Timeframe = $PK_Timeframe LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Timeframe = $result->fetch_assoc();
 
     $smarty->assign('Timeframe', $Timeframe);

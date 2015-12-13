@@ -15,7 +15,7 @@ function VoicemailSettings() {
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SipProviders[] = $row;
     }

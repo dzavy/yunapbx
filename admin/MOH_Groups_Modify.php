@@ -56,7 +56,7 @@ function formdata_from_db($id) {
 			PK_Group = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
     return $data;
 }
@@ -80,7 +80,7 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Group'] == "") {
         $query = "INSERT INTO Moh_Groups() VALUES()";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Group'] = $mysqli->insert_id;
 
         $bigPK_Group = str_pad($data['PK_Group'], 10, "0", STR_PAD_LEFT);
@@ -102,7 +102,7 @@ function formdata_save($data) {
 			Protected = 0
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     $query = "
 		UPDATE
@@ -114,7 +114,7 @@ function formdata_save($data) {
 			PK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Group'];
 }
@@ -127,7 +127,7 @@ function formdata_validate($data) {
         $errors['Name']['Invalid'] = true;
     } else {
         $query = "SELECT * FROM Moh_Groups WHERE Name = '" . ($mysqli->escape_string($data['Name'])) . "' AND NOT PK_Group = '" . intval($data['PK_Group']) . "' LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
 
         if ($result->num_rows != 0) {
             $errors['Name']['Duplicate'] = 1;

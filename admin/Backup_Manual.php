@@ -73,7 +73,7 @@ function formdata_save($data) {
 						'" . $mysqli->real_escape_string($Size) . "',
 					    CURRENT_TIMESTAMP)";
 
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 }
 
 function formdata_from_post() {

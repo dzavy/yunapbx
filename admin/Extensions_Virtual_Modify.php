@@ -90,7 +90,7 @@ function formdata_from_db($id) {
 			Extensions.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     // Init data from 'Extension_Groups'
@@ -102,7 +102,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Groups'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Groups'][] = $row['FK_Group'];
@@ -117,7 +117,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Features'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Features'][] = $row['FK_Feature'];
@@ -132,7 +132,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = {$data['PK_Extension']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Rules'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
@@ -158,7 +158,7 @@ function formdata_from_template($id) {
 			PK_Template = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     $query = "
@@ -169,7 +169,7 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $data['Groups'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -184,7 +184,7 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $data['Features'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -199,7 +199,7 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $data['Rules'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -217,11 +217,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Extension,Type) VALUES('" . $mysqli->real_escape_string($data['Extension']) . "', 'Virtual')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_Virtual(PK_Extension) VALUES('" . $mysqli->real_escape_string($data['PK_Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Extensions'
@@ -240,26 +240,26 @@ function formdata_save($data) {
 			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Extension_Groups'
     $query = "DELETE FROM Extension_Groups WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     if (is_array($data['Groups'])) {
         foreach ($data['Groups'] as $FK_Group) {
             $query = "INSERT INTO Extension_Groups (FK_Extension, FK_Group) VALUES ({$data['PK_Extension']}, $FK_Group)";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
         }
     }
 
     // Update 'Ext_Virtual_Features'
     $query = "DELETE FROM Ext_Virtual_Features WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Features'])) {
         foreach ($data['Features'] as $FK_Feature) {
             $query = "INSERT INTO Ext_Virtual_Features (FK_Extension, FK_Feature) VALUES ({$data['PK_Extension']}, $FK_Feature)";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 
@@ -274,13 +274,13 @@ function formdata_save($data) {
 				PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
 
     // Update 'Extension_Rules'
     $query = "DELETE FROM Extension_Rules WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule => $Status) {
@@ -288,13 +288,13 @@ function formdata_save($data) {
                 continue;
             }
             $query = "INSERT INTO Extension_Rules (FK_Extension, FK_OutgoingRule) VALUES ({$data['PK_Extension']}, {$FK_OutgoingRule})";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 
     // Update 'IVRDial"
     $query = "UPDATE Extensions SET IVRDial = " . ($data['IVRDial'] == 1 ? '1' : '0') . " WHERE PK_Extension = {$data['PK_Extension']}";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Extension'];
 }
@@ -320,7 +320,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

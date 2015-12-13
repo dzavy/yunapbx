@@ -13,10 +13,10 @@ function Extensions_Voicemail_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Ext_Voicemail WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         if ($mysqli->affected_rows() != 1) {
             return;
@@ -37,7 +37,7 @@ function Extensions_Voicemail_Delete() {
 			PK_Extension = $PK_Extension
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Extension = $result->fetch_assoc();
 
     $smarty->assign('Extension', $Extension);

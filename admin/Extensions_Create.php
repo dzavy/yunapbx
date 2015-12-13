@@ -10,7 +10,7 @@ function Extensions_Create() {
 
     // Init default template (FK_Template)
     $query = "SELECT PK_Template FROM Templates WHERE Protected = 1 LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_array();
     $FK_Template = $row[0];
 
@@ -46,7 +46,7 @@ function Extensions_Create() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Templates = array();
     while ($row = $result->fetch_assoc()) {

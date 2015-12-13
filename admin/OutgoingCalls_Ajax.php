@@ -16,23 +16,23 @@ function OutgoingCalls_Ajax() {
     switch ($data['Action']) {
         case 'DeleteRule':
             $query = "DELETE FROM OutgoingRules WHERE PK_OutgoingRule = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $query = "DELETE FROM Extension_Rules WHERE FK_OutgoingRule = " . intval($data['ID']) . "";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $query = "DELETE FROM Template_Rules WHERE FK_OutgoingRule = " . intval($data['ID']) . "";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $query = "DELETE FROM OutgoingCIDRules WHERE FK_OutgoingRule = " . intval($data['ID']) . " ";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $response['ID'] = $data['ID'];
             break;
 
         case 'DeleteCIDRule':
             $query = "DELETE FROM OutgoingCIDRules WHERE PK_OutgoingCIDRule = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
 
             $response['ID'] = $data['ID'];
             break;
@@ -45,7 +45,7 @@ function OutgoingCalls_Ajax() {
 
                 $response['test'] .= "$order-$PK_Rule , ";
                 $query = "UPDATE OutgoingRules SET RuleOrder = $order WHERE PK_OutgoingRule = $PK_Rule LIMIT 1";
-                $mysqli->query($query) or die($mysqli->error());
+                $mysqli->query($query) or die($mysqli->error);
 
                 $order++;
             }
@@ -96,7 +96,7 @@ function OutgoingCalls_Ajax() {
 					PK_OutgoingCIDRule = " . intval($data['ID']) . "
 				LIMIT 1
 			";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
             $response['ID'] = $data['ID'];
             $response['Errors'] = $errors;
             break;

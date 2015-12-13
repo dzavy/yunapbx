@@ -2,7 +2,7 @@
 
 function DB_Extension($ext) {
 	$query = "SELECT * FROM Extensions WHERE Extension = '$ext' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	if ($mysqli->num_rows($result) != '1') {
 		return null;
 	}
@@ -12,7 +12,7 @@ function DB_Extension($ext) {
 
 function DB_Extension_Name($ext) {
 	$query = "SELECT PK_Extension, Type FROM Extensions WHERE Extension = '$ext' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	$row = $result->fetch_assoc();
 	$id   = $row['PK_Extension'];
 	$type = $row['Type'];
@@ -34,14 +34,14 @@ function DB_Extension_Name($ext) {
 			break;
 	}
 
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	$row = $result->fetch_row();
 	return $row[0];
 }
 
 function Database_Entry($table, $id) {
 	$query = "SELECT * FROM `$table` WHERE PK_Extension = '$id' LIMIT 1";
-	$result = $mysqli->query($query) or die($mysqli->error().$query);
+	$result = $mysqli->query($query) or die($mysqli->error.$query);
 	if ($mysqli->num_rows($result) != '1') {
 		return null;
 	}

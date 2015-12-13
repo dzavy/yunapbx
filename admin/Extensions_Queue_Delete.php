@@ -14,13 +14,13 @@ function Extensions_Queue_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Ext_Queues WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Ext_Queue_Members WHERE FK_Extension = $PK_Extension";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         asterisk_UpdateConf('queues.conf');
         asterisk_Reload();
@@ -40,7 +40,7 @@ function Extensions_Queue_Delete() {
 			PK_Extension = $PK_Extension
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Queue = $result->fetch_assoc();
 
     $smarty->assign('Queue', $Queue);

@@ -13,7 +13,7 @@ function Groups_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Groups WHERE PK_Group = $PK_Group LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: Groups_List.php?msg=DELETE_GROUP');
         die();
@@ -30,7 +30,7 @@ function Groups_Delete() {
 			PK_Group = $PK_Group
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Group = $result->fetch_assoc();
 
     $query = "
@@ -47,7 +47,7 @@ function Groups_Delete() {
 		WHERE
 			FK_Group = $PK_Group
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     $Group['Extensions'] = array();
     while ($row = $result->fetch_assoc()) {

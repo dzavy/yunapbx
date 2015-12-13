@@ -46,7 +46,7 @@ function Extensions_List_Queues() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Extension) FROM Extensions;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -73,7 +73,7 @@ function Extensions_List_Queues() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $Total = $result->num_rows;
     $entries_allowed = $PageSize;
@@ -83,7 +83,7 @@ function Extensions_List_Queues() {
         $extension = $row;
 
         $query2 = "SELECT * FROM Ext_Queue_Members WHERE FK_Extension = {$extension['_PK_']}";
-        $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
         $extension['Members'] = $result2->num_rows;
 
         $Extensions[] = $extension;

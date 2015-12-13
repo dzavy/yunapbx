@@ -13,16 +13,16 @@ function Extensions_FC_Intercom_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM FC_Intercom WHERE FK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM FC_Intercom_Admins WHERE FK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM FC_Intercom_Members WHERE FK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: Extensions_List.php?msg=DELETE_FC_INTERCOM_EXTENSION');
         die();
@@ -39,7 +39,7 @@ function Extensions_FC_Intercom_Delete() {
 			PK_Extension = $PK_Extension
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Extension = $result->fetch_assoc();
 
     $smarty->assign('Extension', $Extension);

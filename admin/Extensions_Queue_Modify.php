@@ -16,7 +16,7 @@ function Extensions_Queue_Modify() {
 
     // Init Available ringing strategies (RingStrategies)
     $query = "SELECT PK_RingStrategy, Name, Description FROM RingStrategies";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $RingStrategies = array();
     while ($row = $result->fetch_assoc()) {
         $RingStrategies[] = $row;
@@ -37,7 +37,7 @@ function Extensions_Queue_Modify() {
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Members = array();
     while ($row = $result->fetch_assoc()) {
         $Members[] = $row;
@@ -61,7 +61,7 @@ function Extensions_Queue_Modify() {
 			SoundLanguages.Name ASC,
 			SoundFiles.Name     ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $SoundFiles = array();
     while ($row = $result->fetch_assoc()) {
         $SoundFiles[$row['Language']][$row['PK_SoundFile']] = $row['Name'];
@@ -69,7 +69,7 @@ function Extensions_Queue_Modify() {
 
     // Init available moh groups
     $query = "SELECT * FROM Moh_Groups ORDER BY Name ASC";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $MohGroups = array();
     while ($row = $result->fetch_assoc()) {
         $MohGroups[] = $row;
@@ -130,7 +130,7 @@ function formdata_from_db($id) {
 			Ext_Queues.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     // Init data from 'Queue_Memebers'
@@ -151,7 +151,7 @@ function formdata_from_db($id) {
 		ORDER
 			By QueueOrder
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Members'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Members'][] = $row['LoginRequired'] . "~" . $row['PK_Extension'];
@@ -168,11 +168,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('Queue', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_Queues(PK_Extension) VALUES('" . $mysqli->real_escape_string($data['PK_Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Ext_Queues'
@@ -214,11 +214,11 @@ function formdata_save($data) {
 			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Ext_Queue_Members'
     $query = "DELETE FROM Ext_Queue_Members WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     if (is_array($data['Members'])) {
         $QueueOrder = 0;
         foreach ($data['Members'] as $member_value) {
@@ -227,13 +227,13 @@ function formdata_save($data) {
             $member['FK_Extension'] = $MemberString[1];
             $member['LoginRequired'] = $MemberString[0];
             $query = "INSERT INTO Ext_Queue_Members (FK_Extension, FK_Extension_Member, LoginRequired, QueueOrder) VALUES ({$data['PK_Extension']}, {$member['FK_Extension']}, {$member['LoginRequired']}, $QueueOrder)";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 
     // Update 'IVRDial"
     $query = "UPDATE Extensions SET IVRDial = " . ($data['IVRDial'] == 1 ? '1' : '0') . " WHERE PK_Extension = {$data['PK_Extension']}";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_Extension'];
 }
@@ -259,7 +259,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

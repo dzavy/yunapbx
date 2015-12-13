@@ -50,7 +50,7 @@ if ($Intercom['Use_Admins_ByAccount']) {
 		LIMIT 1
 	";
 }
-$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 if ($mysqli->numrows($result) != 1) {
 	$agi->stream_file('beeperr');
 	$agi->hangup();
@@ -98,7 +98,7 @@ if ($Intercom['Use_Members_ByAccount']) {
 	";
 }
 
-$result = $mysqli->query($query) or $agi->verbose($mysqli->error().$query);
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
 while ($row = $result->fetch_assoc()) {
 	if ($page_phones != "") {
 		$page_phones .='&';

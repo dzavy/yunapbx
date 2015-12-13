@@ -48,7 +48,7 @@ function CallLog() {
 			AND
 			(CallerID = '" . ($_SESSION['_USER']['PK_Extension']) . "' OR CalledID ='" . ($_SESSION['_USER']['PK_Extension']) . "' )
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -71,7 +71,7 @@ function CallLog() {
 		LIMIT $Start, $PageSize
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $CDRs[] = $row;
     }

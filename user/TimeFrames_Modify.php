@@ -28,7 +28,7 @@ function TimeFrames_Modify() {
     // Delete if requested
     if (isset($_REQUEST['del'])) {
         $query = "DELETE FROM Timeframe_Intervals WHERE PK_Interval = {$_REQUEST['PK_Interval']} LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         if ($mysqli->affected_rows()) {
             $Message = "DELETE_INTERVAL";
         }
@@ -45,7 +45,7 @@ function TimeFrames_Modify() {
 			AND
 			FK_Extension = '" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     if ($result->num_rows != 1) {
         $ReadOnly = true;
     } else {
@@ -65,7 +65,7 @@ function TimeFrames_Modify() {
 		ORDER BY
 			OrderDummy
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $Intervals = array();
     while ($row = $result->fetch_assoc()) {
         $Intervals[] = $row;
@@ -198,13 +198,13 @@ function formdata_save($data) {
 			AND
 			FK_Extension = '" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     if ($result->num_rows != 1) {
         return;
     }
 
     $query = "INSERT INTO Timeframe_Intervals() VALUES()";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
     $data['PK_Interval'] = $mysqli->insert_id;
 
     $query = "
@@ -223,7 +223,7 @@ function formdata_save($data) {
 		WHERE
 			PK_Interval  = {$data['PK_Interval']}
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 }
 
 user_run('TimeFrames_Modify', 'User.tpl');

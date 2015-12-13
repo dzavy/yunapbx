@@ -13,20 +13,20 @@ function Templates_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Templates WHERE PK_Template = $PK_Template AND Protected = 0 LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         if ($mysqli->affected_rows() != 1) {
             return;
         }
 
         $query = "DELETE FROM Template_Codecs WHERE FK_Template = $PK_Template";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Template_Groups WHERE FK_Template = $PK_Template";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Template_Features WHERE FK_Template = $PK_Template";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: Templates_List.php?msg=DELETE_TEMPLATE');
         die();
@@ -49,7 +49,7 @@ function Templates_Delete() {
 			PK_Template = $PK_Template
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Template = $result->fetch_assoc();
 
     $smarty->assign('Template', $Template);

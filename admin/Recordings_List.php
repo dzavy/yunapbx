@@ -38,7 +38,7 @@ function Recordings_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Rule) FROM RecordingRules;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Rules['Total'] = $row[0];
 
@@ -54,7 +54,7 @@ function Recordings_List() {
 			{$Rules['Sort']} {$Rules['Order']}
 		LIMIT {$Rules['Start']}, {$Rules['PageSize']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Rules['Fields'][] = $row;
     }
@@ -120,7 +120,7 @@ function Recordings_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM RecordingLog;";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Calls['Total'] = $row[0];
 
@@ -136,7 +136,7 @@ function Recordings_List() {
 			{$Calls['Sort']} {$Calls['Order']}
 		LIMIT {$Calls['Start']}, {$Calls['PageSize']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Calls['Fields'][] = $row;
     }

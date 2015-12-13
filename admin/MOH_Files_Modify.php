@@ -31,7 +31,7 @@ function MOH_Files_Modify() {
         $extension = $filename_ext[count($filename_ext) - 1];
 
         $query = "SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '$FK_Group'";
-        $result = $mysqli->query($query) or die($mysqli->error());
+        $result = $mysqli->query($query) or die($mysqli->error);
         $row = $result->fetch_row();
         $order = $row['0'] + 1;
 
@@ -47,7 +47,7 @@ function MOH_Files_Modify() {
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Groups[] = $row;
     }
@@ -82,7 +82,7 @@ function upload_file($uploadPath, $filename, $extension, $order, $FK_Group) {
 			`FK_Group` = " . intval($FK_Group) . ",
 			`Order`    = " . intval($order) . "
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $PK_File = $mysqli->insert_id;
 
     //upload to disk

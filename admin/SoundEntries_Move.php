@@ -10,7 +10,7 @@ function SoundEntries_Move() {
     $PK_Folder = $_REQUEST['PK_Folder'];
 
     $query = "UPDATE SoundEntries SET FK_SoundFolder = $PK_Folder WHERE PK_SoundEntry IN ($PK_SoundEntries)";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     header('Location: SoundEntries_List.php?msg=MOVE_ENTRY');
     die();

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jqModal.js"></script>
+<script type="text/javascript" src="../script/jquery.jqModal.js"></script>
 <script type="text/javascript">
 {literal}
 

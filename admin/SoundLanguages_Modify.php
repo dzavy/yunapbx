@@ -40,7 +40,7 @@ function SoundLanguages_Modify() {
 function formdata_from_db($id) {
     global $mysqli;
     $query = "SELECT * FROM SoundLanguages WHERE PK_SoundLanguage = $id	LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -54,7 +54,7 @@ function formdata_save($data) {
     global $mysqli;
     if (empty($data['PK_SoundLanguage'])) {
         $query = "INSERT INTO SoundLanguages(Type) VALUES('User')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_SoundLanguage'] = $mysqli->insert_id;
     }
@@ -69,7 +69,7 @@ function formdata_save($data) {
 			PK_SoundLanguage = " . $mysqli->real_escape_string($data['PK_SoundLanguage']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_SoundLanguage'];
 }

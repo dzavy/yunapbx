@@ -37,8 +37,8 @@
 		<td>{$Modem.DataPort}</td>
 		<td>{if $Modem.CallbackExtension!=""}{$Modem.CallbackExtension}{else}No Mapping{/if}</td>
 		<td>
-				<form method="get" action="VoipProviders_Sip_Modify.php" style="display: inline;">
-					<input type="hidden" name="PK_SipProvider" value="{$Provider._PK_}" />
+				<form method="get" action="GSMModems_Modify.php" style="display: inline;">
+					<input type="hidden" name="PK_GSMModem  " value="{$Modem._PK_}" />
 					<button type="submit">Modify</button>
 				</form>
 		</td>

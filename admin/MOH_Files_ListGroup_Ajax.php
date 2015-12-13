@@ -28,7 +28,7 @@ function MOH_Files_ListGroup_Ajax() {
 						  FROM
 								`Moh_Files`
 						  WHERE `PK_File` = $PK";
-                    $result = $mysqli->query($query) or die($mysqli->error());
+                    $result = $mysqli->query($query) or die($mysqli->error);
                     $File_src = $result->fetch_assoc();
 
                     $PK_Group = $File_src['FK_Group'];
@@ -50,7 +50,7 @@ function MOH_Files_ListGroup_Ajax() {
 
                     //db
                     $query = "UPDATE `Moh_Files` SET `Order` = '" . intval($order) . "' WHERE `PK_File` = '" . intval($PK) . "'";
-                    $mysqli->query($query) or die($mysqli->error());
+                    $mysqli->query($query) or die($mysqli->error);
 
                     $order++;
                 }

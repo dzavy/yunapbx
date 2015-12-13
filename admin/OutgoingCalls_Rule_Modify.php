@@ -36,7 +36,7 @@ function OutgoingCalls_Rule_Modify() {
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $SipProviders[] = $row;
     }
@@ -44,7 +44,7 @@ function OutgoingCalls_Rule_Modify() {
     // IaxProviders
     $IaxProviders = array();
     $query = "SELECT * FROM IaxProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IaxProviders[] = $row;
     }
@@ -78,7 +78,7 @@ function formdata_from_db($id) {
 			PK_OutgoingRule = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -92,12 +92,12 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_OutgoingRule'] == "") {
         $query = "SELECT MAX(RuleOrder) FROM OutgoingRules";
-        $result = $mysqli->query($query) or die($mysqli->error());
+        $result = $mysqli->query($query) or die($mysqli->error);
         $row = $result->fetch_row();
         $RuleOrder = $row[0] + 1;
 
         $query = "INSERT INTO OutgoingRules(RuleOrder) VALUES($RuleOrder)";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_OutgoingRule'] = $mysqli->insert_id;
     }
@@ -119,7 +119,7 @@ function formdata_save($data) {
 			PK_OutgoingRule = " . $mysqli->real_escape_string($data['PK_OutgoingRule']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_OutgoingRule'];
 }

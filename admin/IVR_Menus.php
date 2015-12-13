@@ -12,7 +12,7 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 
     // Get IVR_Tree['Name'|'PK_Menu'|'Description']
     $query = "SELECT PK_Menu, Name, Description FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $row = $result->fetch_assoc();
     $IVR_Tree = $row;
 
@@ -28,7 +28,7 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 		ORDER BY
 			`Order` ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $action_disabled = true;
     while ($row = $result->fetch_assoc()) {
         if ($row['PK_Action'] == $PK_Action || $PK_Action == 0) {
@@ -54,13 +54,13 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 		ORDER BY
 			`Key`
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         if (!in_array($row['FK_Menu_Entry'], $VisitedNodes)) {
             $IVR_Tree['Options'][$row['Key']] = Get_IVR_Tree($row['FK_Menu_Entry'], $row['FK_Action_Entry']);
         } else {
             $query2 = "SELECT PK_Menu, Name, Description FROM IVR_Menus WHERE PK_Menu = {$row['FK_Menu_Entry']} LIMIT 1";
-            $result2 = $mysqli->query($query2) or die($mysqli->error() . $query2);
+            $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
             $visited = $result2->fetch_assoc();
 
             $IVR_Tree['Visited'][$row['Key']] = $visited;
@@ -91,7 +91,7 @@ function IVR_Menus() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $menu = $row;
 
@@ -106,7 +106,7 @@ function IVR_Menus() {
 			WHERE
 				FK_Menu = {$menu['PK_Menu']}
 		";
-        $result_ext = $mysqli->query($query_ext) or die($mysqli->error() . $query_ext);
+        $result_ext = $mysqli->query($query_ext) or die($mysqli->error . $query_ext);
         while ($row_ext = $result_ext->fetch_assoc()) {
             $menu['Extensions'][] = $row_ext['Extension'];
         }

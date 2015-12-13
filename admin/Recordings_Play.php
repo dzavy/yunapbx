@@ -14,7 +14,7 @@ function Recordings_Play() {
     $ID = $mysqli->real_escape_string($_REQUEST['ID']);
 
     $query = "SELECT * FROM RecordingLog WHERE FK_CallLog = '{$ID}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $File = $result->fetch_assoc();
 
     $File['Filename'] = $GLOBALS['config']['monitor_dir'] . "{$File['PK_CallLog']}.wav";

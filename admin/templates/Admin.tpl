@@ -17,7 +17,7 @@
         <script type="text/javascript" src="../script/jquery.js"></script>
         <script type="text/javascript" src="../script/jquery.suckerfish.js"></script>
 
-        <title>Starfish PBX</title>
+        <title>Yuna PBX</title>
     </head>
 
     <body>
@@ -29,52 +29,52 @@
             </div>
 
             <div id="header">
-                <h1>DzavyNetPBX</h1>
+                <h1>Yuna PBX</h1>
                 <h2>Asterisk Web Management Interface</h2>
             </div>
             <div id="menu">
                 <ul id="nav">
-                    <li><span class="menuitem">{t}Extensions{/t}</span>
+                    <li><span class="menuitem">Extensions</span>
                         <ul>
-                            <li><a href="Extensions_List.php">{t}Manage Extensions{/t}</a></li>
-                            <li><a href="Templates_List.php">{t}Extension Templates{/t}</a></li>
-                            <!--<li><a href="#">{t}Extension Settings{/t}</a></li>-->
-                            <li><a href="Groups_List.php">{t}Extension Groups{/t}</a></li>
-                            <!--<li><a href="#">{t}Extension Permissions{/t}</a></li>-->
+                            <li><a href="Extensions_List.php">Manage Extensions</a></li>
+                            <li><a href="Templates_List.php">Extension Templates</a></li>
+                            <!--<li><a href="#">Extension Settings</a></li>-->
+                            <li><a href="Groups_List.php">Extension Groups</a></li>
+                            <!--<li><a href="#">Extension Permissions</a></li>-->
                         </ul>
                     </li>
-                    <li><span class="menuitem">{t}PBX Features{/t}</span>
+                    <li><span class="menuitem">PBX Features</span>
                         <ul>
-                            <li><a href="MOH_Files_List.php">{t}Music On Hold{/t}</a></li>
-                            <li><a href="IVR_Menus.php">{t}IVR Editor{/t}</a></li>
-                            <li><a href="SoundEntries_List.php">{t}Sound Manager{/t}</a></li>
-                            <li><a href="TimeFrames.php">{t}Time Frames{/t}</a></li>						
-                            <li><a href="Recordings_List.php">{t}Call Recording{/t}</a></li>
-                            <li><a href="VoicemailSettings.php">{t}Voicemail Settings{/t}</a></li>
+                            <li><a href="MOH_Files_List.php">Music On Hold</a></li>
+                            <li><a href="IVR_Menus.php">IVR Editor</a></li>
+                            <li><a href="SoundEntries_List.php">Sound Manager</a></li>
+                            <li><a href="TimeFrames.php">Time Frames</a></li>						
+                            <li><a href="Recordings_List.php">Call Recording</a></li>
+                            <li><a href="VoicemailSettings.php">Voicemail Settings</a></li>
                         </ul>
                     </li>
-                    <li><span class="menuitem">{t}Connectivity{/t}</span>
+                    <li><span class="menuitem">Connectivity</span>
                         <ul>
-                            <li><a href="VoipProviders_List.php">{t}VOIP Providers{/t}</a></li>
-                            <li><a href="GSMModems_List.php">{t}GSM Modems{/t}</a></li>
-                            <li><a href="OutgoingCalls.php">{t}Outgoing Calls{/t}</a></li>
-                            <li><a href="IncomingCalls.php">{t}Incoming Calls{/t}</a></li>
+                            <li><a href="VoipProviders_List.php">VOIP Providers</a></li>
+                            <li><a href="GSMModems_List.php">GSM Modems</a></li>
+                            <li><a href="OutgoingCalls.php">Outgoing Calls</a></li>
+                            <li><a href="IncomingCalls.php">Incoming Calls</a></li>
                         </ul>
                     </li>
-                    <li><span class="menuitem">{t}Diagnostics{/t}</span>
+                    <li><span class="menuitem">Diagnostics</span>
                         <ul>
-                            <li><a href="SystemStatus.php">{t}System Status{/t}</a></li>
-                            <li><a href="HardwareMonitor.php">{t}Hardware Monitor{/t}</a></li>
-                            <li><a href="CallLog.php">{t}Call Log{/t}</a></li>
+                            <li><a href="SystemStatus.php">System Status</a></li>
+                            <li><a href="HardwareMonitor.php">Hardware Monitor</a></li>
+                            <li><a href="CallLog.php">Call Log</a></li>
 
                         </ul>
                     </li>
-                    <li><span class="menuitem">{t}System Setup{/t}</span>
+                    <li><span class="menuitem">System Setup</span>
                         <ul>
-                            <li><a href="NetworkSettings.php">{t}Network Settings{/t}</a></li>
-                            <li><a href="SystemClockSettings.php">{t}Set System Clock{/t}</a></li>
-                            <li><a href="Backup.php">{t}Backups{/t}</a></li>
-                            <li><a href="SystemReload.php">{t}System Reload{/t}</a></li>
+                            <li><a href="NetworkSettings.php">Network Settings</a></li>
+                            <li><a href="SystemClockSettings.php">Set System Clock</a></li>
+                            <li><a href="Backup.php">Backups</a></li>
+                            <li><a href="SystemReload.php">System Reload</a></li>
                         </ul>
 
                     </li>

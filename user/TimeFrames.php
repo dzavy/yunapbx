@@ -22,7 +22,7 @@ function TimeFrames() {
 
         if (count($errors) == 0) {
             $query = "INSERT INTO Timeframes(Name, FK_Extension) VALUES('" . $mysqli->real_escape_string($_POST['Name']) . "','" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "')";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
 
             $PK_Timeframe = $mysqli->insert_id;
             header("Location: TimeFrames_Modify.php?msg=CREATE_TIMEFRAME&FK_Timeframe={$PK_Timeframe}");
@@ -43,7 +43,7 @@ function TimeFrames() {
 		ORDER BY Name
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Timeframes[] = $row;
     }
@@ -61,7 +61,7 @@ function TimeFrames() {
 		ORDER BY Name
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Timeframes_Admin[] = $row;
     }

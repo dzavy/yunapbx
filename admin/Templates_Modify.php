@@ -23,7 +23,7 @@ function Templates_Modify() {
 
     // Init available codecs (Codecs)
     $query = "SELECT PK_Codec, Name, Description, Recomended FROM Codecs";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Codecs = array();
     while ($row = $result->fetch_assoc()) {
         $Codecs[] = $row;
@@ -103,7 +103,7 @@ function formdata_from_db($id) {
 			PK_Template = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     $query = "
@@ -114,7 +114,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $data['Codecs'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -129,7 +129,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $data['Groups'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -144,7 +144,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
 
     $data['Features'] = array();
     while ($row = $result->fetch_assoc()) {
@@ -160,7 +160,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = {$data['PK_Template']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Rules'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
@@ -196,44 +196,44 @@ function formdata_save($data) {
 			PK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'Template_Codecs'
     $query = "DELETE FROM Template_Codecs WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     if (is_array($data['Codecs'])) {
         foreach ($data['Codecs'] as $FK_Codec) {
             $query = "INSERT INTO Template_Codecs (FK_Template, FK_Codec) VALUES ({$data['PK_Template']}, $FK_Codec)";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
         }
     }
 
     // Update 'Template_Groups'
     $query = "DELETE FROM Template_Groups WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
 
     if (is_array($data['Groups'])) {
         foreach ($data['Groups'] as $FK_Group) {
             $query = "INSERT INTO Template_Groups (FK_Template, FK_Group) VALUES ({$data['PK_Template']}, $FK_Group)";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
         }
     }
 
     // Update 'Template_Features'
     $query = "DELETE FROM Template_Features WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Features'])) {
         foreach ($data['Features'] as $FK_Feature) {
             $query = "INSERT INTO Template_Features (FK_Template, FK_Feature) VALUES ({$data['PK_Template']}, $FK_Feature)";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 
     // Update 'Template_Rules'
     $query = "DELETE FROM Template_Rules WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule => $Status) {
@@ -241,7 +241,7 @@ function formdata_save($data) {
                 continue;
             }
             $query = "INSERT INTO Template_Rules (FK_Template, FK_OutgoingRule) VALUES ({$data['PK_Template']}, {$FK_OutgoingRule})";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
         }
     }
 }

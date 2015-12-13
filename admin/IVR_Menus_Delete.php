@@ -14,7 +14,7 @@ function IVR_Menus_Delete() {
 
     // Get information about this ivr menu
     $query = "SELECT * FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $IVR_Menu = $result->fetch_assoc();
 
 
@@ -38,7 +38,7 @@ function IVR_Menus_Delete() {
 			AND
 			IVR_Menu_Parent.PK_Menu != '$PK_Menu'
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error());
+    $result = $mysqli->query($query) or die($query . $mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IVR_Actions[] = $row;
     }
@@ -62,7 +62,7 @@ function IVR_Menus_Delete() {
 		ORDER BY
 			`Key`
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error());
+    $result = $mysqli->query($query) or die($query . $mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IVR_Options[] = $row;
     }
@@ -85,7 +85,7 @@ function IVR_Menus_Delete() {
 		ORDER BY
 			Extension		
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error());
+    $result = $mysqli->query($query) or die($query . $mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $IVR_Extensions[] = $row;
     }
@@ -95,13 +95,13 @@ function IVR_Menus_Delete() {
         if (@$_REQUEST['submit'] == 'delete_confirm') {
 
             $query = "DELETE FROM IVR_Action_Params WHERE FK_Action IN (SELECT PK_Action FROM IVR_Actions WHERE FK_Menu = $PK_Menu)";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
 
             $query = "DELETE FROM IVR_Actions WHERE FK_Menu = $PK_Menu";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
 
             $query = "DELETE FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error() . $query);
+            $mysqli->query($query) or die($mysqli->error . $query);
 
             header('Location: IVR_Menus.php');
             die();

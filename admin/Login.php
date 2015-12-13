@@ -45,7 +45,7 @@ function formdata_validate($data) {
 			LIMIT 1
 		";
 
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
 
         if ($result->num_rows != 1) {
             $errors['Wrong'] = true;

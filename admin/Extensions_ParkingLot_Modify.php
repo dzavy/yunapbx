@@ -35,7 +35,7 @@ function Extensions_ParkingLot_Modify() {
         $Extension = formdata_from_db($_REQUEST['PK_Extension']);
     } else {
         $query = "SELECT PK_Extension FROM Extensions WHERE Type = 'ParkingLot' LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error());
+        $result = $mysqli->query($query) or die($mysqli->error);
         if ($result->num_rows == 1) {
             $row = $result->fetch_row();
             $id = $row[0];
@@ -62,7 +62,7 @@ function formdata_from_db($id) {
 			Ext_ParkingLot.PK_Extension = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -82,11 +82,11 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('ParkingLot', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
         $data['PK_Extension'] = $mysqli->insert_id;
 
         $query = "INSERT INTO Ext_ParkingLot(PK_Extension) VALUES({$data['PK_Extension']})";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'Ext_ParkingLot'
@@ -101,13 +101,13 @@ function formdata_save($data) {
 			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     $query = "DELETE FROM Extensions WHERE Type = 'ParkingLot_Reserved'";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
     for ($extension = $data['Start']; $extension <= $data['Stop']; $extension++) {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('ParkingLot_Reserved', '{$extension}')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     return $data['PK_Extension'];
@@ -134,7 +134,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }
@@ -167,7 +167,7 @@ function formdata_validate($data) {
     if (empty($errors['Stop']) && empty($errors['Start'])) {
         for ($extension = $data['Start']; $extension <= $data['Stop']; $extension++) {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '$extension' AND NOT Type = 'ParkingLot_Reserved' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows > 0) {
                 $errors['Stop']['Conflict'] = true;
                 $errors['Start']['Conflict'] = true;

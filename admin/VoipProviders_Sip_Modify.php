@@ -26,7 +26,7 @@ function VoipProviders_Sip_Modify() {
 
     // Init available codecs (Codecs)
     $query = "SELECT PK_Codec, Name, Description, Recomended FROM Codecs";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Codecs = array();
     while ($row = $result->fetch_assoc()) {
         $Codecs[] = $row;
@@ -41,7 +41,7 @@ function VoipProviders_Sip_Modify() {
     }
 
     // Init form data (Providers)
-    if (@$_REQUEST['submit'] == 'save') {
+    if ($_REQUEST['submit'] == 'save') {
         $Provider = formdata_from_post();
         $Errors = formdata_validate($Provider);
 
@@ -53,7 +53,7 @@ function VoipProviders_Sip_Modify() {
             header("Location: VoipProviders_List.php?msg=MODIFY_SIP_PROVIDER&hilight={$id}");
             die();
         }
-    } elseif (@$_REQUEST['PK_SipProvider'] != "") {
+    } elseif ($_REQUEST['PK_SipProvider'] != "") {
         $Provider = formdata_from_db($_REQUEST['PK_SipProvider']);
     } else {
         $Provider = formdata_from_default();
@@ -81,7 +81,7 @@ function formdata_from_db($id) {
 			PK_SipProvider = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     // Init data from 'SipProvider_Codecs'
@@ -93,7 +93,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_SipProvider = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data['Codecs'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Codecs'][] = $row['FK_Codec'];
@@ -109,7 +109,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_SipProvider = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data['Hosts'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Hosts'][] = $row['Host'];
@@ -124,7 +124,7 @@ function formdata_from_db($id) {
 		WHERE
 			FK_SipProvider = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $data['Rules'] = array();
     while ($row = $result->fetch_assoc()) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
@@ -174,12 +174,12 @@ function formdata_save($data) {
     global $mysqli;
     if ($data['PK_SipProvider'] == "") {
         $query = "INSERT INTO SipProviders() VALUES()";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_SipProvider'] = $mysqli->insert_id;
     }
 
-    $data['MapRings'] = @implode(";", $data['MapRing']);
+    $data['MapRings'] = implode(";", $data['MapRing']);
 
     // Update 'Extensions'
     $query = "
@@ -224,7 +224,7 @@ function formdata_save($data) {
 			PK_SipProvider     = " . $mysqli->real_escape_string($data['PK_SipProvider']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update Password if requested and set PhonePassword if it was never set
     if ($data['Password'] != '') {
@@ -237,37 +237,37 @@ function formdata_save($data) {
 				PK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
     }
 
     // Update 'SipProvider_Codecs'
     $query = "DELETE FROM SipProvider_Codecs WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     if (is_array($data['Codecs'])) {
         foreach ($data['Codecs'] as $FK_Codec) {
             $query = "INSERT INTO SipProvider_Codecs (FK_SipProvider, FK_Codec) VALUES ({$data['PK_SipProvider']}, $FK_Codec)";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
         }
     }
 
     // Update 'SipProviders_Hosts'
     $query = "DELETE FROM SipProvider_Hosts WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     if (is_array($data['Hosts'])) {
         foreach ($data['Hosts'] as $Host) {
             $query = "INSERT INTO SipProvider_Hosts (FK_SipProvider, Host) VALUES ({$data['PK_SipProvider']}, '" . $mysqli->real_escape_string($Host) . "')";
-            $mysqli->query($query) or die($mysqli->error());
+            $mysqli->query($query) or die($mysqli->error);
         }
     }
 
     // Update 'SipProvider_Rules'
     $query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error());
+    $mysqli->query($query) or die($mysqli->error);
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule) {
             if ($FK_OutgoingRule != 0) {
                 $query = "INSERT INTO SipProvider_Rules(FK_SipProvider, FK_OutgoingRule) VALUES ({$data['PK_SipProvider']}, $FK_OutgoingRule)";
-                $mysqli->query($query) or die($mysqli->error());
+                $mysqli->query($query) or die($mysqli->error);
             }
         }
     }
@@ -275,7 +275,7 @@ function formdata_save($data) {
     // If we don't apply incoming rules to this provider, make sure we remove existing ones (if exists)
     if ($data['ApplyIncomingRules'] == 0) {
         $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = {$data['PK_SipProvider']}";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
     }
 
     return $data['PK_SipProvider'];
@@ -316,7 +316,7 @@ function formdata_validate($data) {
             // Check if extension is valid on the system
         } else {
             $query = "SELECT PK_Extension FROM Extensions WHERE Extension = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error() . $query);
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
             if ($result->num_rows < 1) {
                 $errors['CallbackExtension']['NoMatch'] = true;
             }

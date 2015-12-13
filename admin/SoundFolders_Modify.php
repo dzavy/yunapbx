@@ -40,7 +40,7 @@ function SoundFolders_Modify() {
 
 function formdata_from_db($id) {
     $query = "SELECT * FROM SoundFolders WHERE PK_SoundFolder = $id	LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $data = $result->fetch_assoc();
 
     return $data;
@@ -53,7 +53,7 @@ function formdata_from_post() {
 function formdata_save($data) {
     if (empty($data['PK_SoundFolder'])) {
         $query = "INSERT INTO SoundFolders(Type) VALUES('User')";
-        $mysqli->query($query) or die($mysqli->error() . $query);
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_SoundFolder'] = $mysqli->insert_id;
     }
@@ -69,7 +69,7 @@ function formdata_save($data) {
 			PK_SoundFolder = " . $mysqli->real_escape_string($data['PK_SoundFolder']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error() . $query);
+    $mysqli->query($query) or die($mysqli->error . $query);
 
     return $data['PK_SoundFolder'];
 }

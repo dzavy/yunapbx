@@ -48,7 +48,7 @@ function formdata_validate($data) {
 				Type IN ('SipPhone', 'Virtual', 'Agent')
 			LIMIT 1
 		";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
 
         if ($result->num_rows != "1") {
             $errors['Wrong'] = true;
@@ -67,7 +67,7 @@ function formdata_validate($data) {
             case 'Agent' : $query = "SELECT Password FROM Ext_Agents    WHERE PK_Extension={$Extension['PK_Extension']} LIMIT 1";
                 break;
         }
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         $row = $result->fetch_row();
 
         if ($data['Password'] != $row[0]) {
@@ -86,7 +86,7 @@ function formdata_validate($data) {
                 break;
         }
 
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         if ($result->num_rows != "1") {
             $errors['Wrong'] = true;
         }

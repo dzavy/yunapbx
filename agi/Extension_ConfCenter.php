@@ -37,7 +37,7 @@ while ($conf_no == '') {
 	$conf_no = $result['result'];
 	
 	$query  = "SELECT * FROM Ext_ConfCenter_Rooms WHERE Number='$conf_no' LIMIT 1";
-	$result = $mysqli->query($query) or $logger->error_sql($mysqli->error(), $query, __FILE__, __LINE__);
+	$result = $mysqli->query($query) or $logger->error_sql($mysqli->error, $query, __FILE__, __LINE__);
 	if ($mysqli->numrows($result) == 1) {
 		$Room = $result->fetch_assoc();
 	} else {
@@ -58,7 +58,7 @@ $query = "
 	WHERE
 		FK_Room = '{$Room['PK_Room']}'
 ";
-$result = $mysqli->query($query) or $logger->error_sql($mysqli->error(), $query, __FILE__, __LINE__);
+$result = $mysqli->query($query) or $logger->error_sql($mysqli->error, $query, __FILE__, __LINE__);
 while ($row = $result->fetch_assoc()) {
 	$Admins[] = $row['Extension'];
 }

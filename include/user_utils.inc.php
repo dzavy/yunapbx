@@ -28,7 +28,7 @@ function user_run($generator_function, $template = "", $need_auth = true) {
 function user_login($extension) {
     global $mysqli;
     $query = "SELECT * FROM Extensions WHERE Extension = " . $mysqli->real_escape_string($extension) . " LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     $user = $result->fetch_assoc();
 
     $_SESSION['_USER'] = $user;

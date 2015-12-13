@@ -41,7 +41,7 @@ function SoundFolders_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_SoundFolder) FROM SoundFolders";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -59,7 +59,7 @@ function SoundFolders_List() {
 		GROUP BY PK_SoundFolder
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $SoundFolders[] = $row;
     }
@@ -82,7 +82,7 @@ function SoundFolders_List() {
 			$Sort $Order
 		LIMIT $Start, $PageSize
 	";
-    $result = $mysqli->query($query) or die($mysqli->error() . $query);
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Folders[] = $row;
     }

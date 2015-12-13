@@ -23,17 +23,17 @@ function TimeFrames_Delete() {
 				AND
 				FK_Extension = '" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "'
 		";
-        $result = $mysqli->query($query) or die($mysqli->error() . $query);
+        $result = $mysqli->query($query) or die($mysqli->error . $query);
         if ($result->num_rows != 1) {
             header('Location: TimeFrames.php?msg=DELETE_TIMEFRAME');
             die();
         }
 
         $query = "DELETE FROM Timeframes WHERE PK_Timeframe = $PK_Timeframe LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Timeframe_Intervals WHERE FK_Timeframe = $PK_Timeframe";
-        $mysqli->query($query) or die($mysqli->error());
+        $mysqli->query($query) or die($mysqli->error);
 
         header('Location: TimeFrames.php?msg=DELETE_TIMEFRAME');
         die();
@@ -41,7 +41,7 @@ function TimeFrames_Delete() {
 
     // Init template info (Template)
     $query = "SELECT * FROM Timeframes WHERE PK_Timeframe = $PK_Timeframe LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error());
+    $result = $mysqli->query($query) or die($mysqli->error);
     $Timeframe = $result->fetch_assoc();
 
     $smarty->assign('Timeframe', $Timeframe);
