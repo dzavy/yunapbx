@@ -1,43 +1,46 @@
 <?php
+
 class AGI_Logger {
-	private $agi;
-	private $debug = true;
 
-	function AGI_Logger($agi) {
-		$this->agi = $agi;
-	}
+    private $agi;
+    private $debug = true;
 
-	function error($message, $file='', $line='') {
-		$prefix = "ERROR [$file,$line] : ";
-		$this->agi->verbose("{$prefix}{$message}", 1);
+    function AGI_Logger($agi) {
+        $this->agi = $agi;
+    }
 
-		die();
-	}
+    function error($message, $file = '', $line = '') {
+        $prefix = "ERROR [$file,$line] : ";
+        $this->agi->verbose("{$prefix}{$message}", 1);
 
-	function warning($message, $file='', $line='') {
-		$prefix = "WARNING [$file,$line] : ";
-		$this->agi->verbose("{$prefix}{$message}", 2);
-	}
+        die();
+    }
 
-	function debug($message, $file='', $line='') {
-		$prefix = "DEBUG [$file,$line] : ";
-		$this->agi->verbose("{$prefix}{$message}", 3);
-	}
+    function warning($message, $file = '', $line = '') {
+        $prefix = "WARNING [$file,$line] : ";
+        $this->agi->verbose("{$prefix}{$message}", 2);
+    }
 
-	function info($message, $file='', $line='') {
-		$prefix = "INFO [$file,$line] : ";
-		$this->agi->verbose("{$prefix}{$message}", 4);
-	}
+    function debug($message, $file = '', $line = '') {
+        $prefix = "DEBUG [$file,$line] : ";
+        $this->agi->verbose("{$prefix}{$message}", 3);
+    }
 
+    function info($message, $file = '', $line = '') {
+        $prefix = "INFO [$file,$line] : ";
+        $this->agi->verbose("{$prefix}{$message}", 4);
+    }
 
-	function error_sql($message, $query, $file='', $line='') {
-		$prefix = "ERROR [$file,$line] :";
+    function error_sql($message, $query, $file = '', $line = '') {
+        global $mysqli;
+        $prefix = "ERROR [$file,$line] :";
 
-		$this->agi->verbose("{$prefix}{$message}", 1);
-		$this->agi->verbose("{$prefix}{$query}", 1);
-		$this->agi->verbose("{$prefix}".$mysqli->error, 1);
+        $this->agi->verbose("{$prefix}{$message}", 1);
+        $this->agi->verbose("{$prefix}{$query}", 1);
+        $this->agi->verbose("{$prefix}" . $mysqli->error, 1);
 
-		die();
-	}
+        die();
+    }
 }
+
 ?>

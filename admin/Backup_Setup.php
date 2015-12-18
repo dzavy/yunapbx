@@ -5,11 +5,11 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Backup_Setup() {
-    
+
     $session = &$_SESSION['Backup_Setup'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
-    $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
+    $Message = (isset($_REQUEST['msg']) ? $_REQUEST['msg'] : "");
 
     if ($_REQUEST['submit']) {
         $Settings = formdata_from_post();

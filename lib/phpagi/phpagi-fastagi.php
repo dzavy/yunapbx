@@ -1,4 +1,3 @@
-#!/usr/local/bin/php -q
 <?php
  /**
   * phpagi-fastagi.php : PHP FastAGI bootstrap
