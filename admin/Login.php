@@ -56,4 +56,4 @@ function formdata_validate($data) {
     return $errors;
 }
 
-admin_run('Login', 'User_NoMenu.tpl', false);
+admin_run('Login', 'AdminLogin.tpl', false);

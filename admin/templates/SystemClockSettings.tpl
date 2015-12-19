@@ -1,8 +1,8 @@
-<script type="text/javascript" src="../lib/jscalendar/calendar.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/calendar-setup.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="../static/script/calendar.js"></script>
+<script type="text/javascript" src="../static/script/calendar-setup.js"></script>
+<script type="text/javascript" src="../static/script/calendar-en.js"></script>
 
-<script type="text/javascript" src="../script/jquery.checkboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.checkboxes.js"></script>
 <script language="javascript">
 {literal}
 

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.jqModal.js"></script>
+<script type="text/javascript" src="../static/script/jquery.jqModal.js"></script>
 <script type="text/javascript">
 {literal}
 function PlayPhone() {
@@ -80,7 +80,7 @@ function popUp(url,inName,width,height)
 	<div class="window_titlebar">Answer the Phone</div>
 	<strong>Ringing Phone.</strong>
 	<br />
-	<img src="images/ringing_phone.gif" alt="Ringing ...">
+	<img src="../static/images/ringing_phone.gif" alt="Ringing ...">
 	<br />
 	Your phone should now be ringing.<br />
 	Please answer your phone to hear the sound.
@@ -117,10 +117,10 @@ function popUp(url,inName,width,height)
 	<tr class="{cycle values="even,odd"}">
 		<td>
 			{if $File.PK_SoundFile}
-				<img src="images/success.gif" />
+				<img src="../static/images/success.gif" />
 				Active
 			{else}
-				<img src="images/alert.gif" />
+				<img src="../static/images/alert.gif" />
 				Empty
 			{/if}
 		</td>

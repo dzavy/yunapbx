@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script language="javascript">
 {literal}
 function select_all()  { 
@@ -160,31 +160,31 @@ function popUp(url,inName,width,height)
 	<caption>Music On Hold Songs ( {$Start+1} to {$End} ) of {$Total}</caption>
 	<tr>
 		<th>
-			<img src="images/select_all.gif" onclick="select_all()" id="img_select_all" alt="0" title="Select All"/>
-			<img src="images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
+			<img src="../static/images/select_all.gif" onclick="select_all()" id="img_select_all" alt="0" title="Select All"/>
+			<img src="../static/images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
 		</th>
 		<th>
 			<a href="?Sort=Filename">File Name</a>
 			{if $Sort == "Filename"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Group">Group Name</a>
 			{if $Sort == "Group"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Order">Play order</a>
 			{if $Sort == "Order"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=DateCreated">Date created</a>
 			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>		
 		<th style="width: 50px;">Play</th>

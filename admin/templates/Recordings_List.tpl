@@ -34,25 +34,25 @@ function popUp(url,inName,width,height)
 		<th>
 			<a href="?Rules[Sort]=Label">Rule Name</a>
 			{if $Rules.Sort == "Label"}
-				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
+				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Rules[Sort]=Type">Extension Type</a>
 			{if $Rules.Sort == "Type"}
-				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
+				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Rules[Sort]=End">Record For</a>
 			{if $Rules.Sort == "End"}
-				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
+				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Rules[Sort]=Keep">Keep For</a>
 			{if $Rules.Sort == "Keep"}
-				<img src="images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
+				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
 		<th style="width: 120px;"></th>
@@ -130,37 +130,37 @@ function popUp(url,inName,width,height)
 		<th>
 			<a href="?Calls[Sort]=Label">Recording Tag</a>
 			{if $Calls.Sort == "Label"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Calls[Sort]=RecordedNumber">Recorded Account</a>
 			{if $Calls.Sort == "RecordedNumber"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Calls[Sort]=CallerNumber">From Caller</a>
 			{if $Calls.Sort == "CallerNumber"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Calls[Sort]=CalledNumber">To Caller</a>
 			{if $Calls.Sort == "CalledNumber"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Calls[Sort]=Duration">Duration</a>
 			{if $Calls.Sort == "Duration"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Calls[Sort]=StartDate">Date Created</a>
 			{if $Calls.Sort == "StartDate"}
-				<img src="images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
+				<img src="../static/images/{$Calls.Order}.gif" alt="{$Calls.Order}" />
 			{/if}
 		</th>
 		<th></th>

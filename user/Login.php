@@ -95,5 +95,5 @@ function formdata_validate($data) {
     return $errors;
 }
 
-user_run('Login', 'User_NoMenu.tpl', false);
+user_run('Login', 'UserLogin.tpl', false);
 ?>

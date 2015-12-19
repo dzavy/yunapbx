@@ -24,13 +24,13 @@
 		<th>
 			<a href="?Sort=Name">Group Name</a>
 			{if $Sort == "Name"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Members">Members</a>
 			{if $Sort == "Members"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 130px"></th>

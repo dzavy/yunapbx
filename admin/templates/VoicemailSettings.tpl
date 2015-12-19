@@ -66,7 +66,7 @@ $(document).ready(function(){
 		<td colspan="2" class="caption">
 			<table>
 				<tr>
-					<td><img src="images/1.gif"/></td>
+					<td><img src="../static/images/1.gif"/></td>
 					<td>
 					Customize the settings for voicemail notification emails
 					</td>
@@ -123,7 +123,7 @@ $(document).ready(function(){
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/2.gif"/></td>
+				<td><img src="../static/images/2.gif"/></td>
 				<td>
 				Voicemail Notification Email Diagnostics
 				</td>
@@ -155,7 +155,7 @@ $(document).ready(function(){
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/3.gif"/></td>
+				<td><img src="../static/images/3.gif"/></td>
 				<td>
 				Voicemail Routing
 				</td>
@@ -189,7 +189,7 @@ $(document).ready(function(){
 		<td colspan="2" class="caption">
 			<table>
 				<tr>
-					<td><img src="images/4.gif"/></td>
+					<td><img src="../static/images/4.gif"/></td>
 					<td>
 					Voicemail Email Template
 					</td>

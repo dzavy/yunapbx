@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 {literal}
 	function popUp(url,inName,width,height)
@@ -270,7 +270,7 @@ $(document).ready(function() {
 		<td></td>
 		<td>
 			<a href="javascript:Display_Advanced_Toggle()">
-				<img src="images/right-arrow.gif" alt="[+]" />
+				<img src="../static/images/right-arrow.gif" alt="[+]" />
 				Click to show advanced options
 			</a>
 		</td>
@@ -281,7 +281,7 @@ $(document).ready(function() {
 		<td></td>
 		<td>
 			<a href="javascript:Display_Advanced_Toggle()">
-				<img src="images/down-arrow.gif" alt="[-]" />
+				<img src="../static/images/down-arrow.gif" alt="[-]" />
 				Click to hide advanced options
 			</a>
 		</td>
@@ -291,7 +291,7 @@ $(document).ready(function() {
 <table class="formtable">
 	<tr class="toggle hidden">
 		<td colspan="2" class="caption">
-			<img src="images/1.gif"/>
+			<img src="../static/images/1.gif"/>
 			<strong>Peer Settings</strong>
 		</td>
 	</tr>
@@ -356,7 +356,7 @@ $(document).ready(function() {
 <table class="formtable">
 	<tr class="toggle hidden">
 		<td colspan="2" class="caption">
-			<img src="images/2.gif"/>
+			<img src="../static/images/2.gif"/>
 			<strong>Connection Settings</strong>
 		</td>
 	</tr>
@@ -453,7 +453,7 @@ $(document).ready(function() {
 <table class="formtable">
 	<tr class="toggle hidden">
 		<td colspan="2" class="caption">
-			<img src="images/3.gif"/>
+			<img src="../static/images/3.gif"/>
 			<strong>Call Settings</strong>
 		</td>
 	</tr>
@@ -486,7 +486,7 @@ $(document).ready(function() {
 <table class="formtable">
 	<tr class="toggle hidden">
 		<td  colspan="2" class="caption">
-			<img src="images/4.gif"/>
+			<img src="../static/images/4.gif"/>
 			<strong>Fax Settings</strong>
 		</td>
 	</tr>

@@ -62,13 +62,13 @@ function ViewAdd() {
 		<th>
 			<a href="?Sort=Name">Language Name</a>
 			{if $Sort == "Name"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Type">Language Type</a>
 			{if $Sort == "Type"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 230px"></th>

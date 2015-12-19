@@ -8,7 +8,7 @@
 		<param name="allowfullscreen" value="false" />
 		<param name="allowscriptaccess" value="always" />
 		<param name="flashvars" value="file=MOH_Files_Download.php" />
-		<object type="application/x-shockwave-flash" data="swf/player-viral.swf" width="280" height="20">
+		<object type="application/x-shockwave-flash" data="../static/swf/player-viral.swf" width="280" height="20">
 			<param name="movie" value="swf/player-viral.swf" />
 			<param name="allowfullscreen" value="true" />
 			<param name="allowscriptaccess" value="always" />

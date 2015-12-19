@@ -1,6 +1,6 @@
-<script type="text/javascript" src="../lib/jscalendar/calendar.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/calendar-setup.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="../static/script/calendar.js"></script>
+<script type="text/javascript" src="../static/script/calendar-setup.js"></script>
+<script type="text/javascript" src="../static/script/calendar-en.js"></script>
 
 <h2>Time Frames</h2>
 {if $Errors.StartDate.Invalid}
@@ -37,7 +37,7 @@
 
 <p>
     <a href="TimeFrames.php">
-        <img src="images/left-arrow.gif" alt="<" />	Back to Time Frames
+        <img src="../static/images/left-arrow.gif" alt="<" />	Back to Time Frames
     </a>
 </p>
 

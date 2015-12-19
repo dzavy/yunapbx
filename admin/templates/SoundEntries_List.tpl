@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.checkboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.checkboxes.js"></script>
 <script type="text/javascript">
 {literal}
 function ViewList() {
@@ -102,25 +102,25 @@ function MoveEntries() {
 		<th>
 			<a href="?Sort=Name">Sound Name</a>
 			{if $Sort == "Name"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Folder">Folder Name</a>
 			{if $Sort == "Folder"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Language">Languages</a>
 			{if $Sort == "Languages"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Type">Sound Type</a>
 			{if $Sort == "Type"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 100px"></th>

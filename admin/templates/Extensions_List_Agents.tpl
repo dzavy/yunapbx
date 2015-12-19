@@ -41,31 +41,31 @@ function ChangeListView() {
 		<th>
 			<a href="?Sort=Extension">Extension</a>
 			{if $Sort == "Extension"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Type">Extension Type</a>
 			{if $Sort == "Type"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=FirstName">First Name</a>
 			{if $Sort == "FirstName"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=LastName">Last Name</a>
 			{if $Sort == "LastName"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=DateCreated">Date Created</a>
 			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 120px"></th>

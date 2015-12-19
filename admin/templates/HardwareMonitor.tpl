@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 {literal}
 <style type="text/css">
 table.hwinfo {

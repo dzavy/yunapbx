@@ -2,22 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <!--
-                <link rel="stylesheet" href="css/admin.css"   type="text/css" />
-                <link rel="stylesheet" href="css/jqModal.css" type="text/css" />
-                <link rel="stylesheet" href="css/tooltip.css" type="text/css" />
-                <link rel="stylesheet" type="text/css" media="all" href="css/calendar.css" title="win2k-cold-1" />-->
 
-        <link rel="stylesheet" type="text/css" media="all" href="css/calendar.css" />
-        <link rel="stylesheet" href="newtheme/reset.css" type="text/css" />
-        <link rel="stylesheet" href="newtheme/telesoft.css" type="text/css" />
-        <link rel="stylesheet" href="newtheme/suckerfish.css" type="text/css" />
-        <link rel="stylesheet" href="newtheme/jquery.tooltip.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/calendar.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/reset.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/telesoft.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/menu.css" type="text/css" />
 
-        <script type="text/javascript" src="../script/jquery.js"></script>
-        <script type="text/javascript" src="../script/jquery.suckerfish.js"></script>
+        <script type="text/javascript" src="../static/script/jquery.js"></script>
+        <script type="text/javascript" src="../static/script/jquery.suckerfish.js"></script>
 
-        <title>Yuna PBX</title>
+        <title>YunaPBX</title>
     </head>
 
     <body>
@@ -29,7 +23,7 @@
             </div>
 
             <div id="header">
-                <h1>Yuna PBX</h1>
+                <h1>YunaPBX</h1>
                 <h2>Asterisk Web Management Interface</h2>
             </div>
             <div id="menu">
@@ -88,7 +82,7 @@
 
             <div id="footer">
                 <p>
-                    Copyright &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
+                    Copyright &copy; 2015, <strong><a href="http://yunapbx.uk/">YunaPBX</a></strong>; &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
                 </p>
             </div>
         </div>

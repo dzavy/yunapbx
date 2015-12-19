@@ -8,7 +8,7 @@
 </p>
 {/if}
 
-<script type="text/javascript" src="../script/jquery.treeview.js" ></script>
+<script type="text/javascript" src="../static/script/jquery.treeview.js" ></script>
 <script>
 {literal}
 

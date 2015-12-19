@@ -29,7 +29,7 @@
 		<th>
 			<a href="?Sort=Name">Template Name</a>
 			{if $Sort == "Name"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 130px"></th>

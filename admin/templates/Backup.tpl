@@ -56,19 +56,19 @@
 		<th>
 			<a href="?Sort=Optionals">Optionals Contents</a>
 			{if $Sort == "Optionals"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Size">Size</a>
 			{if $Sort == "Size"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Date">Date Created</a>
 			{if $Sort == "Date"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>		
 		<th >Delete</th>

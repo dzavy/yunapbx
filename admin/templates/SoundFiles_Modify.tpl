@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.jqModal.js"></script>
+<script type="text/javascript" src="../static/script/jquery.jqModal.js"></script>
 <script type="text/javascript">
 {literal}
 
@@ -84,7 +84,7 @@ $(document).ready(
 	<div class="window_titlebar">Answer the Phone</div>
 	<strong>Your phone should be ringing.</strong>
 	<br />
-	<img src="images/ringing_phone.gif" alt="Ringing ...">
+	<img src="../static/images/ringing_phone.gif" alt="Ringing ...">
 	<br />
 	Please answer your phone and follow the said instructions.
 </div>

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 {literal}
 	
@@ -72,7 +72,7 @@ $(document).ready(function(){
 		<td> PBX Configuration </td>
 		<td> 
 			<p  id="PBX_Conf">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -82,7 +82,7 @@ $(document).ready(function(){
 		<td> Hardware Configuration </td>
 		<td> 
 			<p id="Hardware_Conf">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -92,7 +92,7 @@ $(document).ready(function(){
 		<td> Database Configuration </td>
 		<td> 
 			<p id="DB_Conf">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -102,7 +102,7 @@ $(document).ready(function(){
 		<td> Sounds / Sound Packs </td>
 		<td> 
 			<p id="Sounds">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -112,7 +112,7 @@ $(document).ready(function(){
 		<td> IAX RSA Keys </td>
 		<td> 
 			<p id="IAX_RSA_Keys">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -122,7 +122,7 @@ $(document).ready(function(){
 		<td> Audio Codecs </td>
 		<td> 
 			<p id="Audio_Codecs">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -132,7 +132,7 @@ $(document).ready(function(){
 		<td> Voicemail and Fax Files </td>
 		<td>
 			<p id="Voicemail_Fax_Files">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -145,7 +145,7 @@ $(document).ready(function(){
 		<td> Voicemail Greetings </td>
 		<td> 
 			<p id="Voicemail_Greetings">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -158,7 +158,7 @@ $(document).ready(function(){
 		<td> Recorded Calls </td>
 		<td> 
 			<p id="Recorded_Calls">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -171,7 +171,7 @@ $(document).ready(function(){
 		<td> Music On Hold Files </td>
 		<td> 
 			<p id="MOH_Files">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p> 
 		</td>
@@ -184,7 +184,7 @@ $(document).ready(function(){
 		<td> PBX Error Logs  </td>
 		<td> 
 			<p id="PBX_Error_Logs">
-				<img src="./images/ajax_activity.gif">
+				<img src="../static/images/ajax_activity.gif">
 				Determining Size
 			</p>
 			

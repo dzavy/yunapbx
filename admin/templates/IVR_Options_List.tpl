@@ -168,7 +168,7 @@ $(document).ready(function() {
 
 <p>
 	<a href="IVR_Menus.php?PK_Menu={$History.PK_Menu}#{$History.Tree}">
-		<img src="images/left-arrow.gif" />Back to IVR Editor
+		<img src="../static/images/left-arrow.gif" />Back to IVR Editor
 	</a>
 </p>
 

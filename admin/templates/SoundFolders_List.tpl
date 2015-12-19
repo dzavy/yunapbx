@@ -62,19 +62,19 @@ function ViewAdd() {
 		<th>
 			<a href="?Sort=Name">Folder Name</a>
 			{if $Sort == "Name"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Quantity">Folder Quantity</a>
 			{if $Sort == "Quantity"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Type">Folder Type</a>
 			{if $Sort == "Type"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 130px"></th>

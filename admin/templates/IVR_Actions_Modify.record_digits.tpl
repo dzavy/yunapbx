@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="../static/script/jquery.autocomplete.js"></script>
 <script type="text/javascript">
 {literal}
 $(document).ready(function() {

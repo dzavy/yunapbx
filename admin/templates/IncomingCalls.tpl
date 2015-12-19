@@ -1,5 +1,6 @@
-<script type="text/javascript" src="../script/jquery.highlightFade.js"></script>
-<script type="text/javascript" src="http://interface.eyecon.ro/interface/interface.js"></script>
+<script type="text/javascript" src="../static/script/jquery.highlightFade.js"></script>
+<script type="text/javascript" src="../static/script/interface.js"></script>
+
 <script type="text/javascript">
 {literal}
 
@@ -222,7 +223,7 @@ input, select {
 <!-- Incoming Call Rules -->
 <table class="formtable">
 	<tr>
-		<td><img src="images/1.gif" alt="1"/></td>
+		<td><img src="../static/images/1.gif" alt="1"/></td>
 		<td style="font-weight: bold;">
 			Incoming Call Rules
 		</td>
@@ -264,7 +265,7 @@ input, select {
 				<tr class="{cycle values="even,odd"} {if $HilightRule == $Rule.PK_IncomingRule}hilight{/if}">
 					<td style="width: 15px;">{$Rule.RuleOrder}</td>
 					<td style="width: 25px;">
-						<img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle"/>
+						<img style="cursor: move" src="../static/images/arrow-up-down.gif" alt="move" class="sortablehandle"/>
 					</td>
 					<td style="padding: 10px 0px;">
 						<strong>Transfer</strong>
@@ -302,7 +303,7 @@ input, select {
 				<tr class="{cycle values="even,odd"} {if $HilightRule == $Rule.PK_IncomingRule}hilight{/if}">
 					<td style="width: 15px;">{$Rule.RuleOrder}</td>
 					<td style="width: 25px;">
-						<img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle"/>
+						<img style="cursor: move" src="../static/images/arrow-up-down.gif" alt="move" class="sortablehandle"/>
 					</td>
 					<td style="padding: 10px 0px;">
 						<strong>Block</strong>
@@ -347,7 +348,7 @@ input, select {
 <a id="Routes"></a>
 <table class="formtable">
 	<tr>
-		<td><img src="images/2.gif" alt="2"/></td>
+		<td><img src="../static/images/2.gif" alt="2"/></td>
 		<td style="font-weight: bold;">
 			Incoming Call Routes
 		</td>

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 {literal}
 
@@ -152,11 +152,11 @@ $(document).ready(function() {
 					</td>
 					<td style="vertical-align: middle;">
 						<a href="javascript: AddLoginMember()">
-						<img src="images/right-arrow.gif" alt="<<" />
+						<img src="../static/images/right-arrow.gif" alt="<<" />
 						</a>
 						<br />
 						<a href="javascript: RemoveMember()">
-						<img src="images/left-arrow.gif" alt=">>" />
+						<img src="../static/images/left-arrow.gif" alt=">>" />
 						</a>
 					</td>
 					<td>

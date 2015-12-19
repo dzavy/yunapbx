@@ -57,40 +57,40 @@
         <caption>Voicemail in  {$Path} folder ( {$Start+1} to {$End} ) of {$Total}</caption>
         <tr>
             <th>
-                <img src="images/select_all.gif" onclick="select_all()" id="img_select_all" alt="0" title="Select All"/>
-                <img src="images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
+                <img src="../static/images/select_all.gif" onclick="select_all()" id="img_select_all" alt="0" title="Select All"/>
+                <img src="../static/images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
             </th>
             <th>
                 <a href="?Sort=no">Msg #</a>
                 {if $Sort == "no"}
-                    <img src="images/{$Order}.gif" alt="{$Order}" />
+                    <img src="../static/images/{$Order}.gif" alt="{$Order}" />
                 {/if}
             </th>
             <th>
                 <a href="?Sort=origmailbox">Original Mailbox</a>
                 {if $Sort == "origmailbox"}
-                    <img src="images/{$Order}.gif" alt="{$Order}" />
+                    <img src="../static/images/{$Order}.gif" alt="{$Order}" />
                 {/if}
             </th>
 
             <th>
                 <a href="?Sort=callerid">Caller ID</a>
                 {if $Sort == "callerid"}
-                    <img src="images/{$Order}.gif" alt="{$Order}" />
+                    <img src="../static/images/{$Order}.gif" alt="{$Order}" />
                 {/if}
             </th>
 
             <th>
                 <a href="?Sort=origtime">Date</a>
                 {if $Sort == "origtime"}
-                    <img src="images/{$Order}.gif" alt="{$Order}" />
+                    <img src="../static/images/{$Order}.gif" alt="{$Order}" />
                 {/if}
             </th>
 
             <th>
                 <a href="?Sort=duration">Duration</a>
                 {if $Sort == "duration"}
-                    <img src="images/{$Order}.gif" alt="{$Order}" />
+                    <img src="../static/images/{$Order}.gif" alt="{$Order}" />
                 {/if}
             </th>
 
@@ -109,7 +109,7 @@
                 <td>{$Message.duration}s</td>
                 <td>
                     <a href="Voicemail_GetFile.php?Folder={$Path}&File={$Message.no}">
-                        <img src="images/play.gif" /> Play
+                        <img src="../static/images/play.gif" /> Play
                     </a>
                 </td>
             </tr>

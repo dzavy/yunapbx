@@ -107,7 +107,7 @@ htmlStr += "</center>                                                           
 	</p>
 	<p>
 		Testing your FTP settings. Please be patient and do not refresh this page.<br/>
-		<img src="./images/wait.gif">
+		<img src="../static/images/wait.gif">
 	</p>
 </div>
 

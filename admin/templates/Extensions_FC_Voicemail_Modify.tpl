@@ -8,7 +8,7 @@
 
 {if $FC_Voicemail.PK_Extension != "" }
 <a href="javascript:history.back();">
-	<img src="./images/left-arrow.gif">
+	<img src="../static/images/left-arrow.gif">
 	<b>Back to Manage Extensions  </b>
 </a>
 

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.jqModal.js"></script>
+<script type="text/javascript" src="../static/script/jquery.jqModal.js"></script>
 <script type="text/javascript">
 {literal}
 	function ExtensionSettings_Advanced_Toggle() {
@@ -45,7 +45,7 @@
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/1.gif" alt="1"/></td>
+				<td><img src="../static/images/1.gif" alt="1"/></td>
 				<td>
 					Extension Settings
 				</td>
@@ -110,7 +110,7 @@
 <table class="formtable" id="ExtensionSettings_Advanced_0">
 	<tr><td>
 	<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-		<img src="images/right-arrow.gif" alt="[+]" />
+		<img src="../static/images/right-arrow.gif" alt="[+]" />
 		Click to show advanced options
 	</a>
 	</td></tr>
@@ -119,7 +119,7 @@
 	<tr>
 		<td>
 			<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-				<img src="images/down-arrow.gif" alt="[-]" />
+				<img src="../static/images/down-arrow.gif" alt="[-]" />
 				Click to hide advanced options
 			</a>
 		</td>
@@ -139,7 +139,7 @@
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/2.gif" alt="2"/></td>
+				<td><img src="../static/images/2.gif" alt="2"/></td>
 				<td>
 					SIP Phone Settings
 				</td>
@@ -168,7 +168,7 @@
 <table class="formtable" id="SipPhoneSettings_Advanced_0">
 	<tr><td>
 	<a href="javascript:SipPhoneSettings_Advanced_Toggle()">
-		<img src="images/right-arrow.gif" alt="[+]" />
+		<img src="../static/images/right-arrow.gif" alt="[+]" />
 		Click to show advanced options
 	</a>
 	</td></tr>
@@ -177,7 +177,7 @@
 	<tr>
 		<td>
 			<a href="javascript:SipPhoneSettings_Advanced_Toggle()">
-				<img src="images/down-arrow.gif" alt="[-]" />
+				<img src="../static/images/down-arrow.gif" alt="[-]" />
 				Click to hide advanced options
 			</a>
 		</td>
@@ -228,7 +228,7 @@
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/3.gif" alt="3"/></td>
+				<td><img src="../static/images/3.gif" alt="3"/></td>
 				<td>
 					Enable PBX Features
 				</td>
@@ -259,7 +259,7 @@
 	<td class="caption" colspan="3">
 		<table>
 			<tr>
-				<td><img src="images/4.gif" alt="4" /></td>
+				<td><img src="../static/images/4.gif" alt="4" /></td>
 				<td>
 					Outgoing Call Rules {if $Template.PK_Template != "" }for <em>{$Template.Type|lower}</em> Extension <em>{$Template.Extension}</em> {/if}
 				</td>
@@ -292,7 +292,7 @@
 	<td colspan="3" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/5.gif" alt="5"/></td>
+				<td><img src="../static/images/5.gif" alt="5"/></td>
 				<td>
 					Extension Groups
 				</td>

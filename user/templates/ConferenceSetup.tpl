@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
     {literal}
         function popUp(url, inName, width, height)
@@ -55,7 +55,7 @@
                     <td class="caption">
                         <table>
                             <tr>
-                                <td><img src="images/1.gif"/></td>
+                                <td><img src="../static/images/1.gif"/></td>
                                 <td>
                                     General Settings
                                 </td>
@@ -69,7 +69,7 @@
                     <td>
                         Your Conference Room Number:
                         <input type="text" name="Number" id="roomnumber" size="5" value="{$Conference.Number}" {if $Errors.Number}class="error"{/if} />
-                        <a href="#" onclick="generateRoomNumber()"><img src="images/fill-number.gif" /></a>
+                        <a href="#" onclick="generateRoomNumber()"><img src="../static/images/fill-number.gif" /></a>
                     </td>
                 </tr>
 
@@ -102,7 +102,7 @@
                     <td class="caption" colspan="3">
                         <table>
                             <tr>
-                                <td><img src="images/2.gif"/></td>
+                                <td><img src="../static/images/2.gif"/></td>
                                 <td>
                                     Admin Settings
                                 </td>
@@ -124,11 +124,11 @@
                     </td>
                     <td style="vertical-align: middle;">
                         <a href="javascript: AddAdmin()">
-                            <img src="images/right-arrow.gif" alt="<<" />
+                            <img src="../static/images/right-arrow.gif" alt="<<" />
                         </a>
                         <br />
                         <a href="javascript: RemoveAdmin()">
-                            <img src="images/left-arrow.gif" alt=">>" />
+                            <img src="../static/images/left-arrow.gif" alt=">>" />
                         </a>
                     </td>
                     <td>

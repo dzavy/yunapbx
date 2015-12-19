@@ -1,7 +1,7 @@
-<script type="text/javascript" src="../lib/jscalendar/calendar.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/calendar-setup.js"></script>
-<script type="text/javascript" src="../lib/jscalendar/lang/calendar-en.js"></script>
-<script type="text/javascript" src="../script/jquery.tooltip.js"></script>
+<script type="text/javascript" src="../static/script/calendar.js"></script>
+<script type="text/javascript" src="../static/script/calendar-setup.js"></script>
+<script type="text/javascript" src="../static/script/calendar-en.js"></script>
+<script type="text/javascript" src="../static/script/jquery.tooltip.js"></script>
 
 <h2>Call Log</h2>
 
@@ -52,37 +52,37 @@
 		<th>
 			<a href="?Sort=StartDate">Call Date</a>
 			{if $Sort == "StartDate"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=CallerNumber">Call From</a>
 			{if $Sort == "CallerNumber"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=CalledNumber">Call To</a>
 			{if $Sort == "CalledNumber"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=CallType">Call Type</a>
 			{if $Sort == "CallType"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Duration">Call Time</a>
 			{if $Sort == "Duration"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=BillSec">Talk Time</a>
 			{if $Sort == "BillSec"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th style="width: 90px">Call Details</th>
@@ -106,9 +106,9 @@
 			{/if}
 		</td>
 		<td>
-			{if     $CDR.CallType == 'IN'}<img src="images/incoming.png" />
-			{elseif $CDR.CallType == 'OUT'}<img src="images/outgoing.png" />
-			{elseif $CDR.CallType == 'LOCAL'}<img src="images/internal.png" />
+			{if     $CDR.CallType == 'IN'}<img src="../static/images/incoming.png" />
+			{elseif $CDR.CallType == 'OUT'}<img src="../static/images/outgoing.png" />
+			{elseif $CDR.CallType == 'LOCAL'}<img src="../static/images/internal.png" />
 			{/if}
 		</td>
 		<td>{if $CDR.Duration/60 > 1}{$CDR.Duration/60|intval}m, {/if}{$CDR.Duration%60}s</td>

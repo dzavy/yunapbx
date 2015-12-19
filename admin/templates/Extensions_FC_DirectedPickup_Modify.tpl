@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 
 {literal}
@@ -107,7 +107,7 @@ function GenerateGroups(id) {
 	}
 
 
-	editbox = "<div id=\"divedit"+newId+"\" class=\"editbox hidden\"> <img src=\"images/alert.gif\">Currently editing &nbsp;&nbsp;&nbsp;<a href=\"javascript:CancelEdit();\">Cancel Edit</a></div>";
+	editbox = "<div id=\"divedit"+newId+"\" class=\"editbox hidden\"> <img src=\"../static/images/alert.gif\">Currently editing &nbsp;&nbsp;&nbsp;<a href=\"javascript:CancelEdit();\">Cancel Edit</a></div>";
 
 	str = $("#template_tr").html();
 	$("#listing tr:first").before('<tr id="row'+newId+'" style="display: none">'+str+'</tr>');
@@ -393,7 +393,7 @@ $(document).ready(function(){
 				</td>
 				<td class="template_td_Member">
 					<div id="divedit{$id}" class="editbox hidden">
-						<img src="images/alert.gif">Currently editing &nbsp;&nbsp;&nbsp;<a href="javascript:CancelEdit();">Cancel Edit</a>
+						<img src="../static/images/alert.gif">Currently editing &nbsp;&nbsp;&nbsp;<a href="javascript:CancelEdit();">Cancel Edit</a>
 					</div>
 
 				{foreach from=$variable2 key=GrExt2 item=variable3}

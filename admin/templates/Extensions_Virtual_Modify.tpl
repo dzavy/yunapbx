@@ -1,4 +1,4 @@
-<script src="../script/jquery.jqModal.js"></script>
+<script src="../static/script/jquery.jqModal.js"></script>
 <script>
 {literal}
 	function ExtensionSettings_Advanced_Toggle() {
@@ -51,7 +51,7 @@
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/1.gif"/></td>
+				<td><img src="../static/images/1.gif"/></td>
 				<td>
 					Extension Settings {if $Extension.PK_Extension != "" } for <em>{$Extension.Type|lower}</em> Extension <em>{$Extension.Extension}</em> {/if}
 				</td>
@@ -141,7 +141,7 @@
 <table class="formtable" id="ExtensionSettings_Advanced_0">
 	<tr><td>
 	<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-		<img src="images/right-arrow.gif" alt="[+]" />
+		<img src="../static/images/right-arrow.gif" alt="[+]" />
 		Click to show advanced options
 	</a>
 	</td></tr>
@@ -151,7 +151,7 @@
 	<tr>
 		<td>
 			<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-				<img src="images/down-arrow.gif" alt="[-]" />
+				<img src="../static/images/down-arrow.gif" alt="[-]" />
 				Click to hide advanced options
 			</a>
 		</td>
@@ -169,7 +169,7 @@
 	<td class="caption" colspan="3">
 		<table>
 			<tr>
-				<td><img src="images/3.gif" alt="3" /></td>
+				<td><img src="../static/images/3.gif" alt="3" /></td>
 				<td>
 					Outgoing Call Rules {if $Extension.PK_Extension != "" }for <em>{$Extension.Type|lower}</em> Extension <em>{$Extension.Extension}</em> {/if}
 				</td>
@@ -202,7 +202,7 @@
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/4.gif"/></td>
+				<td><img src="../static/images/4.gif"/></td>
 				<td>
 					Enable PBX Features {if $Extension.PK_Extension != "" }for <em>{$Extension.Type|lower}</em> Extension <em>{$Extension.Extension}</em> {/if}
 				</td>
@@ -234,7 +234,7 @@
 	<td colspan="3" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/5.gif"/></td>
+				<td><img src="../static/images/5.gif"/></td>
 				<td>
 					Extension Groups {if $Extension.PK_Extension != "" }for <em>{$Extension.Type|lower}</em> Extension <em>{$Extension.Extension}</em> {/if}
 				</td>

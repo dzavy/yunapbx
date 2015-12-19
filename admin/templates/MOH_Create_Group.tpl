@@ -1,5 +1,4 @@
-<script type="text/javascript" src="../script/jquery.highlightFade.js"></script>
-<script type="text/javascript" src="http://interface.eyecon.ro/interface/interface.js"></script>
+<script type="text/javascript" src="../static/script/jquery.highlightFade.js"></script>
 
 <script language="javascript">
 {literal}
@@ -60,26 +59,26 @@ print ("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<</pre>");
 		<th>
 			<a href="?Sort=FileName">File Name</a>
 			{if $Sort == "FileName"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=GroupName">Group Name</a>
 			{if $Sort == "GroupName"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		<th>
 			<a href="?Sort=Name">Play order</a>
 			{if $Sort == "PlayOrder"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
 		
 		<th>
 			<a href="?Sort=DateCreated">Date created</a>
 			{if $Sort == "DateCreated"}
-				<img src="images/{$Order}.gif" alt="{$Order}" />
+				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>		
 		<th style="width: 130px">Play</th>

@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
 {literal}
 
@@ -151,7 +151,7 @@ $(document).ready(function() {
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/1.gif"/></td>
+				<td><img src="../static/images/1.gif"/></td>
 				<td>
 					Call Queue Setup
 				</td>
@@ -218,7 +218,7 @@ $(document).ready(function() {
 	<td colspan="5" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/2.gif"/></td>
+				<td><img src="../static/images/2.gif"/></td>
 				<td>
 					Call Queue Member Settings
 				</td>
@@ -325,15 +325,15 @@ $(document).ready(function() {
 		</td>
 		<td style="vertical-align: middle;">
 			<a href="javascript: AddLoginMember()">
-			<img src="images/right-arrow-blue.gif" alt="<<" />
+			<img src="../static/images/right-arrow-blue.gif" alt="<<" />
 			</a>
 			<br />
 			<a href="javascript: RemoveMember()">
-			<img src="images/left-arrow.gif" alt=">>" />
+			<img src="../static/images/left-arrow.gif" alt=">>" />
 			</a>
 			<br />
 			<a href="javascript: AddPermanentMember()">
-			<img src="images/right-arrow-yellow.gif" alt="<<" />
+			<img src="../static/images/right-arrow-yellow.gif" alt="<<" />
 			</a>
 		</td>
 		<td>
@@ -353,19 +353,19 @@ $(document).ready(function() {
 		</td>
 		<td style="vertical-align: middle;">
 			<a href="javascript: MemberTop()">
-			<img src="images/triangle-top.gif" alt="<<" />
+			<img src="../static/images/triangle-top.gif" alt="<<" />
 			</a>
 			<br />
 			<a href="javascript: MemberUp()">
-			<img src="images/triangle-up.gif" alt="<<" />
+			<img src="../static/images/triangle-up.gif" alt="<<" />
 			</a>
 			<br />
 			<a href="javascript: MemberDown()">
-			<img src="images/triangle-down.gif" alt="<<" />
+			<img src="../static/images/triangle-down.gif" alt="<<" />
 			</a>
 			<br />
 			<a href="javascript: MemberBottom()">
-			<img src="images/triangle-bottom.gif" alt=">>" />
+			<img src="../static/images/triangle-bottom.gif" alt=">>" />
 			</a>
 		</td>
 	</tr>
@@ -396,7 +396,7 @@ $(document).ready(function() {
 	<td colspan="2" class="caption">
 		<table>
 			<tr>
-				<td><img src="images/3.gif"/></td>
+				<td><img src="../static/images/3.gif"/></td>
 				<td>
 					Caller Experience Settings
 				</td>
@@ -581,7 +581,7 @@ $(document).ready(function() {
 	<td class="caption">
 		<table>
 			<tr>
-				<td><img src="images/4.gif"/></td>
+				<td><img src="../static/images/4.gif"/></td>
 				<td>
 					In Queue Call Routing
 				</td>

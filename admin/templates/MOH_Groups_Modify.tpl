@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="newtheme/jquery-ui.css" type="text/css" />
-<script type="text/javascript" src="../script/jquery-ui.js"></script>
+<script type="text/javascript" src="../static/script/jquery-ui.js"></script>
 <script type="text/javascript">
 {literal}
 	$(function() {

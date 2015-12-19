@@ -1,5 +1,5 @@
-<script type="text/javascript" src="../script/jquery.highlightFade.js"></script>
-<script type="text/javascript" src="../script/interface.js"></script>
+<script type="text/javascript" src="../static/script/jquery.highlightFade.js"></script>
+<script type="text/javascript" src="../static/script/interface.js"></script>
 
 <script type="text/javascript">
 {literal}
@@ -172,7 +172,7 @@ $(document).ready(
 <!-- Outging Call Rules -->
 <table class="formtable">
 	<tr>
-		<td><img src="images/1.gif" alt="1"/></td>
+		<td><img src="../static/images/1.gif" alt="1"/></td>
 		<td style="font-weight: bold;">
 			Outgoing Call Rules
 		</td>
@@ -208,7 +208,7 @@ $(document).ready(
 		<tr class="{if $Hilight == $Rule.PK_OutgoingRule}hilight{/if} {cycle values="even,odd"}">
 			<td style="width: 35px;">{$Rule.RuleOrder}</td>
 			<td style="width: 25px;">
-				<img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle" />
+				<img style="cursor: move" src="../static/images/arrow-up-down.gif" alt="move" class="sortablehandle" />
 			</td>
 			<td style="width: 150px;">{$Rule.Name}</td>
 			<td style="width: 200px;">
@@ -257,7 +257,7 @@ $(document).ready(
 <!-- Outging Caller ID Rules -->
 <table class="formtable">
 	<tr>
-		<td><img src="images/2.gif" alt="2"/></td>
+		<td><img src="../static/images/2.gif" alt="2"/></td>
 		<td style="font-weight: bold;">
 			Outgoing Caller ID Rules
 		</td>

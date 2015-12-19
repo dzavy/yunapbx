@@ -1,5 +1,5 @@
-<script type="text/javascript" src="../script/jquery.highlightFade.js"></script>
-<script type="text/javascript" src="../script/interface.js"></script>
+<script type="text/javascript" src="../static/script/jquery.highlightFade.js"></script>
+<script type="text/javascript" src="../static/script/interface.js"></script>
 
 <script type="text/javascript">
 {literal}
@@ -88,7 +88,7 @@ $(document).ready(
 
 <p>
 	<a href="IVR_Menus.php?PK_Menu={$History.PK_Menu}#{$History.Tree}">
-		<img src="images/left-arrow.gif" />Back to IVR Editor
+		<img src="../static/images/left-arrow.gif" />Back to IVR Editor
 	</a>
 </p>
 
@@ -112,13 +112,13 @@ $(document).ready(
 		<table class="listing fullwidth">
 			<tr class="{if $Hilight == $Action.PK_Action}hilight{/if} {cycle values="even,odd"}">
 				<td style="width: 25px;">
-					<img src='images/tree_icons/{$Action.Type}.gif' alt="{$Action.Type}"/>
+					<img src='../static/images/tree_icons/{$Action.Type}.gif' alt="{$Action.Type}"/>
 				</td>
 				<td style="width: 35px;">
 					{$Action.Order}
 				</td>
 				<td style="width: 35px;">
-					<img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle" />
+					<img style="cursor: move" src="../static/images/arrow-up-down.gif" alt="move" class="sortablehandle" />
 				</td>
 				<td style="width: 230px;">
 					{include file="IVR_Actions_Display.tpl" Display="Name" Action=$Action}
@@ -141,7 +141,7 @@ $(document).ready(
 </div>
 	<div>
 		<table class="listing fullwidth">
-			<td style="width: 25px;"><img src='images/tree_icons/final.gif' alt="final"/></td>
+			<td style="width: 25px;"><img src='../static/images/tree_icons/final.gif' alt="final"/></td>
 			<td style="width: 35px;">{$Action.Order+1}</td>
 			<td style="width: 35px;">&nbsp;</td>
 			<td style="width: 230px;">Listen for Options</td>

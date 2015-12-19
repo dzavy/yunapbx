@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
     <head>
-        <link rel="stylesheet" href="css/user.css" type="text/css" />
-        <script type="text/javascript" src="../script/jquery.js" ></script>
+        <link rel="stylesheet" href="../static/css/user.css" type="text/css" />
+        <script type="text/javascript" src="../static/script/jquery.js" ></script>
         <title></title>
     </head>
 
@@ -13,12 +13,6 @@
                 {$Output}
             </div>
         </div>
-        <div id="footer" style="position: absolute;bottom: 0px; width: 100%">
-            <p style="padding: 12px;">
-                Copyright &copy; 2008, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
-            </p>
-        </div>
-
     </body>
 
 </html>

@@ -1,6 +1,6 @@
-<script type="text/javascript" src="../script/jquery.highlightFade.js"></script>
-<script type="text/javascript" src="http://interface.eyecon.ro/interface/interface.js"></script>
-<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/jquery.highlightFade.js"></script>
+<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
+<script type="text/javascript" src="../static/script/interface.js"></script>
 
 <script language="javascript">
 {literal}
@@ -217,8 +217,8 @@ $(document).ready(
 	<caption>Music On Hold Songs ( {$Start+1} to {$End} ) of {$Total}</caption>	
 	<tr>
 		<th style="width:20px;">
-			<img src="images/select_all.gif"  onclick="select_all()"  id="img_select_all"  alt="0" title="Select All"/>
-			<img src="images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
+			<img src="../static/images/select_all.gif"  onclick="select_all()"  id="img_select_all"  alt="0" title="Select All"/>
+			<img src="../static/images/select_none.gif" onclick="select_none()" id="img_select_none" alt="0" title="Select None" style="display: none"/>
 		</th>
 		<th style="width: 25px;">                        &nbsp;           </th>
 		<th style="width: 200px;"> 					 <b> File Name    </b></th>
@@ -235,7 +235,7 @@ $(document).ready(
 	<table class="listing fullwidth">	
 		<tr class="{cycle values='odd,even'}">
 			<td style="width: 20px;"> <input type="checkbox" name="Files[]" value="{$File._PK_}" />	                             </td>
-			<td style="width: 25px;"><img style="cursor: move" src="images/arrow-up-down.gif" alt="move" class="sortablehandle"/></td>
+			<td style="width: 25px;"><img style="cursor: move" src="../static/images/arrow-up-down.gif" alt="move" class="sortablehandle"/></td>
 			<td style="width: 200px;">                   {$File.Filename}.{$File.Fileext}                                        </td>
 			<td style="width: 80px; text-align:center;"> {$File.Group}                                                           </td>
 			<td style="width: 60px; text-align:center;"> {$File.Order}															 </td>

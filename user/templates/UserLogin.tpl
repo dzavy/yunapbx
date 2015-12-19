@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="../static/css/calendar.css" type="text/css" />
         <link rel="stylesheet" href="../static/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="../static/css/telesoft.css" type="text/css" />
-        <link rel="stylesheet" href="../static/css/menu.css" type="text/css" />
 
         <script type="text/javascript" src="../static/script/jquery.js"></script>
         <script type="text/javascript" src="../static/script/jquery.suckerfish.js"></script>
@@ -18,7 +17,7 @@
         <div id="wrapper">
             <div id="top">
                 <div class="padding">
-                    <strong>Extension {$User.Extension}</strong> [ <a href="Logout.php">Logout</a> ]
+
                 </div>
             </div>
 
@@ -27,29 +26,6 @@
                 <h2>Asterisk Web Management Interface</h2>
             </div>
             <div id="menu">
-                <ul id="nav">
-                    <li><span class="menuitem">Settings</span>
-                        <ul>
-                            <li><a href="Account_Modify.php">Modify Account</a></li>
-                            <li><a href="#">Call Rules</a></li>
-                            <li><a href="TimeFrames.php">Time Frames</a></li>
-                            <li><a href="#">Phonebook</a></li>
-                            <li><a href="ConferenceSetup.php">Conference Setup</a></li>
-                        </ul>
-                    </li>
-                    <li><span class="menuitem">Voicemail</span>
-                        <ul>
-                            <li><a href="Voicemail.php">Mailbox</a></li>
-                            <li><a href="#">Voicemail Options</a></li>
-                        </ul>
-                    </li>
-                    <li><span class="menuitem">Call History</span>
-                        <ul>
-                            <li><a href="CallLog.php">Call Log</a></li>
-                            <li><a href="#">Call Reporting</a></li>
-                        </ul>
-                    </li>
-                </ul>
                 <div style="clear:both"></div>
             </div>
 

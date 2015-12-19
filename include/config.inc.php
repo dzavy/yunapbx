@@ -10,6 +10,5 @@ $conf['astman']['password'] = 'admin';
 
 $conf['dirs']['moh'] = '/data/moh';
 $conf['dirs']['monitor'] = '/data/monitor';
-$conf['dirs']['keys'] = dirname(__FILE__) . '/../keys';
 $conf['dirs']['agi'] = dirname(__FILE__) . '/../agi';
 ?>
