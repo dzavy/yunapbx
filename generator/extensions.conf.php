@@ -7,12 +7,12 @@ include(dirname(__FILE__).'/../include/config.inc.php');
 $smarty = smarty_init(dirname(__FILE__));
 
 $smarty->assign('SipProviders', Get_SipProviders());
-$smarty->assign('IaxProviders', Get_IaxProviders());
+//$smarty->assign('IaxProviders', Get_IaxProviders());
 $smarty->assign('AGI_DIR'     , $conf['dirs']['agi']);
 
 $out = $smarty->fetch('extensions.conf.tpl');
 
-$fh = fopen(dirname(__FILE__).'/output/extensions.conf', 'w');
+$fh = fopen('/etc/asterisk/extensions.conf', 'w');
 fwrite($fh, $out);
 fclose($fh);
 

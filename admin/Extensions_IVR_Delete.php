@@ -18,7 +18,7 @@ function Extensions_IVR_Delete() {
         $query = "DELETE FROM Ext_IVR WHERE PK_Extension = $PK_Extension LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
-        if ($mysqli->affected_rows() != 1) {
+        if ($mysqli->affected_rows != 1) {
             return;
         }
 

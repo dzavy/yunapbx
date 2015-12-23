@@ -15,7 +15,7 @@ function Templates_Delete() {
         $query = "DELETE FROM Templates WHERE PK_Template = $PK_Template AND Protected = 0 LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
-        if ($mysqli->affected_rows() != 1) {
+        if ($mysqli->affected_rows != 1) {
             return;
         }
 

@@ -5,8 +5,8 @@
 
         <link rel="stylesheet" href="../static/css/calendar.css" type="text/css" />
         <link rel="stylesheet" href="../static/css/reset.css" type="text/css" />
-        <link rel="stylesheet" href="../static/css/telesoft.css" type="text/css" />
-        <link rel="stylesheet" href="../static/css/menu.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/suckerfish.css" type="text/css" />
 
         <script type="text/javascript" src="../static/script/jquery.js"></script>
         <script type="text/javascript" src="../static/script/jquery.suckerfish.js"></script>

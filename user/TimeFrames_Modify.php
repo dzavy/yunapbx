@@ -29,7 +29,7 @@ function TimeFrames_Modify() {
     if (isset($_REQUEST['del'])) {
         $query = "DELETE FROM Timeframe_Intervals WHERE PK_Interval = {$_REQUEST['PK_Interval']} LIMIT 1";
         $mysqli->query($query) or die($mysqli->error . $query);
-        if ($mysqli->affected_rows()) {
+        if ($mysqli->affected_rows) {
             $Message = "DELETE_INTERVAL";
         }
     }

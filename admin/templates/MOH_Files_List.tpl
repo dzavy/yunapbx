@@ -200,7 +200,7 @@ function popUp(url,inName,width,height)
 		<td>{$File.Order}</td>
 		<td>{$File.DateCreated}</td>
 		<td style="width: 50px;">				
-				<button type="button" onclick="javacript:popUp('MOH_Files_Play.php?PK_File={$File._PK_}','Play MOH File',300,150);">Play</button>
+				<button type="button" onclick="javacript:popUp('MOH_Files_Play.php?PK_File={$File._PK_}','Play MOH File',300,100);">Play</button>
 		</td>
 	</tr>
 	{/foreach}

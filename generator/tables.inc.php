@@ -57,54 +57,25 @@ function Get_SipProviders() {
     return $SipProviders;
 }
 
-function Get_IaxProviders() {
+function Get_Dongles() {
     global $mysqli;
     $query = "
 		SELECT
-			IaxProviders.*
+			Dongles.*
 		FROM
-			IaxProviders
+			Dongles
 		ORDER BY
 			Name
 	";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
 
-    $IaxProviders = array();
+    $Dongles = array();
     while ($row = $result->fetch_assoc()) {
-        $provider = $row;
-
-        // Get allowed codecs
-        $codecs = array();
-        $query_codec = "
-			SELECT
-				Name
-			FROM
-				Codecs
-				INNER JOIN IaxProvider_Codecs ON PK_Codec = FK_Codec
-			WHERE
-				FK_IaxProvider = {$provider['PK_IaxProvider']}
-		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
-        while ($row_codec = $result_codec->fetch_assoc()) {
-            $codecs[] = $row_codec['Name'];
-        }
-        $provider['Codecs'] = implode(',', $codecs);
-
-        $provider['OutHosts'] = array();
-        if ($provider['PrOutbHost'] != "") {
-            $provider['OutHosts'][] = $provider['PrOutbHost'];
-        }
-        if ($provider['SecOutbHost'] != "") {
-            $provider['OutHosts'][] = $provider['SecOutbHost'];
-        }
-        if ($provider['TertOutbHost'] != "") {
-            $provider['OutHosts'][] = $provider['TertOutbHost'];
-        }
-
-        $IaxProviders[] = $provider;
+        $dongle = $row;
+        $Dongles[] = $dongle;
     }
 
-    return $IaxProviders;
+    return $Dongles;
 }
 
 function Get_Ext_SipPhones() {

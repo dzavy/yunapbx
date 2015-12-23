@@ -34,7 +34,7 @@ $(document).ready(function() {
 			Extension Type
 		</td>
 		<td>
-			<select name="Type" id="Type" onchange="javascript: RefreshTemplate()">
+			<select name="Type" id="Type" onchange="javascript: RefreshTemplate();">
 				<optgroup label="Standard">
 				<option {if $Type == "SipPhone"}selected="selected"{/if} value="SipPhone">SIP Phone or SIP Adapter for Analog Phone (ATA)</option>
 				<option {if $Type == "Virtual"}selected="selected"{/if} value="Virtual">Virtual Extension</option>

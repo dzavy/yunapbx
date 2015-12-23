@@ -51,9 +51,6 @@
 
 {if ! $ReadOnly}
     <h3>Manage this Time Frame</h3>
-    <p>
-        <a href="#" class="help">How does this work?</a>
-    </p>
 {else}
     <h3>Time Frame Definition</h3>
 {/if}

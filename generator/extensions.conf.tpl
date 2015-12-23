@@ -6,6 +6,24 @@ clearglobalvars=no
 [globals]
 STARFISH_AGI_DIR={$AGI_DIR}
 
+[hints]
+exten = 1234,hint,SIP/1234
+exten = 1235,hint,SIP/1235
+exten = 1236,hint,SIP/1236
+
+[messages]{literal}
+exten => _XXXX,1,MessageSend(sip:${EXTEN}, ${MESSAGE(from)})
+exten => _XXXX,2,NoOp(Send status is ${MESSAGE_SEND_STATUS})
+exten => _XXXX,3,Hangup()
+exten => _XXXXXXXXXXX,1,DongleSendSMS(dongle0,${EXTEN},${MESSAGE(body)})
+exten => _XXXXXXXXXXX,2,Hangup()
+{/literal}
+    
+[internal]{literal}
+exten => _XXXX,1,Dial(SIP/${EXTEN})
+{/literal}
+
+
 [default]
 
 ;; --------- Context to route calls received from the PBX -----------
@@ -21,6 +39,7 @@ exten => _XXXXX,n,Hangup()
 exten => _XXXXX.,1,agi(${STARFISH_AGI_DIR}/Route_Outgoing.php)
 exten => _XXXXX.,2,Hangup()
 exten => h,1,agi(${STARFISH_AGI_DIR}/Hangup.php)
+exten => _XXXXXXXXXXX,1,Dial(Dongle/dongle3/${EXTEN})
 {/literal}
 
 

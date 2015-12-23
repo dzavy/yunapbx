@@ -19,7 +19,7 @@ function SoundFolders_Delete() {
         $query = "DELETE FROM SoundFolders WHERE PK_SoundFolder = $PK_SoundFolder LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
-        if ($mysqli->affected_rows() != 1) {
+        if ($mysqli->affected_rows != 1) {
             return;
         }
 

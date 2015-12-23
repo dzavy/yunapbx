@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
-function VoipProviders_Sip_Delete() {
+function VoipProviders_Delete() {
     global $mysqli;
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -16,7 +16,7 @@ function VoipProviders_Sip_Delete() {
         $query = "DELETE FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
         $mysqli->query($query) or die($mysqli->error . $query);
 
-        if ($mysqli->affected_rows() != 1) {
+        if ($mysqli->affected_rows != 1) {
             return;
         }
 
@@ -53,8 +53,8 @@ function VoipProviders_Sip_Delete() {
 
     $smarty->assign('Provider', $Provider);
 
-    return $smarty->fetch('VoipProviders_Sip_Delete.tpl');
+    return $smarty->fetch('VoipProviders_Delete.tpl');
 }
 
-admin_run('VoipProviders_Sip_Delete', 'Admin.tpl');
+admin_run('VoipProviders_Delete', 'Admin.tpl');
 ?>

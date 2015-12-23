@@ -44,18 +44,6 @@
         $("#Hosts").selectOptions(/./, true);
     }
 
-    function UpdateTSFields(val) {
-        if (val == 1) {
-            $("#LocalUser_TD").removeClass('disabled');
-            $("#LocalUser_TD input").removeAttr('disabled');
-            $("#JabberHostname").removeAttr('disabled', 'disabled');
-        } else {
-            $("#LocalUser_TD").addClass('disabled');
-            $("#LocalUser_TD input").attr('disabled', 'disabled');
-            $("#JabberHostname").attr('disabled', 'disabled');
-        }
-    }
-
     function UpdateCallRules(val) {
         if (val == 0) {
             $("#OutgoingTbl :input").removeAttr('disabled');
@@ -68,42 +56,17 @@
         }
     }
 
-    function UpdateFaxFields(val) {
-        if (val == 1) {
-            $("#MinRateFax").removeAttr('disabled', 'disabled');
-            $("#MaxRateFax").removeAttr('disabled', 'disabled');
-            $("#RSP_fax").removeAttr('disabled', 'disabled');
-            $("#RIP_fax").removeAttr('disabled', 'disabled');
-            $("#MaxDelayFax").removeAttr('disabled', 'disabled');
-        } else {
-            $("#MinRateFax").attr('disabled', 'disabled');
-            $("#MaxRateFax").attr('disabled', 'disabled');
-            $("#RSP_fax").attr('disabled', 'disabled');
-            $("#RIP_fax").attr('disabled', 'disabled');
-            $("#MaxDelayFax").attr('disabled', 'disabled');
-        }
-    }
-
     $(document).ready(function () {
 
     {/literal}
-    {if $Provider.TelesoftPBX} UpdateTSFields (1);
-    {else}
-    UpdateTSFields (0);
-    {/if}
 
     {if $Provider.ApplyIncomingRules}	UpdateCallRules(1);
     {else}
     UpdateCallRules(0);
     {/if}
 
-    {if $Provider.ErrorCorrection} UpdateFaxFields(1);
-    {else}
-    UpdateFaxFields(0);
-    {/if}
-
     {literal}
-            })
+    })
 
     {/literal}
 </script>
@@ -131,7 +94,7 @@
     <p class="error_message">Invalid Hostname or IP Address in SIP Provider Host List.</p>
 {/if}
 
-<form action="VoipProviders_Sip_Modify.php" method="post" onsubmit="PreSubmit()">
+<form action="VoipProviders_Modify.php" method="post" onsubmit="PreSubmit()">
     <p>
         <input type="hidden" name="PK_SipProvider" value="{$Provider.PK_SipProvider}" />
     </p>
@@ -190,17 +153,6 @@
             <td>
                 <input type="text" {if $Errors.CallbackExtension}class="error"{/if} id="CallbackExtension" name="CallbackExtension" value="{$Provider.CallbackExtension}" size="6" />
                 <button type="button" class="users" onclick="javacript:popUp('Extensions_Popup.php?FillID=CallbackExtension', 'Select Extension', 415, 330);">&nbsp;</button>
-            </td>
-        </tr>
-
-        <!-- Default Fax Extension -->
-        <tr>
-            <td>
-                Default Fax Extension
-            </td>
-            <td>
-                <input type="text" {if $Errors.DefFaxExtension}class="error"{/if} id="DefFaxExtension" name="DefFaxExtension" value="{$Provider.DefFaxExtension}" size="6" />
-                <button type="button" class="users" onclick="javacript:popUp('Extensions_Popup.php?FillID=DefFaxExtension', 'Select Extension', 415, 330);">&nbsp;</button>
             </td>
         </tr>
 
@@ -516,71 +468,6 @@
             </td>
         </tr>
 
-        <!-- DTMF Dial -->
-        <tr class="toggle hidden">
-            <td>
-                Dial Using DTMF Tones
-            </td>
-            <td>
-                <label><input type="radio" value="1" name="DTMFDial" {if $Provider.DTMFDial}checked="checked"{/if} />Yes</label>
-                &nbsp;
-                <label><input type="radio" value="0" name="DTMFDial" {if ! $Provider.DTMFDial}checked="checked"{/if} />No</label>
-            </td>
-        </tr>
-
-
-
-        <!-- Map Distinctive Rings -->
-        <tr class="toggle hidden">
-            <td>
-                Map Distinctive Rings
-            </td>
-            <td>
-                <table class="nostyle">
-                    {assign var=NrMapRing value=1}
-                    {foreach from=$Provider.MapRings item=MapRing}
-                        <tr>
-                            <td>Ring #{$NrMapRing} maps to number
-                                <input type="text" name="MapRing[{$NrMapRing-1}]" value="{$MapRing}" />
-                            </td>
-                            {assign var=NrMapRing value=$NrMapRing+1}
-                        </tr>
-                    {/foreach}
-                </table>
-            </td>
-        </tr>
-
-        <!-- Enable Jitterbuffer -->
-        <tr class="toggle hidden">
-            <td>
-                Enable Jitterbuffer
-            </td>
-            <td>
-                <select name="Jitterbuffer">
-                    <option value="never"
-                            {if $Provider.Jitterbuffer == 'never'} selected="selected"{/if} >
-                        Never
-                    </option>
-                    <option value="yes"
-                            {if $Provider.Jitterbuffer == 'yes'} selected="selected"{/if} >
-                        When Needed
-                    </option>
-                    <option value="always"
-                            {if $Provider.Jitterbuffer == 'always'} selected="selected"{/if} >
-                        Always
-                    </option>
-                    <option value="fixed"
-                            {if $Provider.Jitterbuffer == 'fixed'} selected="selected"{/if} >
-                        When Needed with Fixed Window
-                    </option>
-                    <option value="alwaysfixed"
-                            {if $Provider.Jitterbuffer == 'alwaysfixed'} selected="selected"{/if} >
-                        Always with Fixed Window
-                    </option>
-                </select>
-            </td>
-        </tr>
-
         <!-- Allow Reinvite -->
         <tr class="toggle hidden">
             <td>
@@ -621,82 +508,6 @@
                 <label><input type="radio" value="1" name="SendEarlyMedia" {if $Provider.SendEarlyMedia}checked="checked"{/if} />Yes</label>
                 &nbsp;
                 <label><input type="radio" value="0" name="SendEarlyMedia" {if !$Provider.SendEarlyMedia}checked="checked"{/if} />No</label>
-            </td>
-        </tr>
-    </table>
-
-    <table class="formtable">
-        <tr class="toggle hidden">
-            <td colspan="2" class="caption">
-                <img src="../static/images/5.gif"/>
-                <strong>Fax Settings</strong>
-            </td>
-        </tr>
-        <tr class="toggle hidden">
-            <td colspan="2">
-                <p class="warning_message">It is recommended to only send T.38 faxes over SIP.</p>
-            </td>
-        </tr>
-
-
-        <!-- Error Correction Mode for G711 Faxes -->
-        <tr class="toggle hidden">
-            <td>
-                Error Correction Mode for <br> G711 Faxes
-            </td>
-            <td>
-                <label><input type="radio" name="ErrorCorrection" id="ErrorCorrection" {if $Provider.ErrorCorrection} checked="checked"{/if} value="1" onclick="UpdateFaxFields(1)"/> Enabled</label>
-                &nbsp;
-                <label><input type="radio" name="ErrorCorrection" id="ErrorCorrection" {if !$Provider.ErrorCorrection} checked="checked"{/if} value="0" onclick="UpdateFaxFields(0)"/> Disabled</label>
-            </td>
-        </tr>
-        <!-- Minimum transfer rate for fax transmissions -->
-        <tr class="toggle hidden">
-            <td>
-                Minimum transfer rate for <br> fax transmissions
-            </td>
-            <td>
-                <input type="text" id="MinRateFax" name="MinRateFax" value="{$Provider.MinRateFax}" {if $Errors.MinRateFax}class="error"{/if} />
-            </td>
-        </tr>
-
-        <!-- Maximum transfer rate for fax transmissions -->
-        <tr class="toggle hidden">
-            <td>
-                Maximum transfer rate for <br> fax transmissions
-            </td>
-            <td>
-                <input type="text" id="MaxRateFax" name="MaxRateFax" value="{$Provider.MaxRateFax}" {if $Errors.MinRateFax} class="error"{/if} />
-            </td>
-        </tr>
-
-        <!-- Redundant signal packets for T38 fax sessions -->
-        <tr class="toggle hidden">
-            <td>
-                Redundant signal packets for T38 fax sessions
-            </td>
-            <td>
-                <input type="text" id="RSP_fax" name="RSP_fax" value="{$Provider.RSP_fax}" {if $Errors.RSP_fax} class="error"{/if} />
-            </td>
-        </tr>
-
-        <!-- Redundant image packets for T38 fax sessions -->
-        <tr class="toggle hidden">
-            <td>
-                Redundant image packets for T38 fax sessions
-            </td>
-            <td>
-                <input type="text" id="RIP_fax" name="RIP_fax" value="{$Provider.RIP_fax}" {if $Errors.RIP_fax} class="error"{/if} />
-            </td>
-        </tr>
-
-        <!-- Maximum expected T38 packet delay -->
-        <tr class="toggle hidden">
-            <td>
-                Maximum expected T38 packet delay
-            </td>
-            <td>
-                <input type="text" id="MaxDelayFax" name="MaxDelayFax" value="{$Provider.MaxDelayFax}" {if $Errors.MaxDelayFax} class="error"{/if} />
             </td>
         </tr>
     </table>

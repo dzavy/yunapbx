@@ -31,7 +31,7 @@ function delete_file($PK_File) {
 		AND `Order` >" . intval($File_Src['Order'])
     ;
     $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $inf_files = $mysqli->fetch_all($result);
+    $inf_files = $result->fetch_all();
 
     for ($i = 0; $i < count($inf_files); $i++) {
         $src_filename = moh_filename($inf_files[$i]['PK_File'], $File_Src['FK_Group'], $inf_files[$i]['Order'], $inf_files[$i]['Fileext']);

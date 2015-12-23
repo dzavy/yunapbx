@@ -2,7 +2,7 @@
 {literal}
 function AddNewSubmit() {
 	var Type = $("#Type").val();
-	$("#AddNewForm").attr('action', 'VoipProviders_'+Type+'_Modify.php')
+	$("#AddNewForm").attr('action', 'VoipProviders_Modify.php')
 	//VoipProviders_Sip_Modify.php
 }
 {/literal}
@@ -10,34 +10,17 @@ function AddNewSubmit() {
 
 <h2>VOIP Providers</h2>
 
-{if $Message == "MODIFY_RTP_RANGE"}
-<p class="success_message">Successfully modified RTP port range.</p>
-{/if}
 {if $Message == "MODIFY_SIP_PROVIDER"}
 <p class="success_message">Successfully modified SIP provider.</p>
-{/if}
-{if $Message == "MODIFY_IAX_PROVIDER"}
-<p class="success_message">Successfully modified IAX provider.</p>
 {/if}
 {if $Message == "DELETE_SIP_PROVIDER"}
 <p class="success_message">Successfully delete SIP provider</p>
 {/if}
-{if $Message == "DELETE_IAX_PROVIDER"}
-<p class="success_message">Successfully delete IAX provider</p>
-{/if}
-
-{if $Message == "ERRORS_RTP_RANGE"}
-<p class="error_message">Error -Invalid RTP port range</p>
-{/if}
 
 <form action="#" method="post" onsubmit="AddNewSubmit()" id="AddNewForm">
 <p>
-	<strong>Add New:</strong>
-	<select name="Type" id="Type">
-		<option value="Sip">SIP Provider</option>
-		<option value="Iax">IAX Provider</option>
-	</select>
-	<button type="submit">Go</button>
+
+	<button type="submit">Add New VOIP Provider</button>
 </p>
 </form>
 
@@ -85,26 +68,14 @@ function AddNewSubmit() {
 		<td>{$Provider.Host}</td>
 		<td>{if $Provider.CallbackExtension!=""}{$Provider.CallbackExtension}{else}No Mapping{/if}</td>
 		<td>
-			{if $Provider.Type == 'SIP'}
-				<form method="get" action="VoipProviders_Sip_Modify.php" style="display: inline;">
+				<form method="get" action="VoipProviders_Modify.php" style="display: inline;">
 					<input type="hidden" name="PK_SipProvider" value="{$Provider._PK_}" />
 					<button type="submit">Modify</button>
 				</form>
-				<form method="get" action="VoipProviders_Sip_Delete.php" style="display: inline;">
+				<form method="get" action="VoipProviders_Delete.php" style="display: inline;">
 					<input type="hidden" name="PK_SipProvider" value="{$Provider._PK_}" />
 					<button type="submit" class="important">Delete</button>
 				</form>
-			{/if}
-			{if $Provider.Type == 'IAX'}
-				<form method="get" action="VoipProviders_Iax_Modify.php" style="display: inline;">
-					<input type="hidden" name="PK_IaxProvider" value="{$Provider._PK_}" />
-					<button type="submit">Modify</button>
-				</form>
-				<form method="get" action="VoipProviders_Iax_Delete.php" style="display: inline;">
-					<input type="hidden" name="PK_IaxProvider" value="{$Provider._PK_}" />
-					<button type="submit" class="important">Delete</button>
-				</form>
-			{/if}
 		</td>
 	</tr>
 	{/foreach}
@@ -123,5 +94,3 @@ function AddNewSubmit() {
 	Use the <em>Add New Provider</em> form to define one now.
 </p>
 {/if}
-
-

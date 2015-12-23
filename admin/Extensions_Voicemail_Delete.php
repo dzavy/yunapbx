@@ -18,7 +18,7 @@ function Extensions_Voicemail_Delete() {
         $query = "DELETE FROM Ext_Voicemail WHERE PK_Extension = $PK_Extension LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
-        if ($mysqli->affected_rows() != 1) {
+        if ($mysqli->affected_rows != 1) {
             return;
         }
 

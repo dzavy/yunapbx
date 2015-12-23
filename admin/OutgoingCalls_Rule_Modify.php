@@ -42,15 +42,15 @@ function OutgoingCalls_Rule_Modify() {
     }
 
     // IaxProviders
-    $IaxProviders = array();
-    $query = "SELECT * FROM IaxProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
-        $IaxProviders[] = $row;
-    }
+    //$IaxProviders = array();
+    //$query = "SELECT * FROM IaxProviders ORDER BY Name";
+    //$result = $mysqli->query($query) or die($mysqli->error);
+    //while ($row = $result->fetch_assoc()) {
+    //    $IaxProviders[] = $row;
+    //}
 
     $smarty->assign('SipProviders', $SipProviders);
-    $smarty->assign('IaxProviders', $IaxProviders);
+    //$smarty->assign('IaxProviders', $IaxProviders);
     $smarty->assign('Rule', $Rule);
     $smarty->assign('Errors', $Errors);
 

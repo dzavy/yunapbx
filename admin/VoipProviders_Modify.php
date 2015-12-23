@@ -5,10 +5,10 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
-function GSMModems_Modify() {
+function VoipProviders_Modify() {
     global $mysqli;
     
-    $session = &$_SESSION['GSMModems_Modify'];
+    $session = &$_SESSION['VoipProviders_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
 
@@ -66,7 +66,7 @@ function GSMModems_Modify() {
     $smarty->assign('Errors', $Errors);
     $smarty->assign('Rules', $Rules);
 
-    return $smarty->fetch('VoipProviders_Sip_Modify.tpl');
+    return $smarty->fetch('VoipProviders_Modify.tpl');
 }
 
 function formdata_from_db($id) {
@@ -179,8 +179,6 @@ function formdata_save($data) {
         $data['PK_SipProvider'] = $mysqli->insert_id;
     }
 
-    $data['MapRings'] = implode(";", $data['MapRing']);
-
     // Update 'Extensions'
     $query = "
 		UPDATE
@@ -207,19 +205,8 @@ function formdata_save($data) {
 			UserEqPhone        = " . ($data['UserEqPhone'] ? '1' : '0') . ",
 			LocalAddrFrom      = " . ($data['LocalAddrFrom'] ? '1' : '0') . ",
 			DTMFDial           = " . ($data['DTMFDial'] ? '1' : '0') . ",
-			TelesoftPBX        = " . ($data['TelesoftPBX'] ? '1' : '0') . ",
 			LocalUser          = " . ($data['LocalUser'] ? '1' : '0') . ",
-			Voicepulse         = " . ($data['Voicepulse'] ? '1' : '0') . ",
-			JabberHostname     = '" . $mysqli->real_escape_string($data['JabberHostname']) . "',
-			Jitterbuffer       = '" . $mysqli->real_escape_string($data['Jitterbuffer']) . "',
-			Reinvite           = '" . $mysqli->real_escape_string($data['Reinvite']) . "',
-			ErrorCorrection    = " . ($data['ErrorCorrection'] ? '1' : '0') . ",
-			MinRateFax         = '" . $mysqli->real_escape_string($data['MinRateFax']) . "',
-			MaxRateFax         = '" . $mysqli->real_escape_string($data['MaxRateFax']) . "',
-			RSP_fax            = '" . $mysqli->real_escape_string($data['RSP_fax']) . "',
-			RIP_fax            = '" . $mysqli->real_escape_string($data['RIP_fax']) . "',
-			MaxDelayFax        = '" . $mysqli->real_escape_string($data['MaxDelayFax']) . "',
-			MapRings            = '" . $mysqli->real_escape_string($data['MapRings']) . "'
+			Reinvite           = '" . $mysqli->real_escape_string($data['Reinvite']) . "'
 		WHERE
 			PK_SipProvider     = " . $mysqli->real_escape_string($data['PK_SipProvider']) . "
 		LIMIT 1
@@ -343,5 +330,5 @@ function formdata_validate($data) {
     return $errors;
 }
 
-admin_run('GSMModems_Modify', 'Admin.tpl');
+admin_run('VoipProviders_Modify', 'Admin.tpl');
 ?>

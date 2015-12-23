@@ -5,7 +5,7 @@
 </p>
 <br />
 <p>
-	<form method="post" action="VoipProviders_Sip_Delete.php">
+	<form method="post" action="VoipProviders_Delete.php">
 		<input type="hidden" name="PK_SipProvider" value="{$Provider.PK_SipProvider}" />
 		<button type="submit" name="submit" value="delete_confirm" class="important">Yes, Delete Provider</button>
 	</form>

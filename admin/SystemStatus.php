@@ -50,7 +50,7 @@ function SystemStatus() {
     // Init table fields (Extensions)
     $Providers = array();
     $query = "
-		(
+		
 		SELECT
 			PK_SipProvider          AS _PK_,
 			Name                    AS Name,
@@ -63,20 +63,6 @@ function SystemStatus() {
 		FROM
 			SipProviders
 			LEFT JOIN SipProvider_Statuses ON SipProviders.PK_SipProvider = SipProvider_Statuses.FK_SipProvider
-		) UNION (
-		SELECT
-			PK_IaxProvider          AS _PK_,
-			Name                    AS Name,
-			'IAX'                   AS Type,
-			IaxProviders.AccountID  AS AccountID,
-			IaxProviders.Host       AS Host,
-			CallbackExtension       AS CallbackExtension,
-			Status                  AS Status,
-			Latency                 AS Latency
-		FROM
-			IaxProviders
-			LEFT JOIN IaxProvider_Statuses ON IaxProviders.PK_IaxProvider = IaxProvider_Statuses.FK_IaxProvider
-		)
 		ORDER BY
 			$P_Sort $P_Order
 		LIMIT $P_Start, $P_PageSize
@@ -189,18 +175,18 @@ function update_provider_statuses() {
     }
 
     /////////////////////
-    $mysqli->query("DELETE FROM IaxProvider_Statuses");
-    $query = "SELECT * FROM IaxProviders";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($provider = $result->fetch_assoc()) {
-        $Status = iax_get_status($provider);
-        $query = "INSERT INTO IaxProvider_Statuses SET
-			FK_IaxProvider = '" . $mysqli->real_escape_string($Status['FK_IaxProvider']) . "',
-			Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
-			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
-		";
-        $mysqli->query($query) or die($mysqli->error . $query);
-    }
+    //$mysqli->query("DELETE FROM IaxProvider_Statuses");
+    //$query = "SELECT * FROM IaxProviders";
+    //$result = $mysqli->query($query) or die($mysqli->error . $query);
+    //while ($provider = $result->fetch_assoc()) {
+    //    $Status = iax_get_status($provider);
+    //    $query = "INSERT INTO IaxProvider_Statuses SET
+	//		FK_IaxProvider = '" . $mysqli->real_escape_string($Status['FK_IaxProvider']) . "',
+	//		Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
+	//		Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
+	//	";
+    //    $mysqli->query($query) or die($mysqli->error . $query);
+    //}
 }
 
 function update_Ext_SipPhones_Statuses() {

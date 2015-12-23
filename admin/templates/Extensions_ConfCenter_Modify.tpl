@@ -56,15 +56,15 @@ function popUp(url,inName,width,height)
 	<tr>
 		<td>
 			After
-			<select name="Invalid" type="comboBox">
+			<select name="Invalid">
 			    <option value="0">Unlinited</option>
-			    <option value="1" {if $Extension.Invalid=='1'}Selected='selected'{/if}>1</option>
-			    <option value="2" {if $Extension.Invalid=='2'}Selected='selected'{/if}>2</option>
-			    <option value="3" {if $Extension.Invalid=='3'}Selected='selected'{/if}>3</option>
-			    <option value="4" {if $Extension.Invalid=='4'}Selected='selected'{/if}>4</option>
-			    <option value="5" {if $Extension.Invalid=='5'}Selected='selected'{/if}>5</option>
-			    <option value="6" {if $Extension.Invalid=='6'}Selected='selected'{/if}>6</option>
-			    <option value="7" {if $Extension.Invalid=='7'}Selected='selected'{/if}>7</option>
+			    <option value="1" {if $Extension.Invalid=='1'}selected='selected'{/if}>1</option>
+			    <option value="2" {if $Extension.Invalid=='2'}selected='selected'{/if}>2</option>
+			    <option value="3" {if $Extension.Invalid=='3'}selected='selected'{/if}>3</option>
+			    <option value="4" {if $Extension.Invalid=='4'}selected='selected'{/if}>4</option>
+			    <option value="5" {if $Extension.Invalid=='5'}selected='selected'{/if}>5</option>
+			    <option value="6" {if $Extension.Invalid=='6'}selected='selected'{/if}>6</option>
+			    <option value="7" {if $Extension.Invalid=='7'}selected='selected'{/if}>7</option>
 			</select>
 			invalid conference room number attempts route caller to extension
 			<input type="text" size="5" id="TransferExt" name="TransferExt" value="{$Extension.TransferExt}" {if $Errors.TransferExt}class="error"{/if} />

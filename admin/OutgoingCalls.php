@@ -47,11 +47,10 @@ function OutgoingCalls() {
 			RestBetweenLow,
 			ProviderType,
 			Protected,
-			CONCAT(IFNULL(SipProviders.Name,''), IFNULL(IaxProviders.Name,'')) AS ProviderName
+			SipProviders.Name AS ProviderName
 		FROM
 			OutgoingRules
 			LEFT JOIN SipProviders ON PK_SipProvider = ProviderID AND ProviderType = 'SIP'
-			LEFT JOIN IaxProviders ON PK_IaxProvider = ProviderID AND ProviderType = 'IAX'
 		ORDER BY
 			RuleOrder ASC
 	";

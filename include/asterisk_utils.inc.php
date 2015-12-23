@@ -21,8 +21,7 @@ function asterisk_Reload() {
     $manager->Connect($conf['astman']['user'], $conf['astman']['password']);
 
     $message = new AsteriskManagerMessage();
-    $message->SetKey('Action', 'Command');
-    $message->SetKey('Command', 'reload');
+    $message->SetKey('Action', 'Reload');
 
     $manager->Send($message);
 }

@@ -5,8 +5,8 @@
 
         <link rel="stylesheet" href="../static/css/calendar.css" type="text/css" />
         <link rel="stylesheet" href="../static/css/reset.css" type="text/css" />
-        <link rel="stylesheet" href="../static/css/telesoft.css" type="text/css" />
-        <link rel="stylesheet" href="../static/css/menu.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="../static/css/suckerfish.css" type="text/css" />
 
         <script type="text/javascript" src="../static/script/jquery.js"></script>
         <script type="text/javascript" src="../static/script/jquery.suckerfish.js"></script>
@@ -50,7 +50,7 @@
                     <li><span class="menuitem">Connectivity</span>
                         <ul>
                             <li><a href="VoipProviders_List.php">VOIP Providers</a></li>
-                            <li><a href="GSMModems_List.php">GSM Modems</a></li>
+                            <li><a href="Dongles_List.php">3G Modems</a></li>
                             <li><a href="OutgoingCalls.php">Outgoing Calls</a></li>
                             <li><a href="IncomingCalls.php">Incoming Calls</a></li>
                         </ul>

@@ -4,7 +4,7 @@
 {if $Detail.Event == 'DIAL' }
 	Dialed number ({$Detail.Data.0})
 {elseif $Detail.Event == 'RING' }
-	Rang {$Detail.Data.0} <{$Detail.Data.1}>
+	Rang {$Detail.Data.0} &lt;{$Detail.Data.1}&gt;
 
 {elseif $Detail.Event == 'DIALSTATUS' }
 	Received status of {$Detail.Data.0} with a cause code of {$Detail.Data.1}
@@ -13,7 +13,7 @@
 	Call was hung up by {if $Detail.Data.1 ==""}{$Detail.Data.0}{else}{$Detail.Data.1} &lt;{$Detail.Data.0}&gt;{/if}
 
 {elseif $Detail.Event == 'VOICEMAIL' }
-	Call was sent to voicemail box of {$Detail.Data.0} <{$Detail.Data.1}>
+	Call was sent to voicemail box of {$Detail.Data.0} &lt;{$Detail.Data.1}&gt;
 
 {elseif $Detail.Event == 'INPROVIDER' }
 	Received call over {$Detail.Data.0} provider ({$Detail.Data.1})
