@@ -19,6 +19,12 @@ function Dongles_Delete() {
         if ($mysqli->affected_rows != 1) {
             return;
         }
+        
+        $query = "DELETE FROM Dongle_Rules WHERE FK_Dongle = $PK_Dongle";
+        $mysqli->query($query) or die($mysqli->error . $query);
+
+        $query = "DELETE FROM Dongle_Statuses WHERE FK_Dongle = $PK_Dongle";
+        $mysqli->query($query) or die($mysqli->error . $query);
 
         asterisk_UpdateConf('dongle.conf');
         asterisk_UpdateConf('extensions.conf');

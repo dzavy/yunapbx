@@ -2,7 +2,7 @@
 
 {if $Providers|@count }
     <table class="listing fullwidth">
-        <caption>VOIP Providers ( {$P_Start+1} to {$P_End} ) of {$P_Total}</caption>
+        <caption>VOIP Providers</caption>
         <tr>
             <th>
                 <a href="?P_Sort=Type">Type</a>
@@ -83,6 +83,75 @@
 {else}
     <p class="warning_message">
         There are no VoIP providers defined on this system. 
+        Use the <em>System / VoIP Providers</em> page to define one.
+    </p>
+{/if}
+
+<br/>
+
+{if $Dongles|@count }
+    <table class="listing fullwidth">
+        <caption>3G Dongles</caption>
+        <tr>
+            <th>
+                <a href="?D_Sort=Name">Name</a>
+                {if $D_Sort == "Name"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=IMEI">IMEI</a>
+                {if $D_Sort == "IMEI"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=IMSI">IMSI</a>
+                {if $D_Sort == "IMSI"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=RSSI">RSSI</a>
+                {if $D_Sort == "RSSI"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=Provider">Provider</a>
+                {if $D_Sort == "Provider"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=Mode">Mode</a>
+                {if $D_Sort == "Mode"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+            <th>
+                <a href="?D_Sort=Status">State</a>
+                {if $D_Sort == "Status"}
+                    <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
+                {/if}
+            </th>
+        </tr>
+
+        {foreach from=$Dongles item=Dongle}
+            <tr class="{cycle values="odd,even"}{if $Dongle.Provider == "NONE"}red{else}green{/if}">
+                <td>{$Dongle.Name}</td>
+                <td>{$Dongle.IMEI}</td>
+                <td>{$Dongle.IMSI}</td>
+                <td>{$Dongle.RSSI}</td>
+                <td>{$Dongle.Provider}</td>
+                <td>{$Dongle.Mode}</td>
+                <td>{$Dongle.Status}</td>
+            </tr>
+        {/foreach}
+    </table>
+{else}
+    <p class="warning_message">
+        There are no 3G dongles defined on this system. 
         Use the <em>System / VoIP Providers</em> page to define one.
     </p>
 {/if}

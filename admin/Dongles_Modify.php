@@ -34,7 +34,7 @@ function Dongles_Modify() {
             asterisk_UpdateConf('dongle.conf');
             asterisk_UpdateConf('extensions.conf');
             asterisk_Reload();
-            header("Location: Dongles_List.php?msg=MODIFY_SIP_PROVIDER&hilight={$id}");
+            header("Location: Dongles_List.php?msg=MODIFY_DONGLE&hilight={$id}");
             die();
         }
     } elseif ($_REQUEST['PK_Dongle'] != "") {
@@ -71,15 +71,15 @@ function formdata_from_db($id) {
 		SELECT
 			FK_OutgoingRule
 		FROM
-			SipProvider_Rules
+			Dongle_Rules
 		WHERE
-			FK_SipProvider = $id
+			FK_Dongle = $id
 	";
-    //$result = $mysqli->query($query) or die($mysqli->error . $query);
-    //$data['Rules'] = array();
-    //while ($row = $result->fetch_assoc()) {
-    //    $data['Rules'][] = $row['FK_OutgoingRule'];
-    //}
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $data['Rules'] = array();
+    while ($row = $result->fetch_assoc()) {
+        $data['Rules'][] = $row['FK_OutgoingRule'];
+    }
 
     return $data;
 }
@@ -116,7 +116,8 @@ function formdata_save($data) {
 			Name               = '" . $mysqli->real_escape_string($data['Name']) . "',
 			IMEI               = '" . $mysqli->real_escape_string($data['IMEI']) . "',
 			IMSI               = '" . $mysqli->real_escape_string($data['IMSI']) . "',
-			CallbackExtension  = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "'
+			CallbackExtension  = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "',
+            ApplyIncomingRules = " . ($data['ApplyIncomingRules'] ? '1' : '0') . "
 		WHERE
 			PK_Dongle          = " . $mysqli->real_escape_string($data['PK_Dongle']) . "
 		LIMIT 1
@@ -124,22 +125,22 @@ function formdata_save($data) {
     $mysqli->query($query) or die($mysqli->error . $query);
 
     // Update 'SipProvider_Rules'
-    //$query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    //$mysqli->query($query) or die($mysqli->error);
-    //if (is_array($data['Rules'])) {
-    //    foreach ($data['Rules'] as $FK_OutgoingRule) {
-    //        if ($FK_OutgoingRule != 0) {
-    //            $query = "INSERT INTO SipProvider_Rules(FK_SipProvider, FK_OutgoingRule) VALUES ({$data['PK_SipProvider']}, $FK_OutgoingRule)";
-    //            $mysqli->query($query) or die($mysqli->error);
-    //        }
-    //    }
-    //}
+    $query = "DELETE FROM Dongle_Rules WHERE FK_Dongle = " . $mysqli->real_escape_string($data['PK_Dongle']) . " ";
+    $mysqli->query($query) or die($mysqli->error);
+    if (is_array($data['Rules'])) {
+        foreach ($data['Rules'] as $FK_OutgoingRule) {
+            if ($FK_OutgoingRule != 0) {
+                $query = "INSERT INTO Dongle_Rules(FK_Dongle, FK_OutgoingRule) VALUES ({$data['PK_Dongle']}, $FK_OutgoingRule)";
+                $mysqli->query($query) or die($mysqli->error);
+            }
+        }
+    }
 
     // If we don't apply incoming rules to this provider, make sure we remove existing ones (if exists)
-    //if ($data['ApplyIncomingRules'] == 0) {
-    //    $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = {$data['PK_SipProvider']}";
-    //    $mysqli->query($query) or die($mysqli->error);
-    //}
+    if ($data['ApplyIncomingRules'] == 0) {
+        $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = {$data['PK_Dongle']}";
+        $mysqli->query($query) or die($mysqli->error);
+    }
 
     return $data['PK_Dongle'];
 }

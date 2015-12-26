@@ -8,19 +8,27 @@ function AddNewSubmit() {
 {/literal}
 </script>
 
-<h2>GSM Modems</h2>
+<h2>3G Dongles</h2>
+
+{if $Message == "MODIFY_DONGLE"}
+<p class="success_message">Successfully modified 3G Dongle.</p>
+{/if}
+{if $Message == "DELETE_DONGLE"}
+<p class="success_message">Successfully deletes 3G Dongle</p>
+{/if}
+
 <form action="#" method="post" onsubmit="AddNewSubmit()" id="AddNewForm">
 <p>
 
-	<button type="submit">Add New VOIP Provider</button>
+	<button type="submit">Add New 3G Dongle</button>
 </p>
 </form>
 {if $Dongles|@count}
 <table class="listing fullwidth">
-	<caption>GSM Modems ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>3G Dongles ( {$Start+1} to {$End} ) of {$Total}</caption>
 	<tr>
 		<th>
-			<a href="?Sort=Name">Modem Name</a>
+			<a href="?Sort=Name">Dongle Name</a>
 			{if $Sort == "Name"}
 				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
@@ -50,7 +58,7 @@ function AddNewSubmit() {
 		<td>{$Dongle.Name}</td>
 		<td>{$Dongle.IMEI}</td>
 		<td>{$Dongle.IMSI}</td>
-		<td>{if $Modem.CallbackExtension!=""}{$Modem.CallbackExtension}{else}No Mapping{/if}</td>
+		<td>{if $Dongle.CallbackExtension!=""}{$Dongle.CallbackExtension}{else}No Mapping{/if}</td>
 		<td>
 				<form method="get" action="Dongles_Modify.php" style="display: inline;">
 					<input type="hidden" name="PK_Dongle" value="{$Dongle._PK_}" />
@@ -74,8 +82,8 @@ function AddNewSubmit() {
 </p>
 {else}
 <p class="warning_message">
-	There are no voip providers defined on this system. 
-	Use the <em>Add New Provider</em> form to define one now.
+	There are no 3G dongles defined on this system. 
+	Use the <em>Add New 3G Dongle</em> button to define one now.
 </p>
 {/if}
 

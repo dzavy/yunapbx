@@ -13,10 +13,8 @@ function SystemStatus() {
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     update_provider_statuses();
+    update_dongle_statuses();
     update_Ext_SipPhones_Statuses();
-
-    // Init no element on page (P_PageSize)
-    $P_PageSize = 50;
 
     // Init P_Sort P_Order (P_Order)
     if ($session['P_Sort'] == $_REQUEST['P_Sort']) {
@@ -33,19 +31,6 @@ function SystemStatus() {
         $P_Sort = 'Name';
     }
     $session['P_Sort'] = $P_Sort;
-
-    // Init listing P_Start (P_Start)
-    if (isset($_REQUEST['P_Start'])) {
-        $P_Start = $_REQUEST['P_Start'];
-    } else {
-        $P_Start = 0;
-    }
-
-    // Init P_Total entries (P_Total)
-    $query = "SELECT COUNT(PK_SipProvider) FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $row = $result->fetch_array();
-    $P_Total = $row[0];
 
     // Init table fields (Extensions)
     $Providers = array();
@@ -65,30 +50,61 @@ function SystemStatus() {
 			LEFT JOIN SipProvider_Statuses ON SipProviders.PK_SipProvider = SipProvider_Statuses.FK_SipProvider
 		ORDER BY
 			$P_Sort $P_Order
-		LIMIT $P_Start, $P_PageSize
 	";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Providers[] = $row;
     }
 
-    // Init P_End record (P_End)
-    $P_End = count($Providers);
-
     $smarty->assign('Providers', $Providers);
     $smarty->assign('P_Sort', $P_Sort);
     $smarty->assign('P_Order', $P_Order);
-    $smarty->assign('P_Start', $P_Start);
-    $smarty->assign('P_End', $P_End);
-    $smarty->assign('P_Total', $P_Total);
-    $smarty->assign('P_PageSize', $P_PageSize);
-    $smarty->assign('Message', $Message);
-    $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 
+    
+    // Init D_Sort D_Order (D_Order)
+    if ($session['D_Sort'] == $_REQUEST['D_Sort']) {
+        $D_Order = ($session['D_Order'] == "asc" ? "desc" : "asc");
+    } elseif ($session['D_Sort'] != $_REQUEST['D_Sort']) {
+        $D_Order = 'asc';
+    }
+    $session['D_Order'] = $D_Order;
 
+    // Init P_Sort field (P_Sort)
+    if (isset($_REQUEST['D_Sort'])) {
+        $D_Sort = $_REQUEST['D_Sort'];
+    } else {
+        $D_Sort = 'Name';
+    }
+    $session['D_Sort'] = $D_Sort;
+    
+    $Dongles = array();
+    $query = "
+		
+		SELECT
+			PK_Dongle               AS _PK_,
+			Name                    AS Name,
+            IMEI                    AS IMEI,
+            IMSI                    AS IMSI,
+			Status                  AS Status,
+			RSSI                    AS RSSI,
+            Provider                AS Provider,
+            Mode                    AS Mode
+		FROM
+			Dongles
+			LEFT JOIN Dongle_Statuses ON Dongles.PK_Dongle = Dongle_Statuses.FK_Dongle
+		ORDER BY
+			$D_Sort $D_Order
+	";
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    while ($row = $result->fetch_assoc()) {
+        $Dongles[] = $row;
+    }
 
+    $smarty->assign('Dongles', $Dongles);
+    $smarty->assign('D_Sort', $D_Sort);
+    $smarty->assign('D_Order', $D_Order);
 
-
+    
     // Init no element on page (C_PageSize)
     $C_PageSize = 50;
 
@@ -173,20 +189,24 @@ function update_provider_statuses() {
 		";
         $mysqli->query($query) or die($mysqli->error . $query);
     }
+}
 
-    /////////////////////
-    //$mysqli->query("DELETE FROM IaxProvider_Statuses");
-    //$query = "SELECT * FROM IaxProviders";
-    //$result = $mysqli->query($query) or die($mysqli->error . $query);
-    //while ($provider = $result->fetch_assoc()) {
-    //    $Status = iax_get_status($provider);
-    //    $query = "INSERT INTO IaxProvider_Statuses SET
-	//		FK_IaxProvider = '" . $mysqli->real_escape_string($Status['FK_IaxProvider']) . "',
-	//		Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
-	//		Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
-	//	";
-    //    $mysqli->query($query) or die($mysqli->error . $query);
-    //}
+function update_dongle_statuses() {
+    global $mysqli;
+    $mysqli->query("DELETE FROM Dongle_Statuses");
+    $query = "SELECT * FROM Dongles";
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    while ($dongle = $result->fetch_assoc()) {
+        $Status = dongle_get_status($dongle);
+        $query = "INSERT INTO Dongle_Statuses SET
+			FK_Dongle      = '" . $mysqli->real_escape_string($Status['FK_Dongle']) . "',
+			RSSI           = '" . $mysqli->real_escape_string($Status['RSSI']) . "',
+			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "',
+            Provider       = '" . $mysqli->real_escape_string($Status['Provider']) . "',
+            Mode           = '" . $mysqli->real_escape_string($Status['Mode']) . "'
+		";
+        $mysqli->query($query) or die($mysqli->error . $query);
+    }
 }
 
 function update_Ext_SipPhones_Statuses() {
@@ -248,64 +268,6 @@ function update_Ext_SipPhones_Statuses() {
     }
 }
 
-function iax_get_status($IaxProvider) {
-    $Status = array(
-        'FK_IaxProvider' => $IaxProvider['PK_IaxProvider'],
-        'Status' => 'Unknown',
-        'Latency' => ''
-    );
-
-    /*
-      iax2 show peer razvanpbx
-      ........
-      Addr->IP     : 70.183.85.70 Port 4569
-      .......
-      Status       : OK (256 ms)
-      ......
-     */
-    $response = asterisk_Cmd("iax2 show peer {$IaxProvider['Label']}");
-    $response = explode("\n", $response);
-    foreach ($response as $line) {
-        unset($regs);
-        if (preg_match('/ *Addr->IP *: *([0-9.]*) Port ([0-9]*)/', $line, $regs)) {
-            $IaxProvider['IP'] = $regs[1];
-            $IaxProvider['Port'] = $regs[2];
-        }
-
-        unset($regs);
-        if (preg_match('/ *Status *: OK \(([0-9]*) ms\)/', $line, $regs)) {
-            $Status['Latency'] = $regs['1'];
-        }
-
-        unset($regs);
-        if ($IaxProvider['RegisterType'] == 'Client' || $IaxProvider['RegisterType'] == 'Peer') {
-            if (preg_match('/ *Status *: ([0-9a-zA-Z]*)/', $line, $regs)) {
-                if ($regs[1] == 'OK') {
-                    $Status['Status'] = 'Registered';
-                } else {
-                    $Status['Status'] = ucfirst(strtolower($regs[1]));
-                }
-            }
-        }
-    }
-
-    /*
-      iax2 show registry
-      Host                  dnsmgr  Username    Perceived             Refresh  State
-      70.183.85.70:4569     N       switchvoxp  <Unregistered>             60  Rejected
-     */
-    $response = asterisk_Cmd('iax2 show registry');
-    $response = explode("\n", $response);
-    foreach ($response as $line) {
-        unset($regs);
-        if (preg_match("/^{$IaxProvider['IP']}:{$IaxProvider['Port']} *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]*) *(.*)$/", $line, $regs)) {
-            $Status['Status'] = $regs['5'];
-        }
-    }
-
-    return $Status;
-}
-
 function sip_get_status($SipProvider) {
     $Status = array(
         'FK_SipProvider' => $SipProvider['PK_SipProvider'],
@@ -313,12 +275,6 @@ function sip_get_status($SipProvider) {
         'Latency' => ''
     );
 
-    /*
-      sip show peer sip_provider_17
-      .......
-      Status       : Unmonitored
-      ......
-     */
     $response = asterisk_Cmd("sip show peer sip_provider_{$SipProvider['PK_SipProvider']}");
     $response = explode("\n", $response);
     foreach ($response as $line) {
@@ -353,6 +309,42 @@ function sip_get_status($SipProvider) {
         }
     }
 
+    return $Status;
+}
+
+function dongle_get_status($Dongle) {
+    $Status = array(
+        'FK_Dongle' => $Dongle['PK_Dongle'],
+        'Status' => 'Unknown',
+        'RSSI' => 0,
+        'Mode' => 'Unknown',
+        'Provider' => 'Unknown'
+    );
+
+    $response = asterisk_Cmd("dongle show device state dongle{$Dongle['PK_Dongle']}");
+    $response = explode("\n", $response);
+    foreach ($response as $line) {
+        unset($regs);
+        if (preg_match('/ *RSSI *: ([0-9]*)/', $line, $regs)) {
+            $Status['RSSI'] = $regs['1'];
+        }
+
+        unset($regs);
+        if (preg_match('/ *Provider Name *: (.*)/', $line, $regs)) {
+            $Status['Provider'] = $regs[1];
+        }
+
+        unset($regs);
+        if (preg_match('/ *Mode *: (.*)/', $line, $regs)) {
+            $Status['Mode'] = $regs[1];
+        }
+
+        unset($regs);
+        if (preg_match('/ *GSM Registration Status *: (.*)/', $line, $regs)) {
+            $Status['Status'] = $regs[1];
+        }
+    }
+    
     return $Status;
 }
 

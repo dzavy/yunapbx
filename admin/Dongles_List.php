@@ -7,7 +7,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 function Dongles_List() {
     global $mysqli;
     
-    $session = &$_SESSION['GSMModems_List'];
+    $session = &$_SESSION['Dongles_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");

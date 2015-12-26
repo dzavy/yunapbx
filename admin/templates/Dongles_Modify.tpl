@@ -19,31 +19,6 @@
         $('.toggle').toggleClass('hidden');
     }
 
-    function CallerID_Enable() {
-        $('#CallerIDName').removeAttr("disabled");
-        $('#CallerIDNumber').removeAttr("disabled");
-        $('#CallerIDNumber').removeClass("disabled");
-        $('#CallerIDName').removeClass("disabled");
-    }
-    function CallerID_Disable() {
-        $('#CallerIDName').attr("disabled", "disabled");
-        $('#CallerIDNumber').attr("disabled", "disabled");
-        $('#CallerIDNumber').addClass("disabled");
-        $('#CallerIDName').addClass("disabled");
-    }
-
-    function AddHost() {
-        $("#Hosts").addOption($("#SipHost").val(), $("#SipHost").val(), false);
-        $("#SipHost").val('');
-    }
-    function DeleteHost() {
-        $("#Hosts").removeOption(/./, true);
-    }
-
-    function PreSubmit() {
-        $("#Hosts").selectOptions(/./, true);
-    }
-
     function UpdateCallRules(val) {
         if (val == 0) {
             $("#OutgoingTbl :input").removeAttr('disabled');
@@ -60,7 +35,7 @@
 
     {/literal}
 
-    {if $Provider.ApplyIncomingRules}	UpdateCallRules(1);
+    {if $Dongle.ApplyIncomingRules}	UpdateCallRules(1);
     {else}
     UpdateCallRules(0);
     {/if}
@@ -71,9 +46,9 @@
     {/literal}
 </script>
 
-<h2>VOIP Providers</h2>
+<h2>3G Dongles</h2>
 {if $Errors.Name.Invalid}
-    <p class="error_message">SIP Provider Name is required (1-32 characters in length).</p>
+    <p class="error_message">Dongle Name is required (1-32 characters in length).</p>
 {/if}
 {if $Errors.IMEI.Invalid}
     <p class="error_message">IMEI is required (15-16 characters in length).</p>
@@ -94,15 +69,15 @@
     </p>
 
     {if $Dongle.PK_Dongle == ""}
-        <strong>Add a New SIP Provider</strong>
+        <strong>Add a New 3G Dongle</strong>
     {else}
-        <strong>Modify SIP Provider</strong>
+        <strong>Modify 3G Dongle</strong>
     {/if}
     <table class="formtable">
         <!-- Sip Provider Name -->
         <tr>
             <td>
-                Provider Name
+                Dongle Name
             </td>
             <td>
                 <input type="text" name="Name" value="{$Dongle.Name}" {if $Errors.Name}class="error"{/if} />
@@ -176,10 +151,10 @@
                 Apply Incoming Call Rules
             </td>
             <td>
-                <input type="radio" value="1" id="ApplyIncomingRules_1" name="ApplyIncomingRules" {if $Provider.ApplyIncomingRules}checked="checked"{/if} onclick="UpdateCallRules(1)" />
+                <input type="radio" value="1" id="ApplyIncomingRules_1" name="ApplyIncomingRules" {if $Dongle.ApplyIncomingRules}checked="checked"{/if} onclick="UpdateCallRules(1)" />
                 <label for="ApplyIncomingRules_1">Yes</label>
                 &nbsp;
-                <input type="radio" value="0" id="ApplyIncomingRules_0" name="ApplyIncomingRules" {if !$Provider.ApplyIncomingRules}checked="checked"{/if} onclick="UpdateCallRules(0)" />
+                <input type="radio" value="0" id="ApplyIncomingRules_0" name="ApplyIncomingRules" {if !$Dongle.ApplyIncomingRules}checked="checked"{/if} onclick="UpdateCallRules(0)" />
                 <label for="ApplyIncomingRules_0">No</label>
             </td>
         </tr>
@@ -201,10 +176,10 @@
                         <tr class='{cycle values="even,odd"}'>
                             <td>{$Rule.Name}</td>
                             <td style="width: 20px;">
-                                <input type="radio" name="Rules[{$Rule.PK_OutgoingRule}]" value="{$Rule.PK_OutgoingRule}" {if $Rule.PK_OutgoingRule|in_array:$Provider.Rules}checked="checked"{/if}/>
+                                <input type="radio" name="Rules[{$Rule.PK_OutgoingRule}]" value="{$Rule.PK_OutgoingRule}" {if $Rule.PK_OutgoingRule|in_array:$Dongle.Rules}checked="checked"{/if}/>
                             </td>
                             <td style="width: 20px;">
-                                <input type="radio" name="Rules[{$Rule.PK_OutgoingRule}]" value="0" {if !$Rule.PK_OutgoingRule|in_array:$Provider.Rules}checked="checked"{/if}/>
+                                <input type="radio" name="Rules[{$Rule.PK_OutgoingRule}]" value="0" {if !$Rule.PK_OutgoingRule|in_array:$Dongle.Rules}checked="checked"{/if}/>
                             </td>
                         </tr>
                     {/foreach}
@@ -218,9 +193,9 @@
     <p>
         <br />
         {if $Dongle.PK_Dongle == ""}
-            <button type="submit" name="submit" value="save">Add SIP Provider</button>
+            <button type="submit" name="submit" value="save">Add 3G Dongle</button>
         {else}
-            <button type="submit" name="submit" value="save">Modify SIP Provider</button>
+            <button type="submit" name="submit" value="save">Modify 3G Dongle</button>
         {/if}
     </p>
 </form>
