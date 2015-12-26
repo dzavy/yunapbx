@@ -1,18 +1,18 @@
-#!/usr/bin/php -q
+#!/usr/bin/php-cli -q
 <?php
-require(dirname(__FILE__).'/../lib/phpagi/phpagi.php');
-require(dirname(__FILE__).'/../include/db_utils.inc.php');
-require(dirname(__FILE__).'/common/AGI_Logger.class.php');
-require(dirname(__FILE__).'/common/AGI_CDR.class.php');
-require(dirname(__FILE__).'/common/AGI_Utils.php');
+require(dirname(__FILE__) . '/../lib/phpagi/phpagi.php');
+require(dirname(__FILE__) . '/../include/db_utils.inc.php');
+require(dirname(__FILE__) . '/common/AGI_Logger.class.php');
+require(dirname(__FILE__) . '/common/AGI_CDR.class.php');
+require(dirname(__FILE__) . '/common/AGI_Utils.php');
 
-$agi    = new AGI();
+$agi = new AGI();
 $logger = new AGI_Logger($agi);
-$cdr    = new AGI_CDR($agi);
+$cdr = new AGI_CDR($agi);
 
 // Get Called Extension informations
-$called_ext   = $agi->request['agi_extension'];
-$Extension_D  = DB_Extension($called_ext);
+$called_ext = $agi->request['agi_extension'];
+$Extension_D = DB_Extension($called_ext);
 
 // Get 'Intercom' Parameters
 $Intercom = Database_Entry('Ext_Intercom', $Extension_D['PK_Extension']);
@@ -23,7 +23,7 @@ $caller_ext = $cid['username'];
 
 // See if the caller is allowed to use this extension
 if ($Intercom['Use_Admins_ByAccount']) {
-	$query = "
+    $query = "
 		SELECT
 			Extension
 		FROM
@@ -36,7 +36,7 @@ if ($Intercom['Use_Admins_ByAccount']) {
 		LIMIT 1
 	";
 } else {
-	$query = "
+    $query = "
 		SELECT
 			Extension
 		FROM
@@ -50,33 +50,33 @@ if ($Intercom['Use_Admins_ByAccount']) {
 		LIMIT 1
 	";
 }
-$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error . $query);
 if ($mysqli->numrows($result) != 1) {
-	$agi->stream_file('beeperr');
-	$agi->hangup();
-	exit(0);
+    $agi->stream_file('beeperr');
+    $agi->hangup();
+    exit(0);
 }
 
 //CDR: Set called info
 $cdr->set_called(
-	"{$Intercom['PK_Extension']}",                    // CalledID
-	"Intercom",                                       // CalledType
-	"Intercom",                                       // CalledName
-	"{$Extension_D['Extension']}"                     // CalledNumber
+        "{$Intercom['PK_Extension']}", // CalledID
+        "Intercom", // CalledType
+        "Intercom", // CalledName
+        "{$Extension_D['Extension']}"                     // CalledNumber
 );
 
-$agi->set_variable('__SIP_URI_OPTIONS','intercom=true');
-$agi->set_variable('SIPURI','intercom=true');
-$agi->set_variable('_VXML_URL','intercom=true');
+$agi->set_variable('__SIP_URI_OPTIONS', 'intercom=true');
+$agi->set_variable('SIPURI', 'intercom=true');
+$agi->set_variable('_VXML_URL', 'intercom=true');
 $agi->exec('AbsoluteTimeout', $Intercom['Timeout']);
-$agi->exec('SipAddHeader'   , $Intercom['Header']);
-$agi->exec('SipAddHeader'   , '"Call Info: Answer-After=0"');
-$agi->exec('SipAddHeader'   , '"Alert-Info: Ring Answer"');
-$agi->exec('SipAddHeader'   , '"Call-Info: <uri>\;answer-after=0"');
+$agi->exec('SipAddHeader', $Intercom['Header']);
+$agi->exec('SipAddHeader', '"Call Info: Answer-After=0"');
+$agi->exec('SipAddHeader', '"Alert-Info: Ring Answer"');
+$agi->exec('SipAddHeader', '"Call-Info: <uri>\;answer-after=0"');
 
 // Get a list of phones we want to page
 if ($Intercom['Use_Members_ByAccount']) {
-	$query = "
+    $query = "
 		SELECT
 			Extension
 		FROM
@@ -86,7 +86,7 @@ if ($Intercom['Use_Members_ByAccount']) {
 			FK_Extension = {$Intercom['PK_Extension']}
 	";
 } else {
-	$query = "
+    $query = "
 		SELECT
 			Extension
 		FROM
@@ -98,19 +98,22 @@ if ($Intercom['Use_Members_ByAccount']) {
 	";
 }
 
-$result = $mysqli->query($query) or $agi->verbose($mysqli->error.$query);
+$result = $mysqli->query($query) or $agi->verbose($mysqli->error . $query);
 while ($row = $result->fetch_assoc()) {
-	if ($page_phones != "") {
-		$page_phones .='&';
-	}
-	$page_phones .= "SIP/{$row['Extension']}";
+    if ($page_phones != "") {
+        $page_phones .='&';
+    }
+    $page_phones .= "SIP/{$row['Extension']}";
 }
 
 // Set the page options
-if (  $Intercom['TwoWay'] )    { $page_options .= "d"; }
-if ( !$Intercom['PlaySound'] ) { $page_options .= "q"; }
+if ($Intercom['TwoWay']) {
+    $page_options .= "d";
+}
+if (!$Intercom['PlaySound']) {
+    $page_options .= "q";
+}
 
 // Run the page command
 $agi->exec('Page', "$page_phones|$page_options");
-
 ?>
