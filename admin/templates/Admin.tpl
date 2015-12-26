@@ -50,7 +50,7 @@
                     <li><span class="menuitem">Connectivity</span>
                         <ul>
                             <li><a href="VoipProviders_List.php">VOIP Providers</a></li>
-                            <li><a href="Dongles_List.php">3G Modems</a></li>
+                            <li><a href="Dongles_List.php">3G Dongles</a></li>
                             <li><a href="OutgoingCalls.php">Outgoing Calls</a></li>
                             <li><a href="IncomingCalls.php">Incoming Calls</a></li>
                         </ul>

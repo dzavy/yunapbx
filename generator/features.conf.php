@@ -9,7 +9,7 @@ $smarty->assign('Parking', Get_Ext_Parking());
 
 $out = $smarty->fetch('features.conf.tpl');
 
-$fh = fopen(dirname(__FILE__).'/output/features.conf', 'w');
+$fh = fopen('/etc/asterisk/features.conf', 'w');
 fwrite($fh, $out);
 fclose($fh);
 

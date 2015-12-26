@@ -17,7 +17,7 @@ $smarty->assign('Extensions', Get_Ext_SipPhones());
 
 $out = $smarty->fetch('voicemail.conf.tpl');
 
-$fh = fopen(dirname(__FILE__).'/output/voicemail.conf', 'w');
+$fh = fopen('/etc/asterisk/voicemail.conf', 'w');
 fwrite($fh, $out);
 fclose($fh);
 

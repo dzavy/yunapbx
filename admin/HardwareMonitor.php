@@ -25,7 +25,7 @@ function HardwareMonitor() {
 
     $Output['arp'] = file_get_contents('/proc/net/arp');
 
-    exec('route -n', $Output['route']);
+    exec('route -n | grep -v Kernel', $Output['route']);
     $Output['route'] = implode("\n", $Output['route']);
 
     $Output['resolv_conf'] = file_get_contents('/etc/resolv.conf');

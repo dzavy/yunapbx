@@ -34,6 +34,3 @@ function user_login($extension) {
     $_SESSION['_USER'] = $user;
 }
 
-function user_logout() {
-    unset($_SESSION['_USER']);
-}

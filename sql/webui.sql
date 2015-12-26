@@ -143,6 +143,21 @@ insert  into `Codecs`(`PK_Codec`,`Name`,`Description`,`Recomended`) values
 (9,'h263p','H.263+ (1998) Video',0),
 (10,'h264','H.264 Video',0);
 
+/*Table structure for table `Dongles` */
+
+DROP TABLE IF EXISTS `Dongles`;
+
+CREATE TABLE `Dongles` (
+  `PK_Dongle` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Name` varchar(32) NOT NULL,
+  `IMEI` varchar(32) NOT NULL,
+  `IMSI` varchar(32) NOT NULL,
+  `CallbackExtension` varchar(15) DEFAULT NULL
+  PRIMARY KEY (`PK_Dongle`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Data for the table `Dongles` */
+
 /*Table structure for table `DTMFModes` */
 
 DROP TABLE IF EXISTS `DTMFModes`;
@@ -768,25 +783,6 @@ insert  into `Features`(`PK_Feature`,`Name`,`ShortName`,`Recomended`) values
 (4,'Voicemail Forwarding ','voicemail_forwarding',0),
 (5,'Web Tool Access','web_tool_access',1),
 (6,'Unpark Calls','unpark_calls',0);
-
-/*Table structure for table `GSMModems` */
-
-DROP TABLE IF EXISTS `GSMModems`;
-
-CREATE TABLE `GSMModems` (
-  `PK_GsmModem` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(32) NOT NULL,
-  `AudioPort` varchar(32) NOT NULL,
-  `DataPort` varchar(32) NOT NULL,
-  `CallbackExtension` varchar(15) DEFAULT NULL,
-  `CallerIDChange` tinyint(1) NOT NULL DEFAULT '0',
-  `CallerIDName` varchar(32) DEFAULT NULL,
-  `CallerIDNumber` varchar(32) DEFAULT NULL,
-  `CallerIDMethod` enum('FromHeader','P-Asserted-Identity','Remote-Party-ID') NOT NULL DEFAULT 'FromHeader',
-  PRIMARY KEY (`PK_GsmModem`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-/*Data for the table `GSMModems` */
 
 /*Table structure for table `Groups` */
 

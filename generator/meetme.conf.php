@@ -9,7 +9,7 @@ $smarty->assign('Rooms', Get_Ext_ConfCenter_Rooms());
 
 $out = $smarty->fetch('meetme.conf.tpl');
 
-$fh = fopen(dirname(__FILE__).'/output/meetme.conf', 'w');
+$fh = fopen('/etc/asterisk/meetme.conf', 'w');
 fwrite($fh, $out);
 fclose($fh);
 

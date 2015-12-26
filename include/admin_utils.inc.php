@@ -4,12 +4,6 @@ session_start();
 
 include_once(dirname(__FILE__) . '/smarty_utils.inc.php');
 
-function myprint($var) {
-    print ("<pre>");
-    print_r($var);
-    print ("</pre>");
-}
-
 function admin_run($generator_function, $template = "", $need_auth = true) {
     if ($need_auth) {
         if (empty($_SESSION['_USER'])) {
@@ -27,10 +21,6 @@ function admin_run($generator_function, $template = "", $need_auth = true) {
     } else {
         echo $Output;
     }
-}
-
-function admin_logout() {
-    unset($_SESSION['_USER']);
 }
 
 function pbx_var_get($name) {
