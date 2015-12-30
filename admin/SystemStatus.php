@@ -39,7 +39,6 @@ function SystemStatus() {
 		SELECT
 			PK_SipProvider          AS _PK_,
 			Name                    AS Name,
-			'SIP'                   AS Type,
 			SipProviders.AccountID  AS AccountID,
 			SipProviders.Host       AS Host,
 			CallbackExtension       AS CallbackExtension,

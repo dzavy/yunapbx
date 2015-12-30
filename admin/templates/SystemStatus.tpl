@@ -5,12 +5,6 @@
         <caption>VOIP Providers</caption>
         <tr>
             <th>
-                <a href="?P_Sort=Type">Type</a>
-                {if $P_Sort == "Type"}
-                    <img src="../static/images/{$P_Order}.gif" alt="{$P_Order}" />
-                {/if}
-            </th>
-            <th>
                 <a href="?P_Sort=Name">Name</a>
                 {if $P_Sort == "Name"}
                     <img src="../static/images/{$P_Order}.gif" alt="{$P_Order}" />
@@ -50,7 +44,6 @@
 
         {foreach from=$Providers item=Provider}
             <tr class="{cycle values="odd,even"}{if $Provider.Status == "Registered"}green{elseif $Provider.Status == "Unregistered"||$Provider.Status == "Rejected"||$Provider.Status=='Unreachable'}red{elseif $Provider.Status == ""}disabled{else}yellow{/if}">
-                <td>{$Provider.Type}</td>
                 <td>{$Provider.Name}</td>
                 <td>{$Provider.Host}</td>
                 <td>{$Provider.AccountID}</td>
