@@ -131,7 +131,7 @@
         </tr>
 
         {foreach from=$Dongles item=Dongle}
-            <tr class="{cycle values="odd,even"}{if $Dongle.Provider == "NONE"}red{else}green{/if}">
+            <tr class="{cycle values="odd,even"}{if $Dongle.Provider == "NONE"}red{elseif $Dongle.Provider == "Unknown"}red{else}green{/if}">
                 <td>{$Dongle.Name}</td>
                 <td>{$Dongle.IMEI}</td>
                 <td>{$Dongle.IMSI}</td>
