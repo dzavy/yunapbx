@@ -4,7 +4,7 @@ include_once(dirname(__FILE__)."/../include/smarty_utils.inc.php");
 include_once(dirname(__FILE__)."/tables.inc.php");
 include(dirname(__FILE__)."/../include/config.inc.php");
 
-$smarty = smarty_init(dirname(__FILE__));
+$smarty = smarty_init(dirname(__FILE__) . '/templates');
 
 $Groups = Get_Moh_Groups();
 foreach ($Groups as $key=>$Group) {
@@ -20,10 +20,8 @@ $smarty->assign('Groups', $Groups);
 
 
 $out = $smarty->fetch('musiconhold.conf.tpl');
-
 $fh = fopen('/etc/asterisk/musiconhold.conf', 'w');
 fwrite($fh, $out);
 fclose($fh);
 
-//echo "<pre>$out</pre>";
 ?>

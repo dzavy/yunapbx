@@ -3,8 +3,7 @@ include_once(dirname(__FILE__)."/../include/db_utils.inc.php");
 include_once(dirname(__FILE__)."/../include/smarty_utils.inc.php");
 include_once(dirname(__FILE__)."/tables.inc.php");
 
-//global $mysqli;
-$smarty = smarty_init(dirname(__FILE__));
+$smarty = smarty_init(dirname(__FILE__) . '/templates');
 
 $smarty->assign('Extensions'  , Get_Ext_SipPhones());
 $smarty->assign('SipProviders', Get_SipProviders());
