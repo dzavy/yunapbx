@@ -21,7 +21,7 @@ function ConferenceSetup() {
 
         if (count($Errors) == 0) {
             formdata_save($Conference);
-            asterisk_UpdateConf('meetme.conf');
+            asterisk_UpdateConf('confbridge.conf');
             asterisk_Reload();
             header("Location: ConferenceSetup.php?msg=MODIFY_CONFERENCE");
             die();
