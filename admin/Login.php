@@ -50,7 +50,7 @@ function formdata_validate($data) {
         if ($result->num_rows != 1) {
             $errors['Wrong'] = true;
         } else {
-            $_SESSION["_USER"] = $data['User'];
+            $_SESSION["_ADMIN"] = $data['User'];
         }
     }
     return $errors;

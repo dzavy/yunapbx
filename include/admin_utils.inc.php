@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/smarty_utils.inc.php');
 
 function admin_run($generator_function, $template = "", $need_auth = true) {
     if ($need_auth) {
-        if (empty($_SESSION['_USER'])) {
+        if (empty($_SESSION['_ADMIN'])) {
             header('Location: Login.php');
             die();
             return;
