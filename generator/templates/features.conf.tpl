@@ -7,7 +7,7 @@ parkingtime => {$Parking.Timeout}
 {/if}
 
 
- [featuremap]
- blindxfer => #                ; Blind transfer, default is #
- disconnect => *0               ; Disconnect (for attended transfer)
- atxfer => *2                   ; Attended transfer
+[featuremap]
+blindxfer => #                ; Blind transfer, default is #
+disconnect => *0               ; Disconnect (for attended transfer)
+atxfer => *2                   ; Attended transfer

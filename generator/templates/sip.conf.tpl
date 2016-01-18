@@ -45,17 +45,11 @@ register => {$P.AccountID}:{$P.Password}:{$P.AuthUser}@sip_provider_{$P.PK_SipPr
 {/foreach}
 
 {foreach from=$SipProviders item=Provider}
-{assign var="id" value=0}
-{foreach from=$Provider.Hosts item=Host}
 ; SIP_PROVIDER : {$Provider.Name}
-{if $id == 0}[sip_provider_{$Provider.PK_SipProvider}]
+[sip_provider_{$Provider.PK_SipProvider}]
 {if $Provider.ProxyHost != ""}outboundproxy={$Provider.ProxyHost}
 {/if}
-{else}
-[sip_provider_{$Provider.PK_SipProvider}_{$id}]
-{/if}
-{assign var="id" value=$id+1}
-host={$Host}
+host={$Provider.ProxyHost}
 type=friend
 secret={$Provider.Password}
 username={$Provider.AuthUser}
@@ -99,7 +93,6 @@ usereqphone=yes
 {if $Provider.SendEarlyMedia}
 progressinband=yes
 {/if}
-{/foreach}
 
 {/foreach}
 

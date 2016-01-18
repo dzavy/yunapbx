@@ -26,5 +26,7 @@ dtmf=relax
 [dongle{$Dongle.PK_Dongle}]
 imei={$Dongle.IMEI}
 imsi={$Dongle.IMSI}
+context=from-dongle{$Dongle.PK_Dongle}
+exten=
 
 {/foreach}
