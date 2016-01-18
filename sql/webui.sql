@@ -143,6 +143,27 @@ insert  into `Codecs`(`PK_Codec`,`Name`,`Description`,`Recomended`) values
 (9,'h263p','H.263+ (1998) Video',0),
 (10,'h264','H.264 Video',0);
 
+
+DROP TABLE IF EXISTS `Dongle_Rules`;
+
+CREATE TABLE `Dongle_Rules` (
+  `FK_Dongle` int(10) unsigned NOT NULL,
+  `FK_OutgoingRule` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`FK_Dongle`,`FK_OutgoingRule`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `Dongle_Statuses`;
+
+CREATE TABLE `Dongle_Statuses` (
+  `FK_Dongle` int(10) unsigned NOT NULL,
+  `RSSI` int(10) NOT NULL,
+  `Status` varchar(50) NOT NULL,
+  `Provider` varchar(50) DEFAULT NULL,
+  `Mode` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`FK_Dongle`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+
 /*Table structure for table `Dongles` */
 
 DROP TABLE IF EXISTS `Dongles`;
