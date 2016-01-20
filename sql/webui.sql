@@ -173,7 +173,7 @@ CREATE TABLE `Dongles` (
   `Name` varchar(32) NOT NULL,
   `IMEI` varchar(32) NOT NULL,
   `IMSI` varchar(32) NOT NULL,
-  `CallbackExtension` varchar(15) DEFAULT NULL
+  `CallbackExtension` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`PK_Dongle`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2905,7 +2905,7 @@ CREATE TABLE `SoundLanguages` (
 
 insert  into `SoundLanguages`(`PK_SoundLanguage`,`Name`,`Type`,`Default`,`DateCreated`) values 
 
-(1,'English','System',1,'2008-09-09 22:00:00'),
+(1,'English','System',1,'2008-09-09 22:00:00');
 
 /*Table structure for table `SoundPacks` */
 
