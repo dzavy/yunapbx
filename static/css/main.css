@@ -333,7 +333,7 @@ div.editbox a {
 }
 
 .success_message {
-    background: url(../images/success.png) no-repeat;
+    background: url(../images/success.gif) no-repeat;
     background-position: 10px 6px;
     background-color: #E1FFD1;
 
@@ -399,7 +399,7 @@ div.editbox a {
 }
 
 .small_success_message {
-    background: url(../images/success.png) no-repeat;	
+    background: url(../images/success.gif) no-repeat;	
     color: #000;
 }
 
