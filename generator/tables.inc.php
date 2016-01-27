@@ -78,6 +78,27 @@ function Get_Dongles() {
     return $Dongles;
 }
 
+function Get_OutgoingRules() {
+    global $mysqli;
+    $query = "
+		SELECT
+			Dongles.*
+		FROM
+			Dongles
+		ORDER BY
+			Name
+	";
+    $result = $mysqli->query($query) or die($mysqli->error . $query);
+
+    $Dongles = array();
+    while ($row = $result->fetch_assoc()) {
+        $dongle = $row;
+        $Dongles[] = $dongle;
+    }
+
+    return $OutgoingRules;
+}
+
 function Get_Ext_SipPhones() {
     global $mysqli;
     $query = "
@@ -133,11 +154,25 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-        $result_features = $mysqli->query($query_features) or die($mysqli->error . $query_codec);
+        $result_features = $mysqli->query($query_features) or die($mysqli->error . $query_features);
         while ($row_feature = $result_features->fetch_assoc()) {
             $exten['Features'][] = $row_feature['ShortName'];
         }
 
+        $exten['Rules'] = array();
+        $query_rules = "
+			SELECT
+				PK_OutgoingRule
+			FROM
+				Extension_Rules JOIN OutgoingRules ON (PK_OutgoingRule = FK_OutgoingRule)
+			WHERE
+				FK_Extension = {$exten['PK_Extension']} ORDER BY RuleOrder
+		";
+        $result_rules = $mysqli->query($query_rules) or die($mysqli->error . $query_rules);
+        while ($row_rule = $result_rules->fetch_assoc()) {
+            $exten['Rules'][] = $row_rule;
+        }
+        
         $Extensions[] = $exten;
     }
 

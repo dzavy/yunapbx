@@ -172,23 +172,25 @@ exten => s,6.Hangup
 {/literal}
 
 
+{foreach from=$Ext_SipPhones item=Ext_SipPhone}
+[extension_{$Ext_SipPhone.PK_Extension}_ingress]
+exten => _X.,1,Goto(extension_{$Ext_SipPhone.PK_Extension}_egress)
 
-;; --------- Context for routing call from sip providers --------------
-{foreach from=$SipProviders item=Provider}
-[sip_provider_{$Provider.PK_SipProvider}]
-{literal}
-exten => _[a-zA-Z0-9_+][a-zA-Z0-9_].,1,agi(${STARFISH_AGI_DIR}/Route_Incoming.php)
-exten => _[a-zA-Z0-9_+][a-zA-Z0-9_].,2,Hangup()
-exten => h,1,agi(${STARFISH_AGI_DIR}/Hangup.php)
-{/literal}
+[extension_{$Ext_SipPhone.PK_Extension}_egress]
+{foreach from=$Ext_SipPhone.Rules item=Rule}
+include => outgoing_{$Rule.PK_OutgoingRule}
 {/foreach}
 
-;; --------- Context for routing call from iax providers --------------
-{foreach from=$IaxProviders item=Provider}
-[iax_provider_{$Provider.PK_IaxProvider}]
-{literal}
-exten => _[a-zA-Z0-9_+][a-zA-Z0-9_].,1,agi(${STARFISH_AGI_DIR}/Route_Incoming.php)
+{/foreach}
+
+{foreach from=$SipProviders item=Provider}
+[sip_provider_{$Provider.PK_SipProvider}]
 exten => _[a-zA-Z0-9_+][a-zA-Z0-9_].,2,Hangup()
-exten => h,1,agi(${STARFISH_AGI_DIR}/Hangup.php)
-{/literal}
+
+{/foreach}
+
+{foreach from=$Dongles item=Dongle}
+[dongle_{$Dongle.PK_Dongle}]
+exten => _[a-zA-Z0-9_+][a-zA-Z0-9_].,2,Hangup()
+
 {/foreach}

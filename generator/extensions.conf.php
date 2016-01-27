@@ -7,6 +7,9 @@ include(dirname(__FILE__).'/../include/config.inc.php');
 $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
 $smarty->assign('SipProviders', Get_SipProviders());
+$smarty->assign('Dongles', Get_Dongles());
+$smarty->assign('Ext_SipPhones', Get_Ext_SipPhones());
+
 $smarty->assign('AGI_DIR'     , $conf['dirs']['agi']);
 
 $out = $smarty->fetch('extensions.conf.tpl');
