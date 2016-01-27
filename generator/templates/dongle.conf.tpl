@@ -27,6 +27,7 @@ dtmf=relax
 imei={$Dongle.IMEI}
 imsi={$Dongle.IMSI}
 context=from-dongle{$Dongle.PK_Dongle}
+disablesms={($Dongle.EnableSMS)?"no":"yes"}
 exten=
 
 {/foreach}

@@ -30,6 +30,13 @@
             $("#CallbackExtension").removeAttr('disabled');
         }
     }
+    
+    function DiscoveredDongleSelect() {
+        var dongle = $("#DiscoveredDongles").val();
+        dongle_params = dongle.split(";");
+        $("#IMEI").val(dongle_params[0]);
+        $("#IMSI").val(dongle_params[1]);
+    }
 
     $(document).ready(function () {
 
@@ -73,8 +80,22 @@
     {else}
         <strong>Modify 3G Dongle</strong>
     {/if}
+
     <table class="formtable">
-        <!-- Sip Provider Name -->
+        <tr>
+            <td>
+                Discovered Dongles
+            </td>
+            <td>
+				<select id="DiscoveredDongles" onchange="DiscoveredDongleSelect()">
+                    <option value=";" selected="selected">--- please select ---</option>
+
+                    {foreach from=$DiscoveredDongles item=DiscoveredDongle}
+                        <option value="{$DiscoveredDongle.IMEI};{$DiscoveredDongle.IMSI}">IMEI:{$DiscoveredDongle.IMEI}, IMSI:{$DiscoveredDongle.IMSI}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
         <tr>
             <td>
                 Dongle Name
@@ -90,7 +111,7 @@
                 IMEI
             </td>
             <td>
-                <input type="text" name="IMEI" value="{$Dongle.IMEI}" {if $Errors.IMEI}class="error"{/if} />
+                <input type="text" name="IMEI" id="IMEI" value="{$Dongle.IMEI}" {if $Errors.IMEI}class="error"{/if} />
             </td>
         </tr>
 
@@ -100,7 +121,7 @@
                 IMSI
             </td>
             <td>
-                <input type="text" name="IMSI" value="{$Dongle.IMSI}" {if $Errors.IMSI}class="error"{/if} />
+                <input type="text" name="IMSI" id="IMSI" value="{$Dongle.IMSI}" {if $Errors.IMSI}class="error"{/if} />
             </td>
         </tr>
 
@@ -112,6 +133,18 @@
             <td>
                 <input type="text" {if $Errors.CallbackExtension}class="error"{/if} id="CallbackExtension" name="CallbackExtension" value="{$Dongle.CallbackExtension}" size="6" />
                 <button type="button" class="users" onclick="javacript:popUp('Extensions_Popup.php?FillID=CallbackExtension', 'Select Extension', 415, 330);">&nbsp;</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Enable SMS
+            </td>
+            <td>
+                <input type="radio" value="1" id="EnableSMS_1" name="EnableSMS" {if $Dongle.EnableSMS}checked="checked"{/if}" />
+                <label for="EnableSMS_1">Yes</label>
+                &nbsp;
+                <input type="radio" value="0" id="EnableSMS_0" name="EnableSMS" {if !$Dongle.EnableSMS}checked="checked"{/if}" />
+                <label for="EnableSMS_0">No</label>
             </td>
         </tr>
 

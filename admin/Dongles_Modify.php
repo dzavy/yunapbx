@@ -24,6 +24,21 @@ function Dongles_Modify() {
         $Rules[] = $row;
     }
 
+    $discovery_response = explode("\n", asterisk_Cmd('dongle discovery'));
+    
+    $discovered_dongles = array();
+    $discovered_i = -1;
+    for($i=0;$i<sizeof($discovery_response);$i++) {
+        if(substr($discovery_response[$i],0,1)=="[") {
+            $discovered_i++;
+            $discovered_dongles[$discovered_i] = array();
+        } elseif(substr($discovery_response[$i],0,4)=="imsi") {
+            $discovered_dongles[$discovered_i]["IMSI"] = substr($discovery_response[$i],5);
+        } elseif(substr($discovery_response[$i],0,4)=="imei") {
+            $discovered_dongles[$discovered_i]["IMEI"] = substr($discovery_response[$i],5);
+        }
+    }
+
     // Init form data (Providers)
     if ($_REQUEST['submit'] == 'save') {
         $Dongle = formdata_from_post();
@@ -44,6 +59,7 @@ function Dongles_Modify() {
     }
 
     $smarty->assign('Dongle', $Dongle);
+    $smarty->assign('DiscoveredDongles', $discovered_dongles);
     $smarty->assign('Message', $Message);
     $smarty->assign('Errors', $Errors);
     $smarty->assign('Rules', $Rules);
@@ -86,6 +102,9 @@ function formdata_from_db($id) {
 
 function formdata_from_default() {
     $data = array();
+    $data['Rules'] = array();
+    $data['ApplyIncomingRules'] = true;
+    $data['EnableSMS'] = true;
     return $data;
 }
 
@@ -117,7 +136,8 @@ function formdata_save($data) {
 			IMEI               = '" . $mysqli->real_escape_string($data['IMEI']) . "',
 			IMSI               = '" . $mysqli->real_escape_string($data['IMSI']) . "',
 			CallbackExtension  = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "',
-            ApplyIncomingRules = " . ($data['ApplyIncomingRules'] ? '1' : '0') . "
+            ApplyIncomingRules = " . ($data['ApplyIncomingRules'] ? '1' : '0') . ",
+            EnableSMS          = " . ($data['EnableSMS'] ? '1' : '0') . "
 		WHERE
 			PK_Dongle          = " . $mysqli->real_escape_string($data['PK_Dongle']) . "
 		LIMIT 1
@@ -167,22 +187,22 @@ function formdata_validate($data) {
         $errors['IMSI']['Invalid'] = true;
     }
 
-    //if ($data['ApplyIncomingRules'] == 1) {
-    //    // Check if callback extension is formed of digits only
-    //    if ($data['CallbackExtension'] != "" . intval($data['CallbackExtension'])) {
-    //        $errors['CallbackExtension']['Invalid'] = true;
-    //        // Check if extension is 3-5 digits long
-    //    } elseif (strlen($data['CallbackExtension']) < 3 || strlen($data['CallbackExtension']) > 5) {
-    //        $errors['CallbackExtension']['Invalid'] = true;
-    //        // Check if extension is valid on the system
-    //    } else {
-    //        $query = "SELECT PK_Extension FROM Extensions WHERE Extension = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "' LIMIT 1";
-    //        $result = $mysqli->query($query) or die($mysqli->error . $query);
-    //        if ($result->num_rows < 1) {
-    //            $errors['CallbackExtension']['NoMatch'] = true;
-    //        }
-    //    }
-    //}
+    if ($data['ApplyIncomingRules'] == 1) {
+        // Check if callback extension is formed of digits only
+        if ($data['CallbackExtension'] != "" . intval($data['CallbackExtension'])) {
+            $errors['CallbackExtension']['Invalid'] = true;
+            // Check if extension is 3-5 digits long
+        } elseif (strlen($data['CallbackExtension']) < 3 || strlen($data['CallbackExtension']) > 5) {
+            $errors['CallbackExtension']['Invalid'] = true;
+            // Check if extension is valid on the system
+        } else {
+            $query = "SELECT PK_Extension FROM Extensions WHERE Extension = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "' LIMIT 1";
+            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            if ($result->num_rows < 1) {
+                $errors['CallbackExtension']['NoMatch'] = true;
+            }
+        }
+    }
 
     return $errors;
 }
