@@ -1,7 +1,7 @@
-<h2>VOIP Providers</h2>
+<h2>VoIP Providers</h2>
 <br />
 <p style="font-weight: bold;">
-	Are you sure you want to permanently delete this SIP provider ({$Provider.Name})?
+	Are you sure you want to permanently delete this VoIP provider ({$Provider.Name})?
 </p>
 <br />
 <p>

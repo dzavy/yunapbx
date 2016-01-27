@@ -8,25 +8,25 @@ function AddNewSubmit() {
 {/literal}
 </script>
 
-<h2>VOIP Providers</h2>
+<h2>VoIP Providers</h2>
 
 {if $Message == "MODIFY_SIP_PROVIDER"}
-<p class="success_message">Successfully modified SIP provider.</p>
+<p class="success_message">Successfully modified VoIP provider.</p>
 {/if}
 {if $Message == "DELETE_SIP_PROVIDER"}
-<p class="success_message">Successfully delete SIP provider</p>
+<p class="success_message">Successfully delete VoIP provider</p>
 {/if}
 
 <form action="#" method="post" onsubmit="AddNewSubmit()" id="AddNewForm">
 <p>
 
-	<button type="submit">Add New VOIP Provider</button>
+	<button type="submit">Add New VoIP Provider</button>
 </p>
 </form>
 
 {if $Providers|@count}
 <table class="listing fullwidth">
-	<caption>VOIP Providers ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>VoIP Providers ( {$Start+1} to {$End} ) of {$Total}</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Type">Provider Type</a>
@@ -90,7 +90,7 @@ function AddNewSubmit() {
 </p>
 {else}
 <p class="warning_message">
-	There are no voip providers defined on this system. 
+	There are no VoIP providers defined on this system. 
 	Use the <em>Add New Provider</em> form to define one now.
 </p>
 {/if}

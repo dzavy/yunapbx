@@ -71,9 +71,9 @@
     {/literal}
 </script>
 
-<h2>VOIP Providers</h2>
+<h2>VoIP Providers</h2>
 {if $Errors.Name.Invalid}
-    <p class="error_message">SIP Provider Name is required (1-32 characters in length).</p>
+    <p class="error_message">VoIP Provider Name is required (1-32 characters in length).</p>
 {/if}
 {if $Errors.Password.Invalid}
     <p class="error_message">Password is required (1-32 characters in length).</p>
@@ -100,9 +100,9 @@
     </p>
 
     {if $Provider.PK_SipProvider == ""}
-        <strong>Add a New SIP Provider</strong>
+        <strong>Add a New VoIP Provider</strong>
     {else}
-        <strong>Modify SIP Provider</strong>
+        <strong>Modify VoIP Provider</strong>
     {/if}
     <table class="formtable">
         <!-- Sip Provider Name -->
@@ -516,9 +516,9 @@
     <p>
         <br />
         {if $Provider.PK_SipProvider == ""}
-            <button type="submit" name="submit" value="save">Add SIP Provider</button>
+            <button type="submit" name="submit" value="save">Add VoIP Provider</button>
         {else}
-            <button type="submit" name="submit" value="save">Modify SIP Provider</button>
+            <button type="submit" name="submit" value="save">Modify VoIP Provider</button>
         {/if}
     </p>
 </form>
