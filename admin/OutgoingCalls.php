@@ -38,19 +38,53 @@ function OutgoingCalls() {
     // Outgoing Rules (OutgoingRules)
     $OutgoingRules = array();
     $query = "
-		SELECT
+		(SELECT
 			PK_OutgoingRule,
 			RuleOrder,
 			BeginWith,
 			OutgoingRules.Name,
 			RestBetweenHigh,
 			RestBetweenLow,
-			ProviderType,
+			'VoIP' AS ProviderType,
 			Protected,
 			SipProviders.Name AS ProviderName
 		FROM
 			OutgoingRules
-			LEFT JOIN SipProviders ON PK_SipProvider = ProviderID AND ProviderType = 'SIP'
+        LEFT JOIN SipProviders ON PK_SipProvider = ProviderID
+        WHERE ProviderType = 'SIP'
+        )
+        UNION
+		(SELECT
+			PK_OutgoingRule,
+			RuleOrder,
+			BeginWith,
+			OutgoingRules.Name,
+			RestBetweenHigh,
+			RestBetweenLow,
+			'3G Dongle' AS ProviderType,
+			Protected,
+			Dongles.Name AS ProviderName
+		FROM
+			OutgoingRules
+        LEFT JOIN Dongles ON PK_Dongle = ProviderID
+        WHERE ProviderType = 'DONGLE'
+        )
+        UNION
+		(SELECT
+			PK_OutgoingRule,
+			RuleOrder,
+			BeginWith,
+			OutgoingRules.Name,
+			RestBetweenHigh,
+			RestBetweenLow,
+			'internal' AS ProviderType,
+			Protected,
+			'' AS ProviderName
+		FROM
+			OutgoingRules
+        WHERE ProviderType = 'INTERNAL'
+        )
+        
 		ORDER BY
 			RuleOrder ASC
 	";

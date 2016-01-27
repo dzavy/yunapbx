@@ -389,17 +389,17 @@ input, select {
 				from
 				<select name="Provider">
 					<option value="0">Any Provider</option>
-					<optgroup label="SIP :">
+					<optgroup label="VoIP:">
 						{foreach from=$SipProviders item=SipProvider}
 						<option value="SIP~{$SipProvider.PK_SipProvider}" {if $IncomingRoute.ProviderType=='SIP' && $IncomingRoute.ProviderID==$SipProvider.PK_SipProvider}selected="selected"{/if}>
 							{$SipProvider.Name}
 						</option>
 						{/foreach}
 					</optgroup>
-					<optgroup label="IAX :">
-						{foreach from=$IaxProviders item=IaxProvider}
-						<option value="IAX~{$IaxProvider.PK_IaxProvider}" {if $IncomingRoute.ProviderType=='IAX' && $IncomingRoute.ProviderID==$IaxProvider.PK_IaxProvider}selected="selected"{/if}>
-							{$IaxProvider.Name}
+					<optgroup label="3G Dongle:">
+						{foreach from=$Dongles item=Dongle}
+						<option value="DONGLE~{$Dongle.PK_Dongle}" {if $IncomingRoute.ProviderType=='DONGLE' && $IncomingRoute.ProviderID==$Dongle.PK_Dongle}selected="selected"{/if}>
+							{$Dongle.Name}
 						</option>
 						{/foreach}
 					</optgroup>
@@ -412,10 +412,17 @@ input, select {
 				<strong>Route numbers</strong> from
 				<select name="Provider">
 					<option value="0">Any Provider</option>
-					<optgroup label="SIP :">
+					<optgroup label="VoIP:">
 						{foreach from=$SipProviders item=SipProvider}
 						<option value="SIP~{$SipProvider.PK_SipProvider}" {if $IncomingRoute.ProviderType=='SIP' && $IncomingRoute.ProviderID==$SipProvider.PK_SipProvider}selected="selected"{/if}>
 							{$SipProvider.Name}
+						</option>
+						{/foreach}
+					</optgroup>
+					<optgroup label="3G Dongle:">
+						{foreach from=$Dongles item=Dongle}
+						<option value="DONGLE~{$Dongle.PK_Dongle}" {if $IncomingRoute.ProviderType=='DONGLE' && $IncomingRoute.ProviderID==$Dongle.PK_Dongle}selected="selected"{/if}>
+							{$Dongle.Name}
 						</option>
 						{/foreach}
 					</optgroup>
@@ -443,24 +450,24 @@ input, select {
 	<tr class="{cycle values="even,odd"}">
 		<td>{counter}</td>
 		<td style="padding: 10px 0px;">
-			<strong>Route All</strong> unmatched numbers from SIP Provider "{$SipProvider.Name}" to extension {$SipProvider.CallbackExtension}
+			<strong>Route All</strong> unmatched numbers from VoIP Provider "{$SipProvider.Name}" to extension {$SipProvider.CallbackExtension}
 			<br />
 			Click
-				<a href="VoipProviders_Sip_Modify.php?PK_SipProvider={$SipProvider.PK_SipProvider}">here</a>
-			to change this SIP Providers's default extension.
+				<a href="VoipProviders_Modify.php?PK_SipProvider={$SipProvider.PK_SipProvider}">here</a>
+			to change this VoIP Providers's default extension.
 		</td>
 		<td>&nbsp;</td>
 	</tr>
 	{/foreach}
-	{foreach from=$IaxProviders item=IaxProvider}
+	{foreach from=$Dongles item=Dongle}
 	<tr class="{cycle values="even,odd"}">
 		<td>{counter}</td>
 		<td style="padding: 10px 0px;">
-			<strong>Route All</strong> unmatched numbers from IAX Provider "{$IaxProvider.Name}" to extension {$IaxProvider.CallbackExtension}
+			<strong>Route All</strong> unmatched numbers from 3G Dongle "{$Dongle.Name}" to extension {$Dongle.CallbackExtension}
 			<br />
 			Click
-				<a href="VoipProviders_Iax_Modify.php?PK_IaxProvider={$IaxProvider.PK_IaxProvider}">here</a>
-			to change this IAX Providers's default extension.
+				<a href="Dongles_Modify.php?PK_Dongle={$Dongle.PK_Dongle}">here</a>
+			to change this Dongle's default extension.
 		</td>
 		<td>&nbsp;</td>
 	</tr>

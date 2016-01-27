@@ -42,15 +42,15 @@ function OutgoingCalls_Rule_Modify() {
     }
 
     // IaxProviders
-    //$IaxProviders = array();
-    //$query = "SELECT * FROM IaxProviders ORDER BY Name";
-    //$result = $mysqli->query($query) or die($mysqli->error);
-    //while ($row = $result->fetch_assoc()) {
-    //    $IaxProviders[] = $row;
-    //}
+    $Dongles = array();
+    $query = "SELECT * FROM Dongles ORDER BY Name";
+    $result = $mysqli->query($query) or die($mysqli->error);
+    while ($row = $result->fetch_assoc()) {
+        $Dongles[] = $row;
+    }
 
     $smarty->assign('SipProviders', $SipProviders);
-    //$smarty->assign('IaxProviders', $IaxProviders);
+    $smarty->assign('Dongles', $Dongles);
     $smarty->assign('Rule', $Rule);
     $smarty->assign('Errors', $Errors);
 
@@ -100,6 +100,11 @@ function formdata_save($data) {
         $mysqli->query($query) or die($mysqli->error . $query);
 
         $data['PK_OutgoingRule'] = $mysqli->insert_id;
+        
+        if($data['Allow']) {
+            $query = "INSERT INTO Extension_Rules SELECT PK_Extension, " . $data['PK_OutgoingRule'] . " FROM Ext_SipPhones";
+            $mysqli->query($query) or die($mysqli->error . $query);
+        }
     }
 
     $query = "

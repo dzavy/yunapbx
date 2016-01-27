@@ -88,18 +88,18 @@ function IncomingCalls() {
     }
 
     // IaxProviders
-    //$IaxProviders = array();
-    //$query = "SELECT * FROM IaxProviders WHERE ApplyIncomingRules = 1 ORDER BY Name";
-    //$result = $mysqli->query($query) or die($mysqli->error);
-    //while ($row = $result->fetch_assoc()) {
-    //    $IaxProviders[] = $row;
-    //}
+    $Dongles = array();
+    $query = "SELECT * FROM Dongles WHERE ApplyIncomingRules = 1 ORDER BY Name";
+    $result = $mysqli->query($query) or die($mysqli->error);
+    while ($row = $result->fetch_assoc()) {
+        $Dongles[] = $row;
+    }
 
     $smarty->assign('IncomingRules', $IncomingRules);
     $smarty->assign('IncomingRoutes', $IncomingRoutes);
     $smarty->assign('Timeframes', $Timeframes);
     $smarty->assign('SipProviders', $SipProviders);
-    //$smarty->assign('IaxProviders', $IaxProviders);
+    $smarty->assign('Dongles', $Dongles);
     $smarty->assign('HilightRule', $HiligthRule);
     $smarty->assign('HilightRoute', $HiligthRoute);
 

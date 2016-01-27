@@ -196,9 +196,9 @@ $(document).ready(
 		<th style="width: 25px;">Move</th>
 		<th style="width: 150px;">Name</th>
 		<th style="width: 200px;">Pattern to Match</th>
-		<th>Outgoing Type</th>
-		<th>Call Using</th>
-		<th style="width: 110px"></th>
+		<th style="width: 80px;">Outgoing Type</th>
+		<th style="width: 100px;">Call Using</th>
+		<th style="width: 120px"></th>
 	</tr>
 </table>
 <div id="Rules">
@@ -226,14 +226,10 @@ $(document).ready(
 					Any number {$Rule.RestBetweenLow} digits in length.
 				{/if}
 			</td>
-			<td>
-				{if $Rule.ProviderType != "INTERNAL"}
-					{$Rule.ProviderType} Provider
-				{else}
-					internal
-				{/if}
+			<td style="width: 80px;">
+                {$Rule.ProviderType}
 			</td>
-			<td>
+			<td style="width: 100px;">
 				{$Rule.ProviderName}
 			</td>
 			<td style="text-align: right; width: 120px">

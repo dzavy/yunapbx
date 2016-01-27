@@ -2,7 +2,7 @@
 <script type="text/javascript">
 function ShowSelectRow() {
 	$("#SIP_SelectRow").css('display', 'none');
-	$("#IAX_SelectRow").css('display', 'none');
+	$("#DONGLE_SelectRow").css('display', 'none');
 	$("#GROUP_SelectRow").css('display', 'none');
 
 	var Type = $('#ProviderType').val();
@@ -90,8 +90,8 @@ $(document).ready(function() {
 		<td>Call Trough:</td>
 		<td>
 			<select name="ProviderType" id="ProviderType" onchange="ShowSelectRow()">
-				<option value="SIP"      {if $Rule.ProviderType=='SIP'     }selected="selected"{/if}>SIP Provider</option>
-				<option value="IAX"      {if $Rule.ProviderType=='IAX'     }selected="selected"{/if}>IAX Provider</option>
+				<option value="SIP"      {if $Rule.ProviderType=='SIP'     }selected="selected"{/if}>VoIP Provider</option>
+				<option value="DONGLE"   {if $Rule.ProviderType=='DONGLE'     }selected="selected"{/if}>3G Dongle</option>
 				<option value="GROUP"    {if $Rule.ProviderType=='GROUP'   }selected="selected"{/if}>Channel Group</option>
 				<option value="INTERNAL" {if $Rule.ProviderType=='INTERNAL'}selected="selected"{/if}>Internal</option>
 			</select>
@@ -100,7 +100,7 @@ $(document).ready(function() {
 
 	<!-- SIP Provider -->
 	<tr id="SIP_SelectRow" style="display:none">
-		<td>SIP Provider:</td>
+		<td>VoIP Provider:</td>
 		<td>
 			<select name="ProviderID[SIP]">
 			{foreach from=$SipProviders item=SipProvider}
@@ -111,12 +111,12 @@ $(document).ready(function() {
 	</tr>
 
 	<!-- IAX Provider -->
-	<tr id="IAX_SelectRow" style="display:none">
-		<td>IAX Provider:</td>
+	<tr id="DONGLE_SelectRow" style="display:none">
+		<td>3G Dongle:</td>
 		<td>
-			<select name="ProviderID[IAX]">
-			{foreach from=$IaxProviders item=IaxProvider}
-				<option {if $Rule.ProviderID == $IaxProvider.PK_IaxProvider}selected="selected"{/if} value="{$IaxProvider.PK_IaxProvider}">{$IaxProvider.Name}</option>
+			<select name="ProviderID[DONGLE]">
+			{foreach from=$Dongles item=Dongle}
+				<option {if $Rule.ProviderID == $Dongle.PK_Dongle}selected="selected"{/if} value="{$Dongle.PK_Dongle}">{$Dongle.Name}</option>
 			{/foreach}
 			</select>
 		</td>
