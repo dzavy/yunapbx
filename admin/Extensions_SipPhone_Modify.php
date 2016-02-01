@@ -71,6 +71,7 @@ function Extensions_SipPhone_Modify() {
             $id = formdata_save($SipPhone);
             asterisk_UpdateConf('sip.conf');
             asterisk_UpdateConf('voicemail.conf');
+            asterisk_UpdateConf('extensions.conf');
             asterisk_Reload();
             header("Location: Extensions_List.php?msg=MODIFY_SIPPHONE_EXTENSION&hilight={$id}");
             die();
