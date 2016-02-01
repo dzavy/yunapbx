@@ -1,54 +1,54 @@
 <script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 <script type="text/javascript">
     {literal}
-    function popUp(url, inName, width, height)
-    {
-        inName = inName.replace(/ /g, "_"); /* For stupid pos IE */
-        var popup = window.open('', inName, 'width=' + width + ',height=' + height + ',toolbars=0,scrollbars=1,location=0,status=0,menubar=0,resizable=1,left=200,top=200');
-
-        // only reload the page if it contains a new url
-        if (popup.closed || !popup.document.URL || (-1 == popup.document.URL.indexOf(url)))
+        function popUp(url, inName, width, height)
         {
-            popup.location = url;
+            inName = inName.replace(/ /g, "_"); /* For stupid pos IE */
+            var popup = window.open('', inName, 'width=' + width + ',height=' + height + ',toolbars=0,scrollbars=1,location=0,status=0,menubar=0,resizable=1,left=200,top=200');
+
+            // only reload the page if it contains a new url
+            if (popup.closed || !popup.document.URL || (-1 == popup.document.URL.indexOf(url)))
+            {
+                popup.location = url;
+            }
+            popup.focus();
+            return popup;
         }
-        popup.focus();
-        return popup;
-    }
 
-    function Display_Advanced_Toggle() {
-        $('.toggle').toggleClass('hidden');
-    }
-
-    function UpdateCallRules(val) {
-        if (val == 0) {
-            $("#OutgoingTbl :input").removeAttr('disabled');
-            $("#OutgoingTbl td").removeClass('disabled');
-            $("#CallbackExtension").attr('disabled', 'disabled');
-        } else {
-            $("#OutgoingTbl :input").attr('disabled', 'disabled');
-            $("#OutgoingTbl td").addClass('disabled');
-            $("#CallbackExtension").removeAttr('disabled');
+        function Display_Advanced_Toggle() {
+            $('.toggle').toggleClass('hidden');
         }
-    }
-    
-    function DiscoveredDongleSelect() {
-        var dongle = $("#DiscoveredDongles").val();
-        dongle_params = dongle.split(";");
-        $("#IMEI").val(dongle_params[0]);
-        $("#IMSI").val(dongle_params[1]);
-    }
 
-    $(document).ready(function () {
+        function UpdateCallRules(val) {
+            if (val == 0) {
+                $("#OutgoingTbl :input").removeAttr('disabled');
+                $("#OutgoingTbl td").removeClass('disabled');
+                $("#CallbackExtension").attr('disabled', 'disabled');
+            } else {
+                $("#OutgoingTbl :input").attr('disabled', 'disabled');
+                $("#OutgoingTbl td").addClass('disabled');
+                $("#CallbackExtension").removeAttr('disabled');
+            }
+        }
+
+        function DiscoveredDongleSelect() {
+            var dongle = $("#DiscoveredDongles").val();
+            dongle_params = dongle.split(";");
+            $("#IMEI").val(dongle_params[0]);
+            $("#IMSI").val(dongle_params[1]);
+        }
+
+        $(document).ready(function () {
 
     {/literal}
 
     {if $Dongle.ApplyIncomingRules}	UpdateCallRules(1);
     {else}
-    UpdateCallRules(0);
+            UpdateCallRules(0);
     {/if}
 
     {literal}
-    })
+        })
 
     {/literal}
 </script>
@@ -62,6 +62,9 @@
 {/if}
 {if $Errors.IMSI.Invalid}
     <p class="error_message">IMSI is required (14-15 characters in length).</p>
+{/if}
+{if $Errors.MSISDN.Invalid}
+    <p class="error_message">MSISDN is required (3-15 characters in length).</p>
 {/if}
 {if $Errors.CallbackExtension.Invalid}
     <p class="error_message">A Callback Extension is required (3-5 digits in length).</p>
@@ -87,7 +90,7 @@
                 Discovered Dongles
             </td>
             <td>
-				<select id="DiscoveredDongles" onchange="DiscoveredDongleSelect()">
+                <select id="DiscoveredDongles" onchange="DiscoveredDongleSelect()">
                     <option value=";" selected="selected">--- please select ---</option>
 
                     {foreach from=$DiscoveredDongles item=DiscoveredDongle}
@@ -102,6 +105,15 @@
             </td>
             <td>
                 <input type="text" name="Name" value="{$Dongle.Name}" {if $Errors.Name}class="error"{/if} />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Telephone number
+            </td>
+            <td>
+                <input type="text" name="MSISDN" id="MSISDN" value="{$Dongle.MSISDN}" {if $Errors.MSISDN}class="error"{/if} />
             </td>
         </tr>
 

@@ -135,6 +135,7 @@ function formdata_save($data) {
 			Name               = '" . $mysqli->real_escape_string($data['Name']) . "',
 			IMEI               = '" . $mysqli->real_escape_string($data['IMEI']) . "',
 			IMSI               = '" . $mysqli->real_escape_string($data['IMSI']) . "',
+            MSISDN             = '" . $mysqli->real_escape_string($data['MSISDN']) . "',
 			CallbackExtension  = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "',
             ApplyIncomingRules = " . ($data['ApplyIncomingRules'] ? '1' : '0') . ",
             EnableSMS          = " . ($data['EnableSMS'] ? '1' : '0') . "
@@ -187,6 +188,11 @@ function formdata_validate($data) {
         $errors['IMSI']['Invalid'] = true;
     }
 
+    // Check if account id is 1-32 chars long
+    if (!preg_match("/^[0-9]{3,15}$/", $data['MSISDN'])) {
+        $errors['MSISDN']['Invalid'] = true;
+    }
+    
     if ($data['ApplyIncomingRules'] == 1) {
         // Check if callback extension is formed of digits only
         if ($data['CallbackExtension'] != "" . intval($data['CallbackExtension'])) {
