@@ -11,5 +11,6 @@ format=alaw
 application=/usr/bin/madplay -Qr -o raw:- --mono -R 8000 -a {$Group.Gain}
 {else}
 application=/usr/bin/madplay -Qzr -o raw:- --mono -R 8000 -a {$Group.Gain}
-{/if}    
+{/if}
+
 {/foreach}

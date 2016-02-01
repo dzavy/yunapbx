@@ -5,7 +5,7 @@ monitor-type = MixMonitor
 
 {foreach from=$Queues item=Queue}
 ;{$Queue.Name}
-[queue-{$Queue.PK_Extension}]
+[queue{$Queue.PK_Extension}]
 musicclass         = group_{$Queue.FK_MohGroup}
 announce           = {$Queue.Sound_PickupAnnouncement}
 strategy           = {$Queue.RingStrategy}
@@ -35,7 +35,7 @@ context            = ring-queue
 {/if}
 
 {foreach from=$Queue.Members item=Member}
-{if $Member.LoginRequired == 0}member => Local/{$Member.Extension}-{$Queue.PK_Extension}@Extension_Queue_RingAgent/n
+{if $Member.LoginRequired == 0}member => Local/{$Member.Extension}@internal
 {/if}
 {/foreach}
 {/foreach}

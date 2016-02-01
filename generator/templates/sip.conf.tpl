@@ -39,14 +39,14 @@ localnet={$Localnet}
 
 {foreach from=$SipProviders item=P}
 {if $P.HostType == "Provider"}
-register => {$P.AccountID}:{$P.Password}:{$P.AuthUser}@sip_provider_{$P.PK_SipProvider}/{$P.AccountID}{if $P.SipExpiry != ""}~{$P.SipExpiry}{/if}
+register => {$P.AccountID}:{$P.Password}:{$P.AuthUser}@sip{$P.PK_SipProvider}/{$P.AccountID}{if $P.SipExpiry != ""}~{$P.SipExpiry}{/if}
 {/if}
 
 {/foreach}
 
 {foreach from=$SipProviders item=Provider}
 ; SIP_PROVIDER : {$Provider.Name}
-[sip_provider_{$Provider.PK_SipProvider}]
+[sip{$Provider.PK_SipProvider}]
 {if $Provider.ProxyHost != ""}outboundproxy={$Provider.ProxyHost}
 {/if}
 host={$Provider.ProxyHost}
@@ -65,7 +65,7 @@ fromuser={$Provider.AccountID}
 {else}
 fromuser={$Provider.AccountID}
 {/if}
-context=sip_provider_{$Provider.PK_SipProvider}
+context=sip{$Provider.PK_SipProvider}_ingress
 dtmfmode={$Provider.DTMFMode}
 port={$Provider.SipPort}
 {if     $Provider.Reinvite=="no"}
@@ -102,15 +102,16 @@ progressinband=yes
 accountcode=S{$Extension.Extension}
 type=friend
 callerid={$Extension.FirstName} {$Extension.LastName} <{$Extension.Extension}>
-username={$Extension.Extension}
+defaultuser={$Extension.Extension}
 secret={$Extension.PhonePassword}
 dtmfmode={$Extension.DTMFMode}
-context=internal
-subscribecontext=hints
+context=ext{$Extension.PK_Extension}_ingress
+;subscribecontext=hints
 host=dynamic
 nat={$Extension.NATType}
 disallow=all
 allow={$Extension.Codecs}
+outofcall_message_context=ext{$Extension.PK_Extension}_message
 qualify=yes
 {if 'voicemail'|in_array:$Extension.Features }
 mailbox={$Extension.Extension}@default

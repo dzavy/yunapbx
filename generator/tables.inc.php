@@ -51,6 +51,20 @@ function Get_SipProviders() {
             $provider['Hosts'][] = $row_hosts['Host'];
         }
 
+        $provider['OugoingRules'] = array();
+        $query_outrules = "
+			SELECT
+				OutgoingRules.*
+			FROM
+				SipProvider_Rules JOIN OutgoingRules ON (PK_OutgoingRule = FK_OutgoingRule)
+			WHERE
+				FK_SipProvider = {$provider['PK_SipProvider']} ORDER BY RuleOrder
+		";
+        $result_outrules = $mysqli->query($query_outrules) or die($mysqli->error . $query_outrules);
+        while ($row_outrule = $result_outrules->fetch_assoc()) {
+            $provider['OutgoingRules'][] = $row_outrule;
+        }
+ 
         $SipProviders[] = $provider;
     }
 
@@ -72,6 +86,22 @@ function Get_Dongles() {
     $Dongles = array();
     while ($row = $result->fetch_assoc()) {
         $dongle = $row;
+        
+        
+        $dongle['Rules'] = array();
+        $query_rules = "
+			SELECT
+				OutgoingRules.*
+			FROM
+				Dongle_Rules JOIN OutgoingRules ON (PK_OutgoingRule = FK_OutgoingRule)
+			WHERE
+				FK_Dongle = {$dongle['PK_Dongle']} ORDER BY RuleOrder
+		";
+        $result_rules = $mysqli->query($query_rules) or die($mysqli->error . $query_rules);
+        while ($row_rule = $result_rules->fetch_assoc()) {
+            $dongle['Rules'][] = $row_rule;
+        }
+        
         $Dongles[] = $dongle;
     }
 
@@ -82,18 +112,15 @@ function Get_OutgoingRules() {
     global $mysqli;
     $query = "
 		SELECT
-			Dongles.*
+			*
 		FROM
-			Dongles
-		ORDER BY
-			Name
+			OutgoingRules
 	";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
 
-    $Dongles = array();
+    $OutgoingRules = array();
     while ($row = $result->fetch_assoc()) {
-        $dongle = $row;
-        $Dongles[] = $dongle;
+        $OutgoingRules[] = $row;
     }
 
     return $OutgoingRules;
@@ -162,7 +189,7 @@ function Get_Ext_SipPhones() {
         $exten['Rules'] = array();
         $query_rules = "
 			SELECT
-				PK_OutgoingRule
+				OutgoingRules.*
 			FROM
 				Extension_Rules JOIN OutgoingRules ON (PK_OutgoingRule = FK_OutgoingRule)
 			WHERE
@@ -175,6 +202,9 @@ function Get_Ext_SipPhones() {
         
         $Extensions[] = $exten;
     }
+
+//            var_dump($Extensions);
+//        die();
 
     return $Extensions;
 }
@@ -237,26 +267,6 @@ function Get_Ext_Queues() {
         $Queues[] = $queue;
     }
     return $Queues;
-}
-
-function Get_Ext_Parking() {
-    global $mysqli;
-    $query = "
-		SELECT
-			Extensions.Extension,
-			Extensions.PK_Extension,
-			Ext_ParkingLot.*
-		FROM
-			Ext_ParkingLot
-			INNER JOIN Extensions ON Ext_ParkingLot.PK_Extension = Extensions.PK_Extension
-		ORDER BY
-			Extension
-	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-
-    $Parking = $result->fetch_assoc();
-
-    return $Parking;
 }
 
 function Get_Ext_ConfCenter_Rooms() {
