@@ -274,7 +274,7 @@ function sip_get_status($SipProvider) {
         'Latency' => ''
     );
 
-    $response = asterisk_Cmd("sip show peer sip_provider_{$SipProvider['PK_SipProvider']}");
+    $response = asterisk_Cmd("sip show peer sip{$SipProvider['PK_SipProvider']}");
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
@@ -303,7 +303,7 @@ function sip_get_status($SipProvider) {
     $response = explode("\n", $response);
     foreach ($response as $line) {
         unset($regs);
-        if (preg_match("/^sip_provider_{$SipProvider['PK_SipProvider']}:([0-9]*) *[^ ]* *([^ ]*) *([0-9]*) *(.*[^ ]{1})[ ]{2} *(.*)$/", $line, $regs)) {
+        if (preg_match("/^sip{$SipProvider['PK_SipProvider']}:([0-9]*) *[^ ]* *([^ ]*) *([0-9]*) *(.*[^ ]{1})[ ]{2} *(.*)$/", $line, $regs)) {
             $Status['Status'] = $regs['4'];
         }
     }
