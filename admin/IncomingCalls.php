@@ -47,7 +47,7 @@ function IncomingCalls() {
 			SET
 				RouteType    = '{$_REQUEST['Type']}',
 				ProviderType = 0,
-				Extension    = '000'
+				Extension    = '0000'
 		";
 
         $mysqli->query($query) or die($mysqli->error);
