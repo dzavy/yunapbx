@@ -3,6 +3,7 @@
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
+include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function OutgoingCalls_Rule_Modify() {
     global $mysqli;
@@ -14,12 +15,13 @@ function OutgoingCalls_Rule_Modify() {
         $Errors = formdata_validate($Rule);
 
         if (count($Errors) == 0) {
+            $id = formdata_save($Rule);
+            asterisk_UpdateConf('extensions.conf');
+            asterisk_Reload();
             if ($Rule['PK_OutgoingRule'] == '') {
-                $id = formdata_save($Rule);
                 header("Location: OutgoingCalls.php?msg=CREATE_RULE&hilight={$id}");
                 die();
             } else {
-                $id = formdata_save($Rule);
                 header("Location: OutgoingCalls.php?msg=MODIFY_RULE&hilight={$id}");
                 die();
             }

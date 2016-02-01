@@ -3,6 +3,7 @@
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
+include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function OutgoingCalls_Ajax() {
     global $mysqli;
@@ -101,6 +102,9 @@ function OutgoingCalls_Ajax() {
             $response['Errors'] = $errors;
             break;
     }
+
+    asterisk_UpdateConf('extensions.conf');
+    asterisk_Reload();
 
     echo json_encode($response);
 }
