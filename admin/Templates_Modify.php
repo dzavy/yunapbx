@@ -90,8 +90,7 @@ function formdata_from_db($id) {
 		SELECT
 			PK_Template,
 			Name,
-			FirstName_Editable,
-			LastName_Editable,
+			Name_Editable,
 			Password_Editable,
 			Email_Editable,
 			FK_NATType,
@@ -185,8 +184,7 @@ function formdata_save($data) {
 		UPDATE
 			Templates
 		SET
-			FirstName_Editable = " . ($data['FirstName_Editable'] ? '1' : '0') . ",
-			LastName_Editable  = " . ($data['LastName_Editable'] ? '1' : '0') . ",
+			Name_Editable      = " . ($data['Name_Editable'] ? '1' : '0') . ",
 			Password_Editable  = " . ($data['Password_Editable'] ? '1' : '0') . ",
 			Email_Editable     = " . ($data['Email_Editable'] ? '1' : '0') . ",
 			FK_NATType         = " . $mysqli->real_escape_string($data['FK_NATType']) . ",

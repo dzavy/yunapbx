@@ -57,7 +57,7 @@ function Extensions_List_Queues() {
 			Extensions.PK_Extension        AS _PK_,
 			LPAD(Extension,5,' ')          AS Extension,
 			Type                           AS Type,
-			IFNULL(Ext_Queues.Name,'')     AS Name,
+			Extensions.Name                AS Name,
 			RingStrategies.Name            AS Strategy,
 			DateCreated AS DateCreated,
 			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated_Formated

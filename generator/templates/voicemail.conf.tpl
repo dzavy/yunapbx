@@ -32,7 +32,7 @@ european=Europe/Copenhagen|'vm-received' a d b 'digits/at' HM
 [default]
 {foreach from=$Extensions item=Extension}
 {if 'voicemail'|in_array:$Extension.Features}
-{$Extension.Extension} => {$Extension.Password},{$Extension.FirstName} {$Extension.LastName},{$Extension.Email},,attach={if 'voicemail_forwarding'|in_array:$Extension.Features}yes{else}no{/if}|saycid=no|envelope=no|delete=no
+{$Extension.Extension} => {$Extension.Password},{$Extension.Name},{$Extension.Email},,attach={if 'voicemail_forwarding'|in_array:$Extension.Features}yes{else}no{/if}|saycid=no|envelope=no|delete=no
 {/if}
 {/foreach}
 

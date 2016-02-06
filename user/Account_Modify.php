@@ -44,10 +44,8 @@ function formdata_from_db($id) {
 		SELECT
 			Extensions.PK_Extension AS PK_Extension,
 			Extension,
-			FirstName,
-			FirstName_Editable,
-			LastName,
-			LastName_Editable,
+			Name,
+			Name_Editable,
 			Password,
 			Password_Editable,
 			Email,
@@ -82,31 +80,16 @@ function formdata_save($data) {
     // Update 'First Name'
     $query = "
 		UPDATE
+            Extensions,
 			" . ($_SESSION['_USER']['Type'] == 'SipPhone' ? "Ext_SipPhones" : "") . "
 			" . ($_SESSION['_USER']['Type'] == 'Virtual' ? "Ext_Virtual  " : "") . "
 			" . ($_SESSION['_USER']['Type'] == 'Agent' ? "Ext_Agent    " : "") . "
 		SET
-			FirstName          = '" . $mysqli->real_escape_string($data['FirstName']) . "'
+			Name          = '" . $mysqli->real_escape_string($data['Name']) . "'
 		WHERE
 			PK_Extension       = " . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "
 			AND
 			FirstName_Editable = 1
-		LIMIT 1
-	";
-    $mysqli->query($query) or die($mysqli->error . $query);
-
-    // Update 'Last Name'
-    $query = "
-		UPDATE
-			" . ($_SESSION['_USER']['Type'] == 'SipPhone' ? "Ext_SipPhones" : "") . "
-			" . ($_SESSION['_USER']['Type'] == 'Virtual' ? "Ext_Virtual  " : "") . "
-			" . ($_SESSION['_USER']['Type'] == 'Agent' ? "Ext_Agent    " : "") . "
-		SET
-			LastName           = '" . $mysqli->real_escape_string($data['LastName']) . "'
-		WHERE
-			PK_Extension       = " . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "
-			AND
-			LastName_Editable = 1
 		LIMIT 1
 	";
     $mysqli->query($query) or die($mysqli->error . $query);
@@ -166,8 +149,8 @@ function formdata_validate($data) {
     }
 
     // Check if first name is proper length
-    if ((strlen($data['FirstName']) < 1) || (strlen($data['FirstName']) > 32)) {
-        $errors['FirstName']['Invalid'] = true;
+    if ((strlen($data['Name']) < 1) || (strlen($data['Name']) > 32)) {
+        $errors['Name']['Invalid'] = true;
     }
 
     return $errors;

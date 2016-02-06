@@ -105,13 +105,13 @@
                 {/if}
             </td>
             <td>
-                {if     $CDR.CallType == 'IN'}<img src="../static/images/incoming.png" />
-                {elseif $CDR.CallType == 'OUT'}<img src="../static/images/outgoing.png" />
-                {elseif $CDR.CallType == 'LOCAL'}<img src="../static/images/internal.png" />
+                {if     $CDR.CallType == 'IN'}<img src="../static/images/incoming.png" title="Incoming" />
+                {elseif $CDR.CallType == 'OUT'}<img src="../static/images/outgoing.png" title="Outgoing" />
+                {elseif $CDR.CallType == 'LOCAL'}<img src="../static/images/internal.png" title="Internal" />
                 {/if}
             </td>
-            <td>{$CDR.Duration}</td>
-            <td>{$CDR.BillSec}</td>
+        	<td>{if $CDR.Duration/60 > 1}{($CDR.Duration/60)|string_format:"%d"}m, {/if}{$CDR.Duration%60}s</td>
+    		<td>{if $CDR.BillSec/60 > 1}{($CDR.BillSec/60)|string_format:"%d"}m, {/if}{$CDR.BillSec%60}s</td>
             <td>
                 <a href="CallLog_Details.php?PK_CallLog={$CDR.PK_CallLog}" id="ToolTip_{$CDR.PK_CallLog}" class="jTip" id="six" name="Call Details">Call Details</a>
             </td>

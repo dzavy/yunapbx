@@ -102,10 +102,8 @@ function formdata_from_db($id) {
 		SELECT
 			Ext_SipPhones.PK_Extension,
 			Extension,
-			FirstName,
-			FirstName_Editable,
-			LastName,
-			LastName_Editable,
+			Name,
+			Name_Editable,
 			Password,
 			Password_Editable,
 			Email,
@@ -191,9 +189,7 @@ function formdata_from_template($id) {
     $query = "
 		SELECT
 			PK_Template,
-			Name,
-			FirstName_Editable,
-			LastName_Editable,
+			Name_Editable,
 			Password_Editable,
 			Email_Editable,
 			FK_NATType,
@@ -286,15 +282,15 @@ function formdata_save($data) {
         $mysqli->query($query) or die($mysqli->error . $query);
     }
 
+    $query = "UPDATE Extensions SET Name = '". $mysqli->real_escape_string($data['Name']) . "' WHERE PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']);
+    $mysqli->query($query) or die($mysqli->error . $query);
+
     // Update 'Extensions'
     $query = "
 		UPDATE
 			Ext_SipPhones
 		SET
-			FirstName          = '" . $mysqli->real_escape_string($data['FirstName']) . "',
-			FirstName_Editable = " . ($data['FirstName_Editable'] ? '1' : '0') . ",
-			LastName           = '" . $mysqli->real_escape_string($data['LastName']) . "',
-			LastName_Editable  = " . ($data['LastName_Editable'] ? '1' : '0') . ",
+			Name_Editable  = " . ($data['Name_Editable'] ? '1' : '0') . ",
 			Password_Editable  = " . ($data['Password_Editable'] ? '1' : '0') . ",
 			Email              = '" . $mysqli->real_escape_string($data['Email']) . "',
 			Email_Editable     = " . ($data['Email_Editable'] ? '1' : '0') . ",
@@ -444,8 +440,8 @@ function formdata_validate($data) {
     }
 
     // Check if first name is proper length
-    if ((strlen($data['FirstName']) < 1) || (strlen($data['FirstName']) > 32)) {
-        $errors['FirstName']['Invalid'] = true;
+    if ((strlen($data['Name']) < 1) || (strlen($data['Name']) > 32)) {
+        $errors['Name']['Invalid'] = true;
     }
 
     // Check if the phone passwords match

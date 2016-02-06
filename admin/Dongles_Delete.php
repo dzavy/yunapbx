@@ -19,7 +19,7 @@ function Dongles_Delete() {
         if ($mysqli->affected_rows != 1) {
             return;
         }
-        
+
         $query = "DELETE FROM Dongle_Rules WHERE FK_Dongle = $PK_Dongle";
         $mysqli->query($query) or die($mysqli->error . $query);
 
@@ -31,11 +31,10 @@ function Dongles_Delete() {
         asterisk_Reload();
 
         header('Location: Dongles_List.php?msg=DELETE_DONGLE');
-        die();
-    }
+    } else {
 
-    // Init extension info (Extension)
-    $query = "
+        // Init extension info (Extension)
+        $query = "
 		SELECT
 			PK_Dongle,
 			Name
@@ -45,12 +44,13 @@ function Dongles_Delete() {
 			PK_Dongle = $PK_Dongle
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $Dongle = $result->fetch_assoc();
+        $result = $mysqli->query($query) or die($mysqli->error);
+        $Dongle = $result->fetch_assoc();
 
-    $smarty->assign('Dongle', $Dongle);
+        $smarty->assign('Dongle', $Dongle);
 
-    return $smarty->fetch('Dongles_Delete.tpl');
+        return $smarty->fetch('Dongles_Delete.tpl');
+    }
 }
 
 admin_run('Dongles_Delete', 'Admin.tpl');

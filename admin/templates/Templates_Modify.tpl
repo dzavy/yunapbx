@@ -63,21 +63,12 @@
 	<!-- First Name -->
 	<tr>
 		<td>
-			First Name<br/>
+			Name<br/>
 			<small>Primary user of the extension</small>
 		</td>
 		<td>
-			<label for="FirstName_Editable">User can edit</label>
-			<input type="checkbox" value="1" name="FirstName_Editable" id="FirstName_Editable" {if $Template.FirstName_Editable}checked="checked"{/if} />
-		</td>
-	</tr>
-
-	<!-- Last Name -->
-	<tr>
-		<td>Last Name</td>
-		<td>
-			<label for="LastName_Editable">User can edit</label>
-			<input type="checkbox" value="1" name="LastName_Editable" id="LastName_Editable" {if $Template.LastName_Editable}checked="checked"{/if} />
+			<label for="Name_Editable">User can edit</label>
+			<input type="checkbox" value="1" name="Name_Editable" id="Name_Editable" {if $Template.Name_Editable}checked="checked"{/if} />
 		</td>
 	</tr>
 

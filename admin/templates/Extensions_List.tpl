@@ -71,14 +71,6 @@ function ChangeListView() {
 {elseif $Message == "MODIFY_AGENTLOGIN_EXTENSION" } Successfully modified agent login extension.
 {elseif $Message == "DELETE_AGENTLOGIN_EXTENSION" } Successfully deleted agent login extension.
 
-{elseif $Message == "ADD_PARKINGLOT_EXTENSION"    } Successfully created callpark extension.
-{elseif $Message == "MODIFY_PARKINGLOT_EXTENSION" } Successfully modified callpark extension.
-{elseif $Message == "DELETE_PARKINGLOT_EXTENSION" } Successfully deleted callpark extension.
-
-{elseif $Message == "ADD_INTERCOM_EXTENSION"    } Successfully created new intercom extension.
-{elseif $Message == "MODIFY_INTERCOM_EXTENSION" } Successfully modified intercom extension.
-{elseif $Message == "DELETE_INTERCOM_EXTENSION" } Successfully deleted intercom extension.
-
 {elseif $Message == "ADD_FC_VOICEMAIL_EXTENSION"    } Successfully created new feature code - voicemail extension.
 {elseif $Message == "MODIFY_FC_VOICEMAIL_EXTENSION" } Successfully modified feature code - voicemail extension.
 {elseif $Message == "DELETE_FC_VOICEMAIL_EXTENSION" } Successfully deleted feature code - voicemail extension.
@@ -91,18 +83,9 @@ function ChangeListView() {
 {elseif $Message == "MODIFY_FC_CALLMONITOR_EXTENSION" } Successfully modified feature code - call monitor extension.
 {elseif $Message == "DELETE_FC_CALLMONITOR_EXTENSION" } Successfully deleted feature code - call monitor extension.
 
-{elseif $Message == "ADD_FC_INTERCOM_EXTENSION"    } Successfully created new feature code - personal intercom extension.
-{elseif $Message == "MODIFY_FC_INTERCOM_EXTENSION" } Successfully modified feature code - personal intercom extension.
-{elseif $Message == "DELETE_FC_INTERCOM_EXTENSION" } Successfully deleted feature code - personal intercom extension.
-
 {else } {$Message} {/if}
 </p>
 {/if}
-
-{if $ErrMessage == "CONFLICT_PARKINGLOT_EXTENSION"}
-<p class="error_message">Only one Call Parking extension per system is allowed. Please delete or modify your existing Call Parking extension.</p>
-{/if}
-
 
 
 {if $Extensions|@count }
@@ -144,9 +127,7 @@ function ChangeListView() {
 			{elseif $Extension.Type == 'SimpleConf' } Simple Conference
 			{elseif $Extension.Type == 'ConfCenter' } Meet Me Conference Center
 			{elseif $Extension.Type == 'DialTone'   } Dialtone
-			{elseif $Extension.Type == 'ParkingLot' } Call Parking
 			{elseif $Extension.Type == 'GroupPickup'} Group Pickup
-			{elseif $Extension.Type == 'Directory'  } Directory
 			{elseif $Extension.Feature == 1         } Feature Code
 			{else                                   } {$Extension.Type}
 			{/if}

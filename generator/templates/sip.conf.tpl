@@ -101,7 +101,7 @@ progressinband=yes
 [{$Extension.Extension}]
 accountcode=S{$Extension.Extension}
 type=friend
-callerid={$Extension.FirstName} {$Extension.LastName} <{$Extension.Extension}>
+callerid={$Extension.Name} <{$Extension.Extension}>
 defaultuser={$Extension.Extension}
 secret={$Extension.PhonePassword}
 dtmfmode={$Extension.DTMFMode}

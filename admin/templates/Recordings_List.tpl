@@ -16,6 +16,16 @@ function popUp(url,inName,width,height)
 {/literal}
 </script>
 <h2>Call Recording</h2>
+
+{if $Message!= ""}
+<p class="success_message">
+{if     $Message == "ADD_REC_RULE" } Successfully added a new call recording rule.
+{elseif $Message == "MODIFY_REC_RULE" } Successfully modified the call recording rule.
+{elseif $Message == "DELETE_REC_RULE" } Successfully removed the call recording rule.
+{/if}
+</p>
+{/if}
+
 <p>
 	Setup and manage which extensions's calls you want recorded in your system.
 </p>
@@ -44,16 +54,25 @@ function popUp(url,inName,width,height)
 			{/if}
 		</th>
 		<th>
-			<a href="?Rules[Sort]=End">Record For</a>
-			{if $Rules.Sort == "End"}
+			<a href="?Rules[Sort]=Call_Outgoing">Outgoing Calls</a>
+			{if $Rules.Sort == "Call_Outgoing"}
 				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
 		</th>
 		<th>
-			<a href="?Rules[Sort]=Keep">Keep For</a>
-			{if $Rules.Sort == "Keep"}
+			<a href="?Rules[Sort]=Call_Incoming">Incoming Calls</a>
+			{if $Rules.Sort == "Call_Incoming"}
 				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
 			{/if}
+		</th>
+		<th>
+			<a href="?Rules[Sort]=Call_Queue">Queue Calls</a>
+			{if $Rules.Sort == "Call_Queue"}
+				<img src="../static/images/{$Rules.Order}.gif" alt="{$Rules.Order}" />
+			{/if}
+		</th>
+        <th>
+			Keep For
 		</th>
 		<th style="width: 120px;"></th>
 	</tr>
@@ -63,13 +82,28 @@ function popUp(url,inName,width,height)
 		<td>{$Rule.Label}</td>
 		<td>{$Rule.Type}</td>
 		<td>
-			{if $Rule.EndCount}
-				{$Rule.EndCount} calls
-			{elseif $Rule.EndDate}
-				Until {$Rule.EndDate}
+			{if $Rule.Call_Outgoing}
+                Yes
+            {else}
+				No
 			{/if}
 		</td>
 		<td>
+			{if $Rule.Call_Incoming}
+                Yes
+            {else}
+				No
+			{/if}
+		</td>
+		<td>
+			{if $Rule.Call_Queue}
+                Yes
+            {else}
+				No
+			{/if}
+		</td>
+
+        <td>
 			{if $Rule.KeepCount}
 				{$Rule.KeepCount} calls then {if $Rule.Backup}backup{else}delete{/if}
 			{elseif $Rule.KeepSize}
@@ -190,7 +224,7 @@ function popUp(url,inName,width,height)
 				{$Call.CalledNumber}
 			{/if}
 		</td>
-		<td>{if $Call.Duration/60 > 1}{$Call.Duration/60|string_format:"%0d"}m, {/if}{$Call.Duration%60}s</td>
+   		<td>{if $Call.Duration/60 > 1}{($Call.Duration/60)|string_format:"%d"}m, {/if}{$Call.Duration%60}s</td>
 		<td>{$Call.DateCreated}</td>
 		<td>
 			<button type="button" onclick="javacript:popUp('Recordings_Play.php?ID={$Call.FK_CallLog}','Play Recordings File',350,200);">Play</button>

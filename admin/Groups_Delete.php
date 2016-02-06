@@ -37,13 +37,10 @@ function Groups_Delete() {
 		SELECT
 			Extension,
 			Extensions.PK_Extension,
-			FirstName,
-			LastName
+			Name
 		FROM
 			Extension_Groups
 			INNER JOIN Extensions    ON Extensions.PK_Extension = FK_Extension
-			INNER JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = FK_Extension
-
 		WHERE
 			FK_Group = $PK_Group
 	";

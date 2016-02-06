@@ -57,8 +57,8 @@ function Extensions_List_IVRs() {
 			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated_Formated
 		FROM
 			Extensions
-			LEFT JOIN Ext_IVR   ON Ext_IVR.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN IVR_Menus ON Ext_IVR.FK_Menu      = IVR_Menus.PK_Menu
+            LEFT JOIN Ext_IVR       ON Ext_IVR.PK_Extension       = Extensions.PK_Extension
+				LEFT JOIN IVR_Menus ON Ext_IVR.FK_Menu = IVR_Menus.PK_Menu
 		HAVING
 			Type = 'IVR'
 			AND

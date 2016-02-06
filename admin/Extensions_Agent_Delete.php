@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
-function Extensions_Virtual_Delete() {
+function Extensions_Agent_Delete() {
     global $mysqli;
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -19,7 +19,7 @@ function Extensions_Virtual_Delete() {
         $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
-        $query = "DELETE FROM Ext_Virtual WHERE PK_Extension = $PK_Extension LIMIT 1";
+        $query = "DELETE FROM Ext_Agent WHERE PK_Extension = $PK_Extension LIMIT 1";
         $mysqli->query($query) or die($mysqli->error);
 
         if ($mysqli->affected_rows != 1) {
@@ -29,7 +29,7 @@ function Extensions_Virtual_Delete() {
         $query = "DELETE FROM Extension_Groups WHERE FK_Extension = $PK_Extension";
         $mysqli->query($query) or die($mysqli->error);
 
-        $query = "DELETE FROM Ext_Virtual_Features WHERE FK_Extension = $PK_Extension";
+        $query = "DELETE FROM Ext_Agent_Features WHERE FK_Extension = $PK_Extension";
         $mysqli->query($query) or die($mysqli->error);
 
         $query = "DELETE FROM Extension_Rules WHERE FK_Extension = $PK_Extension";
@@ -39,7 +39,7 @@ function Extensions_Virtual_Delete() {
         asterisk_UpdateConf('voicemail.conf');
         asterisk_Reload();
 
-        header('Location: Extensions_List.php?msg=DELETE_VIRTUAL_EXTENSION');
+        header('Location: Extensions_List.php?msg=DELETE_AGENT_EXTENSION');
         die();
     }
 
@@ -59,8 +59,8 @@ function Extensions_Virtual_Delete() {
 
     $smarty->assign('Extension', $Extension);
 
-    return $smarty->fetch('Extensions_Virtual_Delete.tpl');
+    return $smarty->fetch('Extensions_Agent_Delete.tpl');
 }
 
-admin_run('Extensions_Virtual_Delete', 'Admin.tpl');
+admin_run('Extensions_Agent_Delete', 'Admin.tpl');
 ?>

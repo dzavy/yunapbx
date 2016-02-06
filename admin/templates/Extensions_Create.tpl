@@ -1,7 +1,7 @@
 <script type="text/javascript">
 {literal}
 function RefreshTemplate() {
-	if ($('#Type').val() != 'SipPhone' && $('#Type').val() != 'SccpPhone' && $('#Type').val() != 'Virtual') {
+	if ($('#Type').val() != 'SipPhone' && $('#Type').val() != 'SccpPhone' && $('#Type').val() != 'Agent') {
 		$('#FK_Template_tr').hide();
 	} else {
 		$('#FK_Template_tr').show();
@@ -38,7 +38,6 @@ $(document).ready(function() {
 				<optgroup label="Standard">
 				<option {if $Type == "SipPhone"}selected="selected"{/if} value="SipPhone">SIP Phone</option>
                 <option {if $Type == "SccpPhone"}selected="selected"{/if} value="SccpPhone">Cisco SCCP Phone</option>
-				<option {if $Type == "Virtual"}selected="selected"{/if} value="Virtual">Virtual Extension</option>
 				</optgroup>
 				<optgroup label="Features">
 				<option {if $Type == "ParkingLot"}selected="selected"{/if} value="ParkingLot">Call Parking</option>

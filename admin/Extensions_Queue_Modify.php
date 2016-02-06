@@ -27,12 +27,9 @@ function Extensions_Queue_Modify() {
 		SELECT
 			Extensions.PK_Extension,
 			Extension,
-			CONCAT(IFNULL(Ext_SipPhones.FirstName,''),IFNULL(Ext_Virtual.FirstName,'')) AS FirstName,
-			CONCAT(IFNULL(Ext_SipPhones.LastName,'') ,IFNULL(Ext_Virtual.LastName,''))  AS LastName
+            Name
 		FROM
 			Extensions
-			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		WHERE
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
@@ -138,14 +135,11 @@ function formdata_from_db($id) {
 		SELECT
 			Extensions.PK_Extension,
 			Extension,
-			CONCAT(IFNULL(Ext_SipPhones.FirstName,''),IFNULL(Ext_Virtual.FirstName,'')) AS FirstName,
-			CONCAT(IFNULL(Ext_SipPhones.LastName,'') ,IFNULL(Ext_Virtual.LastName,''))  AS LastName,
+            Name,
 			LoginRequired
 		FROM
 			Ext_Queue_Members
 			INNER JOIN Extensions    ON FK_Extension_Member = PK_Extension
-			LEFT  JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT  JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		WHERE
 			FK_Extension = $id
 		ORDER
@@ -175,12 +169,14 @@ function formdata_save($data) {
         $mysqli->query($query) or die($mysqli->error . $query);
     }
 
+    $query = "UPDATE Extensions SET Name = '". $mysqli->real_escape_string($data['Name']) . "' WHERE PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']);
+    $mysqli->query($query) or die($mysqli->error . $query);
+    
     // Update 'Ext_Queues'
     $query = "
 		UPDATE
 			Ext_Queues
 		SET
-			Name               = '" . $mysqli->real_escape_string($data['Name']) . "',
 			FK_RingStrategy    =  " . $mysqli->real_escape_string($data['FK_RingStrategy']) . ",
 			RingInUse          = '" . ($data['RingInUse'] == 'yes' ? 'yes' : 'no') . "',
 			FK_MohGroup        = " . intval($data['FK_MohGroup']) . ",

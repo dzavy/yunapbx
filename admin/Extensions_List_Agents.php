@@ -51,8 +51,7 @@ function Extensions_List_Agents() {
 			Extensions.PK_Extension        AS _PK_,
 			LPAD(Extension,5,' ')          AS Extension,
 			Type                           AS Type,
-			Ext_Agent.FirstName            AS FirstName,
-			Ext_Agent.LastName             AS LastName,
+			Name                           AS Name,
 			DateCreated AS DateCreated,
 			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated_Formated
 		FROM
@@ -61,7 +60,7 @@ function Extensions_List_Agents() {
 		HAVING
 			Type IN ('Agent')
 			AND
-			(Extension LIKE '%$Search%'	OR FirstName LIKE '%$Search%' OR LastName LIKE '%$Search%')
+			(Extension LIKE '%$Search%'	OR Name LIKE '%$Search%')
 		ORDER BY
 			$Sort $Order
 	";

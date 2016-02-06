@@ -14,22 +14,6 @@ function DisplaySelect() {
 	$('#'+Type+'_Select select').removeAttr('disabled');
 }
 
-function EndType_onChange() {
-	if ($("#EndType_Count").is(":checked")) {
-		$("#EndType_Count_Container input[type=text]").removeAttr('disabled');
-		$("#EndType_Count_Container label").removeClass('disabled');
-
-		$("#EndType_Date_Container input[type=text]").attr('disabled', 'disasbled');
-		$("#EndType_Date_Container label").addClass('disabled');
-	} else {
-		$("#EndType_Count_Container input[type=text]").attr('disabled', 'disasbled');
-		$("#EndType_Count_Container label").addClass('disabled');
-
-		$("#EndType_Date_Container input[type=text]").removeAttr('disabled');
-		$("#EndType_Date_Container label").removeClass('disabled');
-	}
-}
-
 function KeepType_onChange() {
 	if( $("#KeepType_1").is(':checked')) {
 		$("#KeepType_1_Container input[type=text]").removeAttr('disabled');
@@ -110,7 +94,6 @@ function MinLength_onChange() {
 $(document).ready(
 	function () {
 		KeepType_onChange();
-		EndType_onChange();
 		MinLength_onChange();
 		DisplaySelect();
 	}
@@ -126,9 +109,6 @@ $(document).ready(
 {/if}
 {if $Errors.Call_Type.None}
 <p class="error_message">You must select at least 1 call type.</p>
-{/if}
-{if $Errors.EndCount.Invalid}
-<p class="error_message">Invalid recording count. Must be a digit (1-999)</p>
 {/if}
 {if $Errors.Calls.Empty}
 <p class="error_message">You must select at least 1 extension to record</p>
@@ -204,24 +184,6 @@ $(document).ready(
 
 			<input type="checkbox" name="Call_Queue"    {if $Rule.Call_Queue==1   }checked="checked"{/if} id="Call_Queue" value="1" />
 			<label for="Call_Queue">Incoming Queue Calls</label><br />
-			</div>
-		</td>
-	</tr>
-
-	<tr><td colspan="2"><b>How many calls would you like to record?</b></td></tr>
-	<tr><td>&nbsp;</td>
-		<td>
-			<div id="EndType_Count_Container">
-				<input type="radio" {if $Rule.EndDate == ""}checked="checked"{/if} name="EndType" value="Count" id="EndType_Count" onchange="EndType_onChange()"/>
-				<label for="EndType_Count">The next</label>
-				<input type="text" size="3" name="EndCount" {if $Rule.EndDate == ""}value="{$Rule.EndCount}"{/if} {if $Errors.EndCount}class="error"{/if} />
-				<label for="EndType_Count">calls</label>
-			</div>
-
-			<div id="EndType_Date_Container">
-				<input type="radio" {if $Rule.EndDate != ""}checked="checked"{/if}  name="EndType" value="Date" id="EndType_Date" onchange="EndType_onChange()"/>
-				<label for="EndType_Date">Until the date/time</label>
-				{dhtml_calendar name='EndDate' value=$Rule.EndDate format="%Y/%m/%d %H:%M"}
 			</div>
 		</td>
 	</tr>

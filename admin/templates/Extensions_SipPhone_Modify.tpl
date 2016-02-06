@@ -46,8 +46,8 @@
 {if $Errors.Password.Match}
 <p class="error_message">Your two numeric passwords you entered did not match each other.</p>
 {/if}
-{if $Errors.FirstName.Invalid}
-<p class="error_message"> First name is required and must be 1 - 32 characters in length.</p>
+{if $Errors.Name.Invalid}
+<p class="error_message"> Name is required and must be 1 - 32 characters in length.</p>
 {/if}
 {if $Errors.PhonePassword.Match}
 <p class="error_message">The two phone passwords you entered did not match each other.</p>
@@ -92,23 +92,13 @@
 	<!-- First Name -->
 	<tr>
 		<td>
-			First Name<br/>
+			Name<br/>
 			<small>Primary user of the extension</small>
 		</td>
 		<td>
-			<input type="text" name="FirstName" value="{$SipPhone.FirstName}" {if $Errors.FirstName }class="error"{/if} />&nbsp;
-			<label for="FirstName_Editable">User can edit</label>
-			<input type="checkbox" value="1" name="FirstName_Editable" id="FirstName_Editable" {if $SipPhone.FirstName_Editable}checked="checked"{/if} />
-		</td>
-	</tr>
-
-	<!-- Last Name -->
-	<tr>
-		<td>Last Name</td>
-		<td>
-			<input type="text" name="LastName" value="{$SipPhone.LastName}" />&nbsp;
-			<label for="LastName_Editable">User can edit</label>
-			<input type="checkbox" value="1" name="LastName_Editable" id="LastName_Editable" {if $SipPhone.LastName_Editable}checked="checked"{/if} />
+			<input type="text" name="Name" value="{$SipPhone.Name}" {if $Errors.Name }class="error"{/if} />&nbsp;
+			<label for="Name_Editable">User can edit</label>
+			<input type="checkbox" value="1" name="Name_Editable" id="Name_Editable" {if $SipPhone.Name_Editable}checked="checked"{/if} />
 		</td>
 	</tr>
 
@@ -132,7 +122,7 @@
 			<small>For voicemail & web tool access</small>
 		</td>
 		<td>
-			<input type="password" name="Password" value="{$SipPhone.Password}" {if $Errors.Extension}class="error"{/if} />&nbsp;
+			<input type="password" name="Password" {if $Errors.Extension}class="error"{/if} />&nbsp;
 			<label for="Password_Editable">User can edit</label>
 			<input type="checkbox" value="1" name="Password_Editable" id="Password_Editable" {if $SipPhone.Password_Editable}checked="checked"{/if} />
 		</td>
@@ -145,7 +135,7 @@
 			<small>Must match password above</small>
 		</td>
 		<td>
-			<input type="password" name="Password_Retype" value="{$SipPhone.Password}" {if $Errors.Extension}class="error"{/if} />&nbsp;
+			<input type="password" name="Password_Retype" {if $Errors.Extension}class="error"{/if} />&nbsp;
 		</td>
 	</tr>
 </table>

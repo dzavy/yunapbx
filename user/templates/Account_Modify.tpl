@@ -9,25 +9,13 @@
         <!-- First Name -->
         <tr>
             <td>
-                First Name<br/>
+                Name<br/>
             </td>
             <td>
-                {if $Extension.FirstName_Editable}
-                    <input type="text" name="FirstName" value="{$Extension.FirstName}" {if $Errors.FirstName }class="error"{/if} />&nbsp;
+                {if $Extension.Name_Editable}
+                    <input type="text" name="Name" value="{$Extension.Name}" {if $Errors.Name }class="error"{/if} />&nbsp;
                 {else}
-                    {$Extension.FirstName}
-                {/if}
-            </td>
-        </tr>
-
-        <!-- Last Name -->
-        <tr>
-            <td>Last Name</td>
-            <td>
-                {if $Extension.LastName_Editable}
-                    <input type="text" name="LastName" value="{$Extension.LastName}" />&nbsp;
-                {else}
-                    {$Extension.LastName}
+                    {$Extension.Name}
                 {/if}
             </td>
         </tr>

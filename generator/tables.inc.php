@@ -132,8 +132,7 @@ function Get_Ext_SipPhones() {
 		SELECT
 			Ext_SipPhones.PK_Extension AS PK_Extension,
 			Extension,
-			FirstName,
-			LastName,
+			Extensions.Name,
 			Password,
 			Email,
 			PhonePassword,

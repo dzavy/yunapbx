@@ -37,8 +37,7 @@ function Templates_Delete() {
 		SELECT
 			PK_Template,
 			Name,
-			FirstName_Editable,
-			LastName_Editable,
+			Name_Editable,
 			Password_Editable,
 			Email_Editable,
 			FK_NATType,

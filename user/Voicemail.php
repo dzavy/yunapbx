@@ -67,14 +67,9 @@ function Voicemail() {
     $query = "
 		SELECT
 			LPAD(Extension,5,' ')          AS Extension,
-			CONCAT(
-				IFNULL(Ext_SipPhones.FirstName,''),' ',IFNULL(Ext_SipPhones.LastName,''),
-				IFNULL(Ext_Virtual.FirstName,'')  ,' ',IFNULL(Ext_Virtual.LastName,'')
-			) AS Name
+			Name
 		FROM
 			Extensions
-			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		ORDER BY
 			Extension
 	";

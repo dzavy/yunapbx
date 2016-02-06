@@ -10,7 +10,7 @@
 		{foreach from=$Group.Extensions item=Extension}
 			<tr>
 				<td>{$Extension.Extension}</td>
-				<td>"{$Extension.FirstName} {$Extension.LastName}"</td>
+				<td>"{$Extension.Name}"</td>
 			</tr>
 		{/foreach}
 	</table>

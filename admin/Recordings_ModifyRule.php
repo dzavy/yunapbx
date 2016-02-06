@@ -4,10 +4,10 @@ include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
-function Recording_ModifyRule() {
+function Recordings_ModifyRule() {
     global $mysqli;
     
-    $session = &$_SESSION['Recording_ModifyRule'];
+    $session = &$_SESSION['Recordings_ModifyRule'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     // Init message (Message)
@@ -40,14 +40,9 @@ function Recording_ModifyRule() {
 		SELECT
 			Extensions.PK_Extension AS PK_Extension,
 			Extension,
-			CONCAT(
-				IFNULL(Ext_SipPhones.FirstName,''),' ',IFNULL(Ext_SipPhones.LastName,''),
-				IFNULL(Ext_Virtual.FirstName,'')  ,' ',IFNULL(Ext_Virtual.LastName,'')
-			) AS Name
+			Name
 		FROM
 			Extensions
-			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		WHERE
 			Type IN ('Virtual','SipPhone')
 		ORDER BY
@@ -80,7 +75,7 @@ function Recording_ModifyRule() {
     $smarty->assign('Rule', $Rule);
     $smarty->assign('Errors', $Errors);
 
-    return $smarty->fetch('Recording_ModifyRule.tpl');
+    return $smarty->fetch('Recordings_ModifyRule.tpl');
 }
 
 function formdata_from_db($id) {
@@ -119,7 +114,6 @@ function formdata_from_default() {
     $data = array();
 
     $data['Type'] = 'Phone';
-    $data['EndCount'] = '10';
     $data['KeepCount'] = '0';
     $data['KeepSize'] = '0';
     $data['Backup'] = '0';
@@ -162,8 +156,6 @@ function formdata_save($data) {
 			Call_Incoming = '" . ($data['Call_Incoming'] == 1 ? 1 : 0) . "',
 			Call_Outgoing = '" . ($data['Call_Outgoing'] == 1 ? 1 : 0) . "',
 			Call_Queue    = '" . ($data['Call_Queue'] == 1 ? 1 : 0) . "',
-			EndCount      = '" . $mysqli->real_escape_string($data['EndCount']) . "',
-			EndDate       = " . (isset($data['EndDate']) ? " STR_TO_DATE('" . $mysqli->real_escape_string($data['EndDate']) . "', '%Y/%m/%d %H:%i')" : "NULL") . ",
 			KeepCount     = '" . $mysqli->real_escape_string($data['KeepCount']) . "',
 			KeepSize      = '" . $mysqli->real_escape_string($data['KeepSize']) . "',
 			Backup        = '" . $mysqli->real_escape_string($data['Backup']) . "',
@@ -208,12 +200,6 @@ function formdata_validate($data) {
         $errors['Call_Type']['None'] = true;
     }
 
-    if ($data['EndDate'] == "") {
-        if (!preg_match('/^[1-9]{1}[0-9]{0,1}[0-9]{0,1}$/', $data['EndCount'])) {
-            $errors['EndCount']['Invalid'] = true;
-        }
-    }
-
     if (count($data['Extensions']) == 0 && count($data['Groups']) == 0) {
         $errors['Calls']['Empty'] = true;
     }
@@ -233,5 +219,5 @@ function formdata_validate($data) {
     return $errors;
 }
 
-admin_run('Recording_ModifyRule', 'Admin.tpl');
+admin_run('Recordings_ModifyRule', 'Admin.tpl');
 ?>

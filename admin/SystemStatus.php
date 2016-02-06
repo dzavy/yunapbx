@@ -142,7 +142,7 @@ function SystemStatus() {
 		SELECT
 			Extensions.PK_Extension         AS _PK_,
 			Extensions.Extension            AS Extension,
-			CONCAT(FirstName,' ', LastName) AS Name,
+			Name                            AS Name,
 			UserAgent,
 			IPAddress,
 			Status

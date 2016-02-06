@@ -9,6 +9,9 @@ function Recordings_List() {
     
     $session = &$_SESSION['Recordings_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
+    
+    // Init message (Message)
+    $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
 
     // Init no element on page (PageSize)
     $Rules['PageSize'] = 50;
@@ -63,6 +66,7 @@ function Recordings_List() {
     $Rules['End'] = $Rules['Start'] + count($Rules['Fields']);
 
     $smarty->assign('Rules', $Rules);
+    $smarty->assign('Message', $Message);
     $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 
 

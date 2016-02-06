@@ -31,19 +31,16 @@ function delete_file($PK_File) {
 		AND `Order` >" . intval($File_Src['Order'])
     ;
     $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $inf_files = $result->fetch_all();
+    while ($row = $result->fetch_assoc()) {
+        $src_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'], $row['Fileext']);
+        $dst_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'] - 1, $row['Fileext']);
 
-    for ($i = 0; $i < count($inf_files); $i++) {
-        $src_filename = moh_filename($inf_files[$i]['PK_File'], $File_Src['FK_Group'], $inf_files[$i]['Order'], $inf_files[$i]['Fileext']);
-        $dst_filename = moh_filename($inf_files[$i]['PK_File'], $File_Src['FK_Group'], $inf_files[$i]['Order'] - 1, $inf_files[$i]['Fileext']);
-
-        $result = rename($src_filename, $dst_filename);
-        if (!$result) {
+        if (!rename($src_filename, $dst_filename)) {
             $errors['Delete']['ReorderFiles'] = true;
             return $errors;
         }
     }
-
+    
     $query = "
 		UPDATE
 			Moh_Files 
@@ -89,7 +86,7 @@ function move_file($PK_File, $dst_PK_Group) {
     ;
 
     $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File_Src = $mysqli->fetch_assoc();
+    $File_Src = $result->fetch_assoc();
 
     if ($File_Src['FK_Group'] == $dst_PK_Group) {
         $errors['Move']['InSameGroup'] = true;
@@ -166,15 +163,12 @@ function move_file($PK_File, $dst_PK_Group) {
         return $errors;
     }
 
-    $res = $mysqli->fetch_all($result);
+    while ($row = $result->fetch_assoc()) {
+        $src_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'], $row['Fileext']);
+        $dst_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'] - 1, $row['Fileext']);
 
-    for ($i = 0; $i < count($res); $i++) {
-        $src_filename = moh_filename($res[$i]['PK_File'], $File_Src['FK_Group'], $res[$i]['Order'], $res[$i]['Fileext']);
-        $dst_filename = moh_filename($res[$i]['PK_File'], $File_Src['FK_Group'], $res[$i]['Order'] - 1, $res[$i]['Fileext']);
-
-        $result = rename($src_filename, $dst_filename);
-        if (!$result) {
-            $errors['Move']['ReorderFiles'] = true;
+        if (!rename($src_filename, $dst_filename)) {
+            $errors['Delete']['ReorderFiles'] = true;
             return $errors;
         }
     }
@@ -273,11 +267,4 @@ function moh_filename($PK_File, $PK_Group = '', $Order = '', $Extension = '') {
     $filename .= "." . $Extension;
 
     return $conf['dirs']['moh'] . "/$filename";
-}
-
-function mysqli_fetch_all($result) {
-    while ($row = $result->fetch_assoc()) {
-        $return[] = $row;
-    }
-    return $return;
 }
