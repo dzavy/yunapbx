@@ -99,22 +99,6 @@ function formdata_from_db($id) {
         $data['Codecs'][] = $row['FK_Codec'];
     }
 
-    // Init data from 'SipProvider_Hosts'
-    $query = "
-		SELECT
-			PK_SipProvider_Host,
-			Host
-		FROM
-			SipProvider_Hosts
-		WHERE
-			FK_SipProvider = $id
-	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data['Hosts'] = array();
-    while ($row = $result->fetch_assoc()) {
-        $data['Hosts'][] = $row['Host'];
-    }
-
     // Init outgoing rules
     $query = "
 		SELECT
@@ -237,16 +221,6 @@ function formdata_save($data) {
         }
     }
 
-    // Update 'SipProviders_Hosts'
-    $query = "DELETE FROM SipProvider_Hosts WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
-    if (is_array($data['Hosts'])) {
-        foreach ($data['Hosts'] as $Host) {
-            $query = "INSERT INTO SipProvider_Hosts (FK_SipProvider, Host) VALUES ({$data['PK_SipProvider']}, '" . $mysqli->real_escape_string($Host) . "')";
-            $mysqli->query($query) or die($mysqli->error);
-        }
-    }
-
     // Update 'SipProvider_Rules'
     $query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
     $mysqli->query($query) or die($mysqli->error);
@@ -315,18 +289,6 @@ function formdata_validate($data) {
         $errors['Host']['Invalid'] = true;
     }
 
-    // Check every host from the hosts list
-    if (is_array($data['Hosts'])) {
-        foreach ($data['Hosts'] as $Host) {
-            // If is not a hostname
-            if (!preg_match("/^[a-z0-9][a-z0-9\-]+[a-z0-9]$/i", $Host)) {
-                // and is not an ip address
-                if (ip2long($Host) === false) {
-                    $errors['Hosts']['Invalid'] = true;
-                }
-            }
-        }
-    }
     return $errors;
 }
 

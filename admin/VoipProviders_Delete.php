@@ -23,9 +23,6 @@ function VoipProviders_Delete() {
         $query = "DELETE FROM SipProvider_Codecs WHERE FK_SipProvider = $PK_SipProvider";
         $mysqli->query($query) or die($mysqli->error . $query);
 
-        $query = "DELETE FROM SipProvider_Hosts WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error . $query);
-
         $query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = $PK_SipProvider";
         $mysqli->query($query) or die($mysqli->error . $query);
 

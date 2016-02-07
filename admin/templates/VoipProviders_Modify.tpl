@@ -32,18 +32,6 @@
         $('#CallerIDName').addClass("disabled");
     }
 
-    function AddHost() {
-        $("#Hosts").addOption($("#SipHost").val(), $("#SipHost").val(), false);
-        $("#SipHost").val('');
-    }
-    function DeleteHost() {
-        $("#Hosts").removeOption(/./, true);
-    }
-
-    function PreSubmit() {
-        $("#Hosts").selectOptions(/./, true);
-    }
-
     function UpdateCallRules(val) {
         if (val == 0) {
             $("#OutgoingTbl :input").removeAttr('disabled');
@@ -94,7 +82,7 @@
     <p class="error_message">Invalid Hostname or IP Address in SIP Provider Host List.</p>
 {/if}
 
-<form action="VoipProviders_Modify.php" method="post" onsubmit="PreSubmit()">
+<form action="VoipProviders_Modify.php" method="post">
     <p>
         <input type="hidden" name="PK_SipProvider" value="{$Provider.PK_SipProvider}" />
     </p>
@@ -414,24 +402,6 @@
                 &nbsp;
                 <input type="radio" value="0" name="LocalAddrFrom" id="LocalAddrFrom_0" {if $Provider.LocalAddrFrom!=1} checked="checked"{/if} />
                 <label for="LocalAddrFrom_0">No</label>
-            </td>
-        </tr>
-
-        <!-- SIP Provider Host List -->
-        <tr class="toggle hidden">
-            <td>
-                SIP Provider Host List
-            </td>
-            <td>
-                <input type="text" name="SipHost" id="SipHost" style="width: 180px;"/>
-                <a href="javascript:AddHost()">Add New Host</a>
-                <br />
-                <select {if $Errors.Hosts}class="error"{/if} multiple="multiple" id="Hosts" name="Hosts[]" style="width: 180px; height: 150px;">
-                    {foreach from=$Provider.Hosts item=Host}
-                        <option value="{$Host}">{$Host}</option>
-                    {/foreach}
-                </select>
-                <a href="javascript:DeleteHost()">Delete Host</a>
             </td>
         </tr>
     </table>

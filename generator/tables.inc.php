@@ -37,19 +37,6 @@ function Get_SipProviders() {
 
         // Get hosts list
         $provider['Hosts'][] = $provider['Host'];
-        $hosts = array();
-        $query_hosts = "
-			SELECT
-				Host
-			FROM
-				SipProvider_Hosts
-			WHERE
-				FK_SipProvider = {$provider['PK_SipProvider']}
-		";
-        $result_hosts = $mysqli->query($query_hosts) or die($mysqli->error . $query_hosts);
-        while ($row_hosts = $result_hosts->fetch_assoc()) {
-            $provider['Hosts'][] = $row_hosts['Host'];
-        }
 
         $provider['OugoingRules'] = array();
         $query_outrules = "
