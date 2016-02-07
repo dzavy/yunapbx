@@ -27,12 +27,9 @@ function Extensions_GroupPickup_Modify() {
 		SELECT
 			Extensions.PK_Extension,
 			Extension,
-			CONCAT(IFNULL(Ext_SipPhones.FirstName,''),IFNULL(Ext_Virtual.FirstName,'')) AS FirstName,
-			CONCAT(IFNULL(Ext_SipPhones.LastName ,''),IFNULL(Ext_Virtual.LastName,''))  AS LastName
+			Name
 		FROM
 			Extensions
-			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		WHERE
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
@@ -175,6 +172,7 @@ function formdata_save($data) {
 }
 
 function formdata_validate($data) {
+    global $mysqli;
     $errors = array();
 
     if ($data['PK_Extension'] == '') {

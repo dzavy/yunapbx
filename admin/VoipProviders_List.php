@@ -12,9 +12,6 @@ function VoipProviders_List() {
 
     $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
 
-    // Init no element on page (PageSize)
-    $PageSize = 50;
-
     // Init sort order (Order)
     if ($session['Sort'] == $_REQUEST['Sort']) {
         $Order = ($session['Order'] == "asc" ? "desc" : "asc");
@@ -32,19 +29,6 @@ function VoipProviders_List() {
 
     $session['Sort'] = $Sort;
 
-    // Init listing start (Start)
-    if (isset($_REQUEST['Start'])) {
-        $Start = $_REQUEST['Start'];
-    } else {
-        $Start = 0;
-    }
-
-    // Init total entries (Total)
-    $query = "SELECT COUNT(*) FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $row = $result->fetch_array();
-    $Total = $row[0];
-
     // Init table fields (Extensions)
     $Providers = array();
     $query = "
@@ -59,24 +43,16 @@ function VoipProviders_List() {
 				SipProviders
 		ORDER BY
 			$Sort $Order
-		LIMIT $Start, $PageSize
 	";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($row = $result->fetch_assoc()) {
         $Providers[] = $row;
     }
 
-    // Init end record (End)
-    $End = count($Providers);
-
     $smarty->assign('Errors', $Errors);
     $smarty->assign('Providers', $Providers);
     $smarty->assign('Sort', $Sort);
     $smarty->assign('Order', $Order);
-    $smarty->assign('Start', $Start);
-    $smarty->assign('End', $End);
-    $smarty->assign('Total', $Total);
-    $smarty->assign('PageSize', $PageSize);
     $smarty->assign('Message', $Message);
     $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 

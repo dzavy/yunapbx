@@ -53,7 +53,7 @@ function AddNew() {
 </table>
 <br />
 <table class="listing fullwidth">
-	<caption>Music On Hold Groups ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>Music On Hold Groups</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Name">Group Name</a>
@@ -99,11 +99,3 @@ function AddNew() {
 	{/foreach}
 </table>
 
-<p style="text-align: right">
-{if $Start > 0} 
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>

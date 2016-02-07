@@ -214,7 +214,7 @@ $(document).ready(
 <br /><br />
 
 <table class="listing fullwidth">
-	<caption>Music On Hold Songs ( {$Start+1} to {$End} ) of {$Total}</caption>	
+	<caption>Music On Hold Songs</caption>	
 	<tr>
 		<th style="width:20px;">
 			<img src="../static/images/select_all.gif"  onclick="select_all()"  id="img_select_all"  alt="0" title="Select All"/>

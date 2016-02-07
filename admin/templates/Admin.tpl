@@ -31,14 +31,14 @@
                     <li><span class="menuitem">Extensions</span>
                         <ul>
                             <li><a href="Extensions_List.php">Manage Extensions</a></li>
+                            <li><a href="Emergency_Numbers.php">Emergency Numbers</a></li>
                             <li><a href="Templates_List.php">Extension Templates</a></li>
-                            <!--<li><a href="#">Extension Settings</a></li>-->
                             <li><a href="Groups_List.php">Extension Groups</a></li>
-                            <!--<li><a href="#">Extension Permissions</a></li>-->
                         </ul>
                     </li>
                     <li><span class="menuitem">PBX Features</span>
                         <ul>
+                            <li><a href="Feature_Codes.php">Feature Codes</a></li>
                             <li><a href="MOH_Files_List.php">Music On Hold</a></li>
                             <li><a href="IVR_Menus.php">IVR Editor</a></li>
                             <li><a href="SoundEntries_List.php">Sound Manager</a></li>

@@ -1,6 +1,7 @@
 [general]
 persistentmembers = yes
 autofill = yes
+keepstats = yes
 monitor-type = MixMonitor
 
 {foreach from=$Queues item=Queue}

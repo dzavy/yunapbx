@@ -173,7 +173,7 @@ $(document).ready(function() {
 </p>
 
 <table class="listing fullwidth">
-	<caption>Current Options ( 1 to {$IVR_Options|@count} ) of {$IVR_Options|@count}</caption>
+	<caption>Current Options</caption>
 	<tr>
 		<th>Option</th>
 		<th>Menu</th>
@@ -187,11 +187,6 @@ $(document).ready(function() {
 		<td>
 			{if $Option.Action_Order > 0}
 				{$Option.Action_Order}.
-				{php}
-					$Option             = $this->get_template_vars('Option');
-					$IVR_Action['Type'] = $Option['Action_Type'];
-					$this->assign('IVR_Action', $IVR_Action);
-				{/php}
 				{include file="IVR_Actions_Display.tpl" Action=$IVR_Action Display="Name"}
 			{else}
 				IVR Menu Begining

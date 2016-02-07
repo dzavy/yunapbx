@@ -157,7 +157,7 @@ function popUp(url,inName,width,height)
 
 <form action="MOH_Files_List.php" method="post" name="MOH_Files_List">
 <table class="listing fullwidth">
-	<caption>Music On Hold Songs ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>Music On Hold Songs</caption>
 	<tr>
 		<th>
 			<img src="../static/images/select_all.gif" onclick="select_all()" id="img_select_all" alt="0" title="Select All"/>

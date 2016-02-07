@@ -157,7 +157,7 @@ $(document).ready(function() {
 						<select name="AvailableAdmins" id="AvailableAdmins" multiple="multiple" style="width: 190px; height: 200px;">
 							{foreach from=$Accounts item=Account}
 								{if !$Account.PK_Extension|in_array:$GroupPickup.Admins}
-								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.FirstName} {$Account.LastName}"</option>
+								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.Name}"</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -177,7 +177,7 @@ $(document).ready(function() {
 						<select name="Admins[]" id="Admins" multiple="multiple" style="width: 190px; height: 200px;">
 							{foreach from=$Accounts item=Account}
 								{if $Account.PK_Extension|in_array:$GroupPickup.Admins}
-								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.FirstName} {$Account.LastName}"</option>
+								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.Name}"</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -229,7 +229,7 @@ $(document).ready(function() {
 						<select name="AvailableMembers" id="AvailableMembers"  multiple="multiple" style="width: 190px; height: 200px;">
 							{foreach from=$Accounts item=Account}
 								{if ! $Account.PK_Extension|in_array:$GroupPickup.Members}
-								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.FirstName} {$Account.LastName}"</option>
+								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.Name}"</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -249,7 +249,7 @@ $(document).ready(function() {
 						<select name="Members[]" id="Members" multiple="multiple" style="width: 190px; height: 200px;">
 							{foreach from=$Accounts item=Account}
 								{if $Account.PK_Extension|in_array:$GroupPickup.Members}
-								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.FirstName} {$Account.LastName}"</option>
+								<option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.Name}"</option>
 								{/if}
 							{/foreach}
 						</select>

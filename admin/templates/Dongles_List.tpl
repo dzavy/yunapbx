@@ -25,7 +25,7 @@ function AddNewSubmit() {
 </form>
 {if $Dongles|@count}
 <table class="listing fullwidth">
-	<caption>3G Dongles ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>3G Dongles</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Name">Dongle Name</a>
@@ -72,14 +72,6 @@ function AddNewSubmit() {
 	</tr>
 	{/foreach}
 </table>
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>
 {else}
 <p class="warning_message">
 	There are no 3G dongles defined on this system. 

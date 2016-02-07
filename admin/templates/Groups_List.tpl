@@ -19,7 +19,7 @@
 
 {if $Groups|@count}
 <table class="listing fullwidth">
-	<caption>Extension Groups ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>Extension Groups</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Name">Group Name</a>
@@ -60,12 +60,3 @@
 	Use the <em>Create New Extension Group</em> button to define one now.
 </p>
 {/if}
-
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>

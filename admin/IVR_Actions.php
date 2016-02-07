@@ -46,7 +46,6 @@ function IVR_Actions() {
 
     $smarty->assign('IVR_Actions', $IVR_Actions);
     $smarty->assign('PK_Menu', $PK_Menu);
-    $smarty->assign('Total', count($IVR_Actions));
     $smarty->assign('History', $_SESSION['IVR_HISTORY']);
 
     return $smarty->fetch('IVR_Actions.tpl');

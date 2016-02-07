@@ -318,7 +318,7 @@ $(document).ready(function() {
 				{/foreach}
 
 				{if $print == "1"}
-						<option value="{$Member.PK_Extension}">{$Member.Extension} "{$Member.FirstName} {$Member.LastName}"</option>
+						<option value="{$Member.PK_Extension}">{$Member.Extension} "{$Member.Name}"</option>
 				{/if}
 				{/foreach}
 			</select>
@@ -343,9 +343,9 @@ $(document).ready(function() {
 				{foreach from=$Queue.Members item=Agent}
 					{foreach from=$Members item=Member}
 						{if $Agent == "1~"|cat:$Member.PK_Extension}
-							<option class="nonperm" value="1~{$Member.PK_Extension}">{$Member.Extension} "{$Member.FirstName} {$Member.LastName}"</option>
+							<option class="nonperm" value="1~{$Member.PK_Extension}">{$Member.Extension} "{$Member.Name}"</option>
 						{elseif $Agent == "0~"|cat:$Member.PK_Extension}
-							<option class="perm" value="0~{$Member.PK_Extension}">{$Member.Extension} "{$Member.FirstName} {$Member.LastName}"</option>
+							<option class="perm" value="0~{$Member.PK_Extension}">{$Member.Extension} "{$Member.Name}"</option>
 						{/if}
 					{/foreach}
 				{/foreach}

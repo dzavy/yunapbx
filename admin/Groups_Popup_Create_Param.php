@@ -38,14 +38,9 @@ function Groups_Popup_Create_Param() {
 		SELECT
 			Extensions.PK_Extension AS PK_Extension,
 			Extension,
-			CONCAT(
-				IFNULL(Ext_SipPhones.FirstName,''),' ',IFNULL(Ext_SipPhones.LastName,''),
-				IFNULL(Ext_Virtual.FirstName,'')  ,' ',IFNULL(Ext_Virtual.LastName,'')
-			) AS Name
+			Name
 		FROM
 			Extensions
-			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		WHERE
 			Type IN ('Virtual','SipPhone')
 		ORDER BY

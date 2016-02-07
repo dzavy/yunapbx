@@ -24,7 +24,7 @@
 {/if}
 
 <table class="listing fullwidth">
-	<caption>Modify Existing Templates ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>Modify Existing Templates</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Name">Template Name</a>
@@ -55,12 +55,3 @@
 	</tr>
 	{/foreach}
 </table>
-
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>

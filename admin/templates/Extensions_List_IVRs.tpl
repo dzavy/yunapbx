@@ -35,7 +35,7 @@ function ChangeListView() {
 
 {if $Extensions|@count}
 <table class="listing fullwidth">
-	<caption>All IVR Extensions ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>All IVR Extensions</caption>
 	<thead>
 	<tr>
 		<th>
@@ -94,12 +94,3 @@ function ChangeListView() {
 	Use the <em>Create New Extension</em> button to define one now.
 </p>
 {/if}
-
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>

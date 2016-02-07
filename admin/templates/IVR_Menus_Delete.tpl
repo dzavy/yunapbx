@@ -9,9 +9,9 @@
 
 <br />
 <table class="listing">
-	{if $IVR_Actions}
-		<caption>Other actions pointing to this Menu ( 1 to {$IVR_Actions|@count} ) of {$IVR_Actions|@count}</caption>
-		<tr>
+	<caption>Other actions pointing to this Menu</caption>
+    {if $IVR_Actions}
+        <tr>
 			<th><a href="#">Action of Menu</a></th>
 			<th><a href="#">Order</a></th>
 			<th><a href="#">Action Type</a></th>
@@ -41,7 +41,6 @@
 		</tr>
 		{/foreach}
 	{else}
-		<caption>Other actions pointing to this Menu</caption>
 		<tr>
 			<td style="width: 300px">No Data Available </td>
 		</tr>
@@ -55,8 +54,8 @@
 
 <br /><br />
 <table class="listing">
-	{if $IVR_Options}
-		<caption>Options pointing to this Menu ( 1 to {$IVR_Options|@count} ) of {$IVR_Options|@count}</caption>
+	<caption>Options pointing to this Menu</caption>
+    {if $IVR_Options}
 		<tr>
 			<th><a href="#">Option of Menu</a></th>
 			<th><a href="#">Option #</a></th>
@@ -81,7 +80,6 @@
 		</tr>
 		{/foreach}
 	{else}
-		<caption>Options pointing to this action</caption>
 		<tr>
 			<td style="width: 300px">No Data Available </td>
 		</tr>
@@ -95,8 +93,8 @@
 
 <br /><br />
 <table class="listing">
-	{if $IVR_Extensions}
-		<caption>IVR Extensions pointing to this Menu ( 1 to {$IVR_Extensions|@count} ) of {$IVR_Extensions|@count}</caption>
+	<caption>IVR Extensions pointing to this Menu</caption>
+    {if $IVR_Extensions}
 		<tr class="{cycle values='odd,even' name='extensions'}">
 			<th><a href="#">Extension</a></th>
 			<th><a href="#">Menu</a></th>
@@ -121,7 +119,6 @@
 		</tr>
 		{/foreach}
 	{else}
-		<caption>IVR Extensions pointing to this Context</caption>
 		<tr>
 			<td style="width: 300px">No Data Available </td>
 		</tr>

@@ -25,9 +25,6 @@ function Templates_List() {
         }
     }
 
-    // Init no element on page (PageSize)
-    $PageSize = 50;
-
     // Init sort order (Order)
     if ($session['Sort'] == $_REQUEST['Sort']) {
         $Order = ($session['Order'] == "asc" ? "desc" : "asc");
@@ -44,19 +41,6 @@ function Templates_List() {
     }
     $session['Sort'] = $Sort;
 
-    // Init listing start (Start)
-    if (isset($_REQUEST['Start'])) {
-        $Start = $_REQUEST['Start'];
-    } else {
-        $Start = 0;
-    }
-
-    // Init total entries (Total)
-    $query = "SELECT COUNT(PK_Template) FROM Templates;";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $row = $result->fetch_array();
-    $Total = $row[0];
-
     // Init table fields (Templates)
     $Templates = array();
     $query = "
@@ -69,24 +53,15 @@ function Templates_List() {
 			Templates
 		ORDER BY 
 			$Sort $Order
-		LIMIT $Start, $PageSize
-
 	";
     $result = $mysqli->query($query) or die($mysqli->error);
     while ($row = $result->fetch_assoc()) {
         $Templates[] = $row;
     }
 
-    // Init end record (End)
-    $End = $Start + count($Templates);
-
     $smarty->assign('Templates', $Templates);
     $smarty->assign('Sort', $Sort);
     $smarty->assign('Order', $Order);
-    $smarty->assign('Start', $Start);
-    $smarty->assign('End', $End);
-    $smarty->assign('Total', $Total);
-    $smarty->assign('PageSize', $PageSize);
     $smarty->assign('Message', $Message);
     $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 
@@ -94,6 +69,8 @@ function Templates_List() {
 }
 
 function create_new_template($Name) {
+    global $mysqli;
+    
     if ($Name == "") {
         return false;
     }
@@ -107,8 +84,7 @@ function create_new_template($Name) {
 			Templates
 		SET
 			Name               = '" . $mysqli->real_escape_string($Name) . "',
-			FirstName_Editable = 1,
-			LastName_Editable  = 1,
+			Name_Editable      = 1,
 			Password_Editable  = 1,
 			Email_Editable     = 1,
 			FK_NATType         = 1,

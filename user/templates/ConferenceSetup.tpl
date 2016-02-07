@@ -136,7 +136,7 @@
                         <select name="Admins[]" id="Admins" multiple="multiple" style="width: 190px; height: 200px;">
                             {foreach from=$Accounts item=Account}
                                 {if $Account.PK_Extension|in_array:$Conference.Admins}
-                                    <option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.FirstName} {$Account.LastName}"</option>
+                                    <option value="{$Account.PK_Extension}">{$Account.Extension} "{$Account.Name}"</option>
                                 {/if}
                             {/foreach}
                         </select>

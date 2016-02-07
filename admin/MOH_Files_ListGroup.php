@@ -54,10 +54,6 @@ function MOH_Files_ListGroup() {
         }
     }
 
-
-    // Init no element on page (PageSize)
-    $PageSize = 50;
-
     // Init sort order (Order)
     $Order = 'asc';
     $session['Order'] = $Order;
@@ -65,25 +61,6 @@ function MOH_Files_ListGroup() {
     // Init sort field (Sort)
     $Sort = 'Order';
     $session['Sort'] = $Sort;
-
-    // Init listing start (Start)	
-    if (isset($_REQUEST['Start'])) {
-        $Start = $_REQUEST['Start'];
-    } else {
-        $Start = 0;
-    }
-
-    // Init total entries (Total)
-    $query = " SELECT 
-					COUNT(PK_File) 
-			    FROM 
-					Moh_Files 
-				WHERE 
-					FK_Group = $selectedGroup";
-    $result = $mysqli->query($query) or die($mysqli->error);
-
-    $row = $result->fetch_row();
-    $Total = $row[0];
 
     // Init files list (Files)
     $Files = array();
@@ -103,7 +80,6 @@ function MOH_Files_ListGroup() {
 			FK_Group=$selectedGroup
 		ORDER BY 
 			`$Sort` $Order
-		LIMIT $Start, $PageSize
 	";
 
     $result = $mysqli->query($query) or die($mysqli->error . $query);
@@ -111,9 +87,6 @@ function MOH_Files_ListGroup() {
     while ($row = $result->fetch_assoc()) {
         $Files[] = $row;
     }
-
-    // Init file list end (End)
-    $End = $Start + count($Files);
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups ORDER BY Name";
@@ -129,10 +102,6 @@ function MOH_Files_ListGroup() {
     $smarty->assign('Groups', $Groups);
     $smarty->assign('Sort', $Sort);
     $smarty->assign('Order', $Order);
-    $smarty->assign('Start', $Start);
-    $smarty->assign('End', $End);
-    $smarty->assign('Total', $Total);
-    $smarty->assign('PageSize', $PageSize);
     $smarty->assign('Message', $Message);
     $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 

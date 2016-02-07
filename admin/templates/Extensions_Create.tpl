@@ -1,7 +1,7 @@
 <script type="text/javascript">
 {literal}
 function RefreshTemplate() {
-	if ($('#Type').val() != 'SipPhone' && $('#Type').val() != 'SccpPhone' && $('#Type').val() != 'Agent') {
+	if ($('#Type').val() != 'SipPhone' && $('#Type').val() != 'SccpPhone' && $('#Type').val() != 'Agent' && $('#Type').val() != 'Virtual') {
 		$('#FK_Template_tr').hide();
 	} else {
 		$('#FK_Template_tr').show();
@@ -37,22 +37,19 @@ $(document).ready(function() {
 			<select name="Type" id="Type" onchange="javascript: RefreshTemplate();">
 				<optgroup label="Standard">
 				<option {if $Type == "SipPhone"}selected="selected"{/if} value="SipPhone">SIP Phone</option>
-                <option {if $Type == "SccpPhone"}selected="selected"{/if} value="SccpPhone">Cisco SCCP Phone</option>
-				</optgroup>
-				<optgroup label="Features">
-				<option {if $Type == "ParkingLot"}selected="selected"{/if} value="ParkingLot">Call Parking</option>
-                <option {if $Type == "ConfCenter"}selected="selected"{/if} value="ConfCenter">Conference Center</option>
-				<option {if $Type == "DialTone"}selected="selected"{/if} value="DialTone">Dial Tone</option>
-				<option {if $Type == "Feature"}selected="selected"{/if} value="Feature">Feature Code</option>
-                <option {if $Type == "GroupPickup"}selected="selected"{/if} value="GroupPickup">Group Pickup</option>
-                <option {if $Type == "IVR"}selected="selected"{/if} value="IVR">IVR</option>
-				<option {if $Type == "Voicemail"}selected="selected"{/if} value="Voicemail">Voicemail Access</option>
+                <option {if $Type == "Virtual"}selected="selected"{/if} value="Virtual">Virtual Extension (alias)</option>
 				</optgroup>
 				<optgroup label="Call Center">
+                <option {if $Type == "IVR"}selected="selected"{/if} value="IVR">IVR</option>
 				<option {if $Type == "Queue"}selected="selected"{/if} value="Queue">Call Queue</option>
-				<option {if $Type == "Agent"}selected="selected"{/if} value="Agent">Call Queue Agent</option>
-				<option {if $Type == "AgentLogin"}selected="selected"{/if} value="AgentLogin">Agent Login</option>
+				<option {if $Type == "Agent"}selected="selected"{/if} value="Agent">Agent</option>
 				</optgroup>
+				<optgroup label="Features">
+                <option {if $Type == "ConfCenter"}selected="selected"{/if} value="ConfCenter">Conference Center</option>
+				<option {if $Type == "DialTone"}selected="selected"{/if} value="DialTone">Dial Tone</option>
+                <option {if $Type == "GroupPickup"}selected="selected"{/if} value="GroupPickup">Group Pickup</option>
+				<option {if $Type == "Voicemail"}selected="selected"{/if} value="Voicemail">Voicemail Access</option>
+				<option {if $Type == "AgentLogin"}selected="selected"{/if} value="AgentLogin">Agent Login</option>                
 			</select>
 		</td>
 	</tr>

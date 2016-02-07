@@ -26,7 +26,7 @@ function AddNewSubmit() {
 
 {if $Providers|@count}
 <table class="listing fullwidth">
-	<caption>VoIP Providers ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>VoIP Providers</caption>
 	<tr>
 		<th>
 			<a href="?Sort=Type">Provider Type</a>
@@ -80,14 +80,6 @@ function AddNewSubmit() {
 	</tr>
 	{/foreach}
 </table>
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>
 {else}
 <p class="warning_message">
 	There are no VoIP providers defined on this system. 

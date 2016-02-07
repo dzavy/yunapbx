@@ -89,7 +89,7 @@ function formdata_save($data) {
 		WHERE
 			PK_Extension       = " . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "
 			AND
-			FirstName_Editable = 1
+			Name_Editable = 1
 		LIMIT 1
 	";
     $mysqli->query($query) or die($mysqli->error . $query);

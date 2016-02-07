@@ -35,7 +35,7 @@ function ChangeListView() {
 
 {if $Extensions|@count}
 <table class="listing fullwidth">
-	<caption>Agent Extensions ( {$Start+1} to {$End} ) of {$Total}</caption>
+	<caption>Agent Extensions</caption>
 	<thead>
 	<tr>
 		<th>
@@ -51,14 +51,8 @@ function ChangeListView() {
 			{/if}
 		</th>
 		<th>
-			<a href="?Sort=FirstName">First Name</a>
-			{if $Sort == "FirstName"}
-				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
-			{/if}
-		</th>
-		<th>
-			<a href="?Sort=LastName">Last Name</a>
-			{if $Sort == "LastName"}
+			<a href="?Sort=Name">Name</a>
+			{if $Sort == "Name"}
 				<img src="../static/images/{$Order}.gif" alt="{$Order}" />
 			{/if}
 		</th>
@@ -75,8 +69,7 @@ function ChangeListView() {
 	<tr class="{if $Hilight == $Extension._PK_}hilight{/if} {cycle values="odd,even"}">
 		<td>{$Extension.Extension}</td>
 		<td>Agent</td>
-		<td>{$Extension.FirstName}</td>
-		<td>{$Extension.LastName}</td>
+		<td>{$Extension.Name}</td>
 		<td>{$Extension.DateCreated_Formated}</td>
 		<td style="width: 120px">
 			<form method="get" action="Extensions_{$Extension.Type}_Modify.php" style="display: inline;">
@@ -98,11 +91,3 @@ function ChangeListView() {
 </p>
 {/if}
 
-<p style="text-align: right">
-{if $Start > 0}
-	<a class="prev" href="?Start={$Start-$PageSize}">Previous</a>
-{/if}
-{if $End < $Total}
-<a class="next" href="?Start={$Start+$PageSize}">Next</a>
-{/if}
-</p>

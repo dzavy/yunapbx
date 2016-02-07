@@ -96,7 +96,7 @@ $(document).ready(
 <br />
 
 <table class="listing fullwidth">
-	<caption>Current Actions ( 1 to {$Total} ) of {$Total}</caption>
+	<caption>Current Actions</caption>
 	<tr>
 		<th style="width: 25px;">Pic</th>
 		<th style="width: 35px;">Order</th>
