@@ -153,7 +153,14 @@ function formdata_from_template($id) {
 }
 
 function formdata_from_post() {
-    return $_POST;
+    $data = $_POST;
+    if(!isset($data["Rules"])) {
+        $data["Rules"] = array();
+    }
+    if(!isset($data["Group"])) {
+        $data["Groups"] = array();
+    }
+    return $data;
 }
 
 function formdata_save($data) {
