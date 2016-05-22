@@ -1,11 +1,6 @@
 <script src="../static/script/jquery.jqModal.js" type="text/javascript"></script>
 <script type="text/javascript">
 {literal}
-	function ExtensionSettings_Advanced_Toggle() {
-		$('#ExtensionSettings_Advanced_0').toggleClass('hidden');
-		$('#ExtensionSettings_Advanced_1').toggleClass('hidden');
-	}
-
 	function SipPhoneSettings_Advanced_Toggle() {
 		$('#SipPhoneSettings_Advanced_0').toggleClass('hidden');
 		$('#SipPhoneSettings_Advanced_1').toggleClass('hidden');
@@ -139,34 +134,6 @@
 		</td>
 	</tr>
 </table>
-
-<!-- Extension Settings Advanced -->
-<table class="formtable" id="ExtensionSettings_Advanced_0">
-	<tr><td>
-	<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-		<img src="../static/images/right-arrow.gif" alt="[+]" />
-		Click to show advanced options
-	</a>
-	</td></tr>
-</table>
-
-<table class="formtable advanced hidden" id="ExtensionSettings_Advanced_1">
-	<tr>
-		<td>
-			<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-				<img src="../static/images/down-arrow.gif" alt="[-]" />
-				Click to hide advanced options
-			</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type="checkbox" name="IVRDial" id="IVRDial" value="1" {if $SipPhone.IVRDial=='1'}checked="checked"{/if} />
-			<label for="IVRDial">This extension can be dialed from an IVR.</label>
-		</td>
-	</tr>
-</table>
-
 
 <!-- Sip Phone Settings -->
 <table class="formtable">
