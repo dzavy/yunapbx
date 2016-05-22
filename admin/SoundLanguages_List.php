@@ -71,8 +71,7 @@ function SoundLanguages_List() {
 			PK_SoundLanguage,
 			PK_SoundLanguage  AS _PK_,
 			Name              AS Name,
-			Type              AS Type,
-			DateCreated       AS DateCreated
+			Type              AS Type
 		FROM
 			SoundLanguages
 		ORDER BY 
