@@ -49,9 +49,8 @@ function Recordings_List() {
     $Rules['Fields'] = array();
     $query = "
 		SELECT
-			*,
-			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated
-		FROM
+            *
+        FROM
 			RecordingRules
 		ORDER BY
 			{$Rules['Sort']} {$Rules['Order']}
