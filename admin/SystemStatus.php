@@ -46,7 +46,7 @@ function SystemStatus() {
 			Latency                 AS Latency
 		FROM
 			SipProviders
-			LEFT JOIN SipProvider_Statuses ON SipProviders.PK_SipProvider = SipProvider_Statuses.FK_SipProvider
+			LEFT JOIN SipProvider_Status ON SipProviders.PK_SipProvider = SipProvider_Status.FK_SipProvider
 		ORDER BY
 			$P_Sort $P_Order
 	";
@@ -90,7 +90,7 @@ function SystemStatus() {
             Mode                    AS Mode
 		FROM
 			Dongles
-			LEFT JOIN Dongle_Statuses ON Dongles.PK_Dongle = Dongle_Statuses.FK_Dongle
+			LEFT JOIN Dongle_Status ON Dongles.PK_Dongle = Dongle_Status.FK_Dongle
 		ORDER BY
 			$D_Sort $D_Order
 	";
@@ -176,12 +176,12 @@ function SystemStatus() {
 
 function update_provider_statuses() {
     global $mysqli;
-    $mysqli->query("DELETE FROM SipProvider_Statuses");
+    $mysqli->query("DELETE FROM SipProvider_Status");
     $query = "SELECT * FROM SipProviders";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($provider = $result->fetch_assoc()) {
         $Status = sip_get_status($provider);
-        $query = "INSERT INTO SipProvider_Statuses SET
+        $query = "INSERT INTO SipProvider_Status SET
 			FK_SipProvider = '" . $mysqli->real_escape_string($Status['FK_SipProvider']) . "',
 			Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
 			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
@@ -192,12 +192,12 @@ function update_provider_statuses() {
 
 function update_dongle_statuses() {
     global $mysqli;
-    $mysqli->query("DELETE FROM Dongle_Statuses");
+    $mysqli->query("DELETE FROM Dongle_Status");
     $query = "SELECT * FROM Dongles";
     $result = $mysqli->query($query) or die($mysqli->error . $query);
     while ($dongle = $result->fetch_assoc()) {
         $Status = dongle_get_status($dongle);
-        $query = "INSERT INTO Dongle_Statuses SET
+        $query = "INSERT INTO Dongle_Status SET
 			FK_Dongle      = '" . $mysqli->real_escape_string($Status['FK_Dongle']) . "',
 			RSSI           = '" . $mysqli->real_escape_string($Status['RSSI']) . "',
 			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "',
@@ -325,7 +325,7 @@ function dongle_get_status($Dongle) {
     foreach ($response as $line) {
         unset($regs);
         if (preg_match('/ *RSSI *: ([0-9]*)/', $line, $regs)) {
-            $Status['RSSI'] = $regs['1'];
+            $Status['RSSI'] = ($regs[1]>31?0:max(0, ($regs[1]-6)*4));
         }
 
         unset($regs);
