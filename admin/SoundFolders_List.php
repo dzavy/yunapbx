@@ -72,8 +72,7 @@ function SoundFolders_List() {
 			PK_SoundFolder             ,
 			COUNT(PK_SoundEntry) AS Quantity,
 			Name                 AS Name,
-			SoundFolders.Type    AS Type,
-			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated
+			SoundFolders.Type    AS Type
 		FROM
 			SoundFolders
 			LEFT JOIN SoundEntries ON FK_SoundFolder = PK_SoundFolder
