@@ -105,7 +105,7 @@
                 {/if}
             </th>
             <th>
-                <a href="?D_Sort=RSSI">RSSI</a>
+                <a href="?D_Sort=RSSI">Signal</a>
                 {if $D_Sort == "RSSI"}
                     <img src="../static/images/{$D_Order}.gif" alt="{$D_Order}" />
                 {/if}
@@ -135,7 +135,7 @@
                 <td>{$Dongle.Name}</td>
                 <td>{$Dongle.IMEI}</td>
                 <td>{$Dongle.IMSI}</td>
-                <td>{$Dongle.RSSI}</td>
+                <td>{$Dongle.RSSI}%</td>
                 <td>{$Dongle.Provider}</td>
                 <td>{$Dongle.Mode}</td>
                 <td>{$Dongle.Status}</td>
