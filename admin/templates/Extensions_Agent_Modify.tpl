@@ -1,11 +1,6 @@
 <script src="../static/script/jquery.jqModal.js"></script>
 <script>
 {literal}
-	function ExtensionSettings_Advanced_Toggle() {
-		$('#ExtensionSettings_Advanced_0').toggleClass('hidden');
-		$('#ExtensionSettings_Advanced_1').toggleClass('hidden');
-	}
-
 	function popUp(url,inName,width,height)
 	{
 		inName = inName.replace(/ /g, "_"); /* For stupid pos IE */
@@ -123,33 +118,6 @@
 		</td>
 		<td>
 			<input type="password" name="Password_Retype" {if $Errors.Extension}class="error"{/if} />&nbsp;
-		</td>
-	</tr>
-</table>
-
-<!-- Extension Settings Advanced -->
-<table class="formtable" id="ExtensionSettings_Advanced_0">
-	<tr><td>
-	<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-		<img src="../static/images/right-arrow.gif" alt="[+]" />
-		Click to show advanced options
-	</a>
-	</td></tr>
-</table>
-
-<table class="formtable advanced hidden" id="ExtensionSettings_Advanced_1">
-	<tr>
-		<td>
-			<a href="javascript:ExtensionSettings_Advanced_Toggle()">
-				<img src="../static/images/down-arrow.gif" alt="[-]" />
-				Click to hide advanced options
-			</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type="checkbox" name="IVRDial" id="IVRDial" value="1" {if $Extension.IVRDial=='1'}checked="checked"{/if} />
-			<label for="IVRDial">This extension can be dialed from an IVR.</label>
 		</td>
 	</tr>
 </table>
