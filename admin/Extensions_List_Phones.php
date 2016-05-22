@@ -47,9 +47,8 @@ function Extensions_List_Phones() {
 		FROM
 			Extensions
 			LEFT JOIN Ext_SipPhones ON Ext_SipPhones.PK_Extension = Extensions.PK_Extension
-			LEFT JOIN Ext_Virtual   ON Ext_Virtual.PK_Extension   = Extensions.PK_Extension
 		HAVING
-			Type IN ('SipPhone', 'Virtual')
+			Type IN ('SipPhone')
 			AND
 			(Extension LIKE '%$Search%'	OR Name LIKE '%$Search%')
 		ORDER BY
