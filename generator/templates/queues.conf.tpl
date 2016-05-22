@@ -36,7 +36,7 @@ context            = ring-queue
 {/if}
 
 {foreach from=$Queue.Members item=Member}
-{if $Member.LoginRequired == 0}member => Local/{$Member.Extension}@internal
+{if $Member.LoginRequired == 0}member => Local/{$Member.Extension}@ext{$Member.PK_Extension}_egress,,{$Member.Name},hint:{$Member.Extension}@ext{$Member.PK_Extension}_egress
 {/if}
 {/foreach}
 {/foreach}

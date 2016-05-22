@@ -200,6 +200,7 @@ function Get_Ext_Queues() {
     $query = "
 		SELECT
 			Extensions.PK_Extension,
+            Extension,
 			Ext_Queues.*,
 			RingStrategies.Name AS RingStrategy,
 			A.Filename          AS Sound_PickupAnnouncement,

@@ -39,7 +39,7 @@ localnet={$Localnet}
 
 {foreach from=$SipProviders item=P}
 {if $P.HostType == "Provider"}
-register => {$P.AccountID}:{$P.Password}:{$P.AuthUser}@sip{$P.PK_SipProvider}/{$P.AccountID}{if $P.SipExpiry != ""}~{$P.SipExpiry}{/if}
+register => {$P.AccountID}:{$P.Password}:{$P.AuthUser}@{$P.ProxyHost}/{$P.AccountID}{if $P.SipExpiry != ""}~{$P.SipExpiry}{/if}
 {/if}
 
 {/foreach}

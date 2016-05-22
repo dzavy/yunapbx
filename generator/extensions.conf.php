@@ -10,6 +10,7 @@ $smarty->assign('OutgoingRules', Get_OutgoingRules());
 $smarty->assign('SipProviders', Get_SipProviders());
 $smarty->assign('Dongles', Get_Dongles());
 $smarty->assign('Ext_SipPhones', Get_Ext_SipPhones());
+$smarty->assign('Ext_Queues', Get_Ext_Queues());
 
 $smarty->assign('AGI_DIR'     , $conf['dirs']['agi']);
 
