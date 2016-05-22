@@ -55,7 +55,7 @@
 
             <div id="footer">
                 <p>
-                    Copyright &copy; 2015, <strong><a href="http://yunapbx.uk/">YunaPBX</a></strong>; &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
+                    Copyright &copy; 2016, <strong><a href="http://yunapbx.uk/">YunaPBX</a></strong>; &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
                 </p>
             </div>
         </div>
