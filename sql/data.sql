@@ -59,9 +59,9 @@ insert  into `Features`(`PK_Feature`,`Name`,`ShortName`,`Recomended`) values
 
 /*Data for the table `Moh_Groups` */
 
-insert  into `Moh_Groups`(`PK_Group`,`Name`,`Description`,`Volume`,`Ordered`,`DateCreated`,`Protected`) values 
+insert  into `Moh_Groups`(`PK_Group`,`Name`,`Description`,`Volume`,`Ordered`,`Protected`) values 
 
-(1,'default','Default music files for use as music on hold. Add and remove files to customize your on hold playlist.',100,0,'2009-03-19 19:08:26',1);
+(1,'default','Default music files for use as music on hold. Add and remove files to customize your on hold playlist.',100,0,1);
 
 /*Data for the table `NATTypes` */
 
@@ -1674,30 +1674,30 @@ insert  into `SoundFiles`(`PK_SoundFile`,`FK_SoundEntry`,`FK_SoundPack`,`Name`,`
 
 /*Data for the table `SoundFolders` */
 
-insert  into `SoundFolders`(`PK_SoundFolder`,`Name`,`Description`,`Type`,`DateCreated`) values 
+insert  into `SoundFolders`(`PK_SoundFolder`,`Name`,`Description`,`Type`) values 
 
-(1,'Unsorted','','System','2008-09-02 16:28:00'),
-(2,'Conference','','System','2008-09-02 16:28:00'),
-(8,'Digits','','System','2008-09-08 16:43:47'),
-(9,'Agent','','System','2008-09-08 20:55:58'),
-(10,'Authentication','','System','2008-09-08 20:56:12'),
-(11,'Call Queues','','System','2008-09-08 20:56:29'),
-(12,'Days','','System','2008-09-08 20:56:53'),
-(13,'Directory','','System','2008-09-08 20:57:11'),
-(14,'Voicemail','','System','2008-09-08 20:57:32'),
-(18,'Humor','','System','2009-06-02 17:32:07'),
-(16,'Months','','System','2008-09-08 22:55:50'),
-(19,'IVR','','System','2009-06-02 17:32:21'),
-(20,'Letters','','System','2009-06-02 17:32:36'),
-(21,'Miscellaneous','','System','2009-06-02 17:32:51'),
-(22,'Phonetic','','System','2009-06-02 17:33:31'),
-(23,'Privacy','','System','2009-06-02 17:41:03');
+(1,'Unsorted','','System'),
+(2,'Conference','','System'),
+(8,'Digits','','System'),
+(9,'Agent','','System'),
+(10,'Authentication','','System'),
+(11,'Call Queues','','System'),
+(12,'Days','','System'),
+(13,'Directory','','System'),
+(14,'Voicemail','','System'),
+(18,'Humor','','System'),
+(16,'Months','','System'),
+(19,'IVR','','System'),
+(20,'Letters','','System'),
+(21,'Miscellaneous','','System'),
+(22,'Phonetic','','System'),
+(23,'Privacy','','System');
 
 /*Data for the table `SoundLanguages` */
 
-insert  into `SoundLanguages`(`PK_SoundLanguage`,`Name`,`Type`,`Default`,`DateCreated`) values 
+insert  into `SoundLanguages`(`PK_SoundLanguage`,`Name`,`Type`,`Default`) values 
 
-(1,'English','System',1,'2008-09-09 22:00:00');
+(1,'English','System',1);
 
 /*Data for the table `SoundPacks` */
 
@@ -1707,9 +1707,9 @@ insert  into `SoundPacks`(`PK_SoundPack`,`Name`) values
 
 /*Data for the table `Templates` */
 
-insert  into `Templates`(`PK_Template`,`Name`,`FirstName_Editable`,`LastName_Editable`,`Password_Editable`,`Email_Editable`,`FK_NATType`,`FK_DTMFMode`,`IVRDial`,`DateCreated`,`Protected`) values 
+insert  into `Templates`(`PK_Template`,`Name`,`Name_Editable`,`Password_Editable`,`Email_Editable`,`FK_NATType`,`FK_DTMFMode`,`IVRDial`,`Protected`) values 
 
-(1,'Default',1,1,1,1,2,1,1,'2008-06-09 15:08:01',1);
+(1,'Default',1,1,1,2,1,1,1);
 
 /*Data for the table `Timeframe_Intervals` */
 
