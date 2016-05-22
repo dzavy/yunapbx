@@ -31,7 +31,6 @@
                     <li><span class="menuitem">Extensions</span>
                         <ul>
                             <li><a href="Extensions_List.php">Manage Extensions</a></li>
-                            <li><a href="Emergency_Numbers.php">Emergency Numbers</a></li>
                             <li><a href="Templates_List.php">Extension Templates</a></li>
                             <li><a href="Groups_List.php">Extension Groups</a></li>
                         </ul>
@@ -82,7 +81,7 @@
 
             <div id="footer">
                 <p>
-                    Copyright &copy; 2015, <strong><a href="http://yunapbx.uk/">YunaPBX</a></strong>; &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
+                    Copyright &copy; 2016, <strong><a href="http://yunapbx.uk/">YunaPBX</a></strong>; &copy; 2009, <strong><a href="http://www.telesoft.ro/">Telesoft SRL</a></strong>
                 </p>
             </div>
         </div>
