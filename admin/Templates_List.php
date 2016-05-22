@@ -47,7 +47,6 @@ function Templates_List() {
 		SELECT
 			PK_Template AS _PK_,
 			Name                 AS Name,
-			DATE_FORMAT(DateCreated,'%m/%d/%y, %h:%i %p') AS DateCreated,
 			Protected
 		FROM
 			Templates
