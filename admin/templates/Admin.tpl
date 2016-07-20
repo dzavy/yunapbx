@@ -37,7 +37,6 @@
                     </li>
                     <li><span class="menuitem">PBX Features</span>
                         <ul>
-                            <li><a href="Feature_Codes.php">Feature Codes</a></li>
                             <li><a href="MOH_Files_List.php">Music On Hold</a></li>
                             <li><a href="IVR_Menus.php">IVR Editor</a></li>
                             <li><a href="SoundEntries_List.php">Sound Manager</a></li>

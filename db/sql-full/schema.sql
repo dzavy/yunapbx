@@ -1,10 +1,3 @@
-/*
-SQLyog Community v12.18 (64 bit)
-MySQL - 5.1.73 : Database - webui
-*********************************************************************
-*/
-
-
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -13,9 +6,7 @@ MySQL - 5.1.73 : Database - webui
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webui` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `webui`;
 
 /*Table structure for table `Admins` */
 
@@ -26,7 +17,7 @@ CREATE TABLE `Admins` (
   `name` varchar(20) NOT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_User`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Backups` */
 
@@ -38,7 +29,7 @@ CREATE TABLE `Backups` (
   `Size` varchar(5) NOT NULL,
   `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_Backup`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `CDR` */
 
@@ -64,6 +55,35 @@ CREATE TABLE `CDR` (
   KEY `dst` (`dst`),
   KEY `accountcode` (`accountcode`),
   KEY `calldate` (`calldate`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Table structure for table `CEL` */
+
+DROP TABLE IF EXISTS `CEL`;
+
+CREATE TABLE `CEL` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `eventtype` varchar(30) NOT NULL,
+  `eventtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userdeftype` varchar(255) NOT NULL,
+  `cid_name` varchar(80) NOT NULL,
+  `cid_num` varchar(80) NOT NULL,
+  `cid_ani` varchar(80) NOT NULL,
+  `cid_rdnis` varchar(80) NOT NULL,
+  `cid_dnid` varchar(80) NOT NULL,
+  `exten` varchar(80) NOT NULL,
+  `context` varchar(80) NOT NULL,
+  `channame` varchar(80) NOT NULL,
+  `appname` varchar(80) NOT NULL,
+  `appdata` varchar(80) NOT NULL,
+  `amaflags` int(11) NOT NULL,
+  `accountcode` varchar(20) NOT NULL,
+  `peeraccount` varchar(20) NOT NULL,
+  `uniqueid` varchar(150) NOT NULL,
+  `linkedid` varchar(150) NOT NULL,
+  `userfield` varchar(255) NOT NULL,
+  `peer` varchar(80) NOT NULL,
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `CallLog` */
@@ -100,7 +120,7 @@ CREATE TABLE `CallLog_Details` (
   `Data` varchar(255) NOT NULL,
   PRIMARY KEY (`PK_Details`),
   KEY `FK_CallLog` (`FK_CallLog`)
-) ENGINE=MyISAM AUTO_INCREMENT=213 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Codecs` */
 
@@ -112,7 +132,7 @@ CREATE TABLE `Codecs` (
   `Description` varchar(100) NOT NULL,
   `Recomended` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`PK_Codec`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `DTMFModes` */
 
@@ -123,7 +143,7 @@ CREATE TABLE `DTMFModes` (
   `Name` varchar(20) NOT NULL,
   `Description` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_DTMFMode`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Dongle_Rules` */
 
@@ -162,7 +182,7 @@ CREATE TABLE `Dongles` (
   `ApplyIncomingRules` tinyint(1) DEFAULT '1',
   `EnableSMS` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`PK_Dongle`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `EmergencyNumbers` */
 
@@ -174,7 +194,7 @@ CREATE TABLE `EmergencyNumbers` (
   `Enabled` tinyint(1) DEFAULT '0',
   `Protected` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`PK_EmergencyNumber`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Ext_Agent` */
 
@@ -471,7 +491,7 @@ CREATE TABLE `Extensions` (
   `DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_Extension`),
   UNIQUE KEY `ExtensionNumber` (`Extension`)
-) ENGINE=MyISAM AUTO_INCREMENT=238 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `FC_CallMonitor` */
 
@@ -554,7 +574,7 @@ CREATE TABLE `Features` (
   `ShortName` varchar(50) NOT NULL,
   `Recomended` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`PK_Feature`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Groups` */
 
@@ -565,7 +585,7 @@ CREATE TABLE `Groups` (
   `Name` varchar(100) NOT NULL,
   `DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_Group`)
-) ENGINE=MyISAM AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IVR_Action_Params` */
 
@@ -578,7 +598,7 @@ CREATE TABLE `IVR_Action_Params` (
   `Value` varchar(255) NOT NULL,
   `Variable` varchar(50) NOT NULL,
   PRIMARY KEY (`PK_Param`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IVR_Actions` */
 
@@ -590,7 +610,7 @@ CREATE TABLE `IVR_Actions` (
   `Order` int(10) unsigned NOT NULL,
   `Type` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_Action`)
-) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IVR_Menus` */
 
@@ -616,7 +636,7 @@ CREATE TABLE `IVR_Menus` (
   `FK_Menu_Retry` int(10) unsigned NOT NULL,
   `FK_Action_Retry` int(10) unsigned NOT NULL,
   PRIMARY KEY (`PK_Menu`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IVR_Options` */
 
@@ -629,7 +649,7 @@ CREATE TABLE `IVR_Options` (
   `FK_Menu_Entry` int(10) unsigned NOT NULL,
   `FK_Action_Entry` int(10) unsigned NOT NULL,
   PRIMARY KEY (`PK_Option`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IncomingRoutes` */
 
@@ -647,7 +667,7 @@ CREATE TABLE `IncomingRoutes` (
   `Extension` varchar(20) DEFAULT NULL,
   `RouteOrder` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_IncomingRoute`)
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `IncomingRules` */
 
@@ -663,7 +683,7 @@ CREATE TABLE `IncomingRules` (
   `BlockType` enum('busy','congestion','hangup') NOT NULL,
   `FK_Timeframe` int(10) unsigned NOT NULL,
   PRIMARY KEY (`PK_IncomingRule`)
-) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Moh_Files` */
 
@@ -677,7 +697,7 @@ CREATE TABLE `Moh_Files` (
   `Order` int(10) unsigned NOT NULL,
   `DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_File`)
-) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Moh_Groups` */
 
@@ -691,7 +711,7 @@ CREATE TABLE `Moh_Groups` (
   `Ordered` tinyint(1) NOT NULL DEFAULT '0',
   `Protected` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`PK_Group`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `NATTypes` */
 
@@ -702,7 +722,7 @@ CREATE TABLE `NATTypes` (
   `Name` varchar(100) NOT NULL,
   `Description` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_NATType`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `OutgoingCIDRules` */
 
@@ -719,7 +739,7 @@ CREATE TABLE `OutgoingCIDRules` (
   `Name` varchar(100) NOT NULL,
   `Number` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_OutgoingCIDRule`)
-) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `OutgoingRules` */
 
@@ -739,7 +759,7 @@ CREATE TABLE `OutgoingRules` (
   `ProviderID` int(10) unsigned NOT NULL,
   `Protected` tinyint(1) NOT NULL,
   PRIMARY KEY (`PK_OutgoingRule`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `RecordingLog` */
 
@@ -769,7 +789,7 @@ CREATE TABLE `RecordingLog` (
   KEY `StartDate` (`StartDate`),
   KEY `FK_Rule` (`FK_Rule`),
   KEY `FK_CallLog` (`FK_CallLog`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `RecordingRules` */
 
@@ -789,7 +809,7 @@ CREATE TABLE `RecordingRules` (
   `MinLength` int(11) DEFAULT NULL,
   `Label` varchar(50) NOT NULL,
   PRIMARY KEY (`PK_Rule`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `RecordingRules_Extensions` */
 
@@ -820,7 +840,7 @@ CREATE TABLE `RingStrategies` (
   `Name` varchar(30) NOT NULL,
   `Description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`PK_RingStrategy`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Settings` */
 
@@ -896,7 +916,7 @@ CREATE TABLE `SipProviders` (
   `Reinvite` enum('no','yes','nonat','update','nonat,update') NOT NULL DEFAULT 'no',
   `Voicepulse` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`PK_SipProvider`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `SoundEntries` */
 
@@ -907,7 +927,7 @@ CREATE TABLE `SoundEntries` (
   `Type` enum('User','System') NOT NULL DEFAULT 'User',
   `FK_SoundFolder` int(10) unsigned NOT NULL,
   PRIMARY KEY (`PK_SoundEntry`)
-) ENGINE=MyISAM AUTO_INCREMENT=4580 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `SoundFiles` */
 
@@ -922,7 +942,7 @@ CREATE TABLE `SoundFiles` (
   `Filename` varchar(255) NOT NULL,
   `FK_SoundLanguage` int(10) unsigned NOT NULL,
   PRIMARY KEY (`PK_SoundFile`)
-) ENGINE=MyISAM AUTO_INCREMENT=4559 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `SoundFolders` */
 
@@ -934,7 +954,7 @@ CREATE TABLE `SoundFolders` (
   `Description` text NOT NULL,
   `Type` enum('User','System') NOT NULL DEFAULT 'User',
   PRIMARY KEY (`PK_SoundFolder`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `SoundLanguages` */
 
@@ -946,7 +966,7 @@ CREATE TABLE `SoundLanguages` (
   `Type` enum('User','System') NOT NULL DEFAULT 'User',
   `Default` tinyint(1) NOT NULL,
   PRIMARY KEY (`PK_SoundLanguage`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `SoundPacks` */
 
@@ -956,7 +976,7 @@ CREATE TABLE `SoundPacks` (
   `PK_SoundPack` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   PRIMARY KEY (`PK_SoundPack`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Template_Codecs` */
 
@@ -1015,7 +1035,7 @@ CREATE TABLE `Templates` (
   PRIMARY KEY (`PK_Template`),
   KEY `FK_NATType` (`FK_NATType`),
   KEY `FK_DTMFMode` (`FK_DTMFMode`)
-) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Timeframe_Intervals` */
 
@@ -1034,7 +1054,7 @@ CREATE TABLE `Timeframe_Intervals` (
   `EndTimeMode` enum('AM','PM') NOT NULL,
   `OrderDummy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PK_Interval`)
-) ENGINE=MyISAM AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Table structure for table `Timeframes` */
 
@@ -1045,36 +1065,18 @@ CREATE TABLE `Timeframes` (
   `Name` varchar(255) NOT NULL,
   `FK_Extension` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`PK_Timeframe`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Table structure for table `cel` */
+/*Table structure for table `Version` */
 
-DROP TABLE IF EXISTS `cel`;
+DROP TABLE IF EXISTS `Version`;
 
-CREATE TABLE `cel` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `eventtype` varchar(30) NOT NULL,
-  `eventtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `userdeftype` varchar(255) NOT NULL,
-  `cid_name` varchar(80) NOT NULL,
-  `cid_num` varchar(80) NOT NULL,
-  `cid_ani` varchar(80) NOT NULL,
-  `cid_rdnis` varchar(80) NOT NULL,
-  `cid_dnid` varchar(80) NOT NULL,
-  `exten` varchar(80) NOT NULL,
-  `context` varchar(80) NOT NULL,
-  `channame` varchar(80) NOT NULL,
-  `appname` varchar(80) NOT NULL,
-  `appdata` varchar(80) NOT NULL,
-  `amaflags` int(11) NOT NULL,
-  `accountcode` varchar(20) NOT NULL,
-  `peeraccount` varchar(20) NOT NULL,
-  `uniqueid` varchar(150) NOT NULL,
-  `linkedid` varchar(150) NOT NULL,
-  `userfield` varchar(255) NOT NULL,
-  `peer` varchar(80) NOT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=727 DEFAULT CHARSET=utf8;
+CREATE TABLE `Version` (
+  `Name` varchar(40) NOT NULL,
+  `Value` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`Name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 /* Function  structure for function  `ValidTimeInterval` */
 
