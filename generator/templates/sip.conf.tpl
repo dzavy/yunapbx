@@ -1,25 +1,3 @@
-[general]
-allowguest=no
-allowoverlap=no
-alwaysauthreject=yes
-context=unknown_provider
-udpbindaddr=::
-tcpenable=yes
-tcpbindaddr=::
-tlsenable=yes
-tlsbindaddr=::
-tlscertfile=/data/ssl/server.crt
-tlsprivatekey=/data/ssl/server.key
-tlsdontverifyserver=yes
-srvlookup=yes
-pedantic=no
-directmedia=nonat
-videosupport=yes
-textsupport=yes
-callcounter=yes
-accept_outofcall_message=yes
-outofcall_message_context=messages
-auth_message_requests=yes
 {if $Settings.Network_UseNAT == "1"}
 externip={$Settings.Network_ExternalAddress}
 {foreach from=$Settings.Network_Additional_LAN item=Localnet}

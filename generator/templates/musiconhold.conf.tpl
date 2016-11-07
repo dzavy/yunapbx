@@ -4,13 +4,13 @@
 {else}
 [group_{$Group.PK_Group}]
 {/if}
-mode=custom
+mode=files
 directory={$Group.Folder}
 format=alaw
 {if $Group.Ordered}
-application=/usr/bin/madplay -Qr -o raw:- --mono -R 8000 -a {$Group.Gain}
+sort=alpha
 {else}
-application=/usr/bin/madplay -Qzr -o raw:- --mono -R 8000 -a {$Group.Gain}
+sort=random
 {/if}
 
 {/foreach}
