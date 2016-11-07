@@ -1,6 +1,6 @@
-[macro-call-recording]
+[macro-call-recording]{literal}
 exten => s,1,MixMonitor(${STRFTIME(${EPOCH},,%Y%m%d)}-${CDR(uniqueid)}.wav,W(2),/usr/bin/lame -b16 -c --silent ^{MIXMONITOR_FILENAME} ^{MIXMONITOR_FILENAME:0:-3}mp3 && rm ^{MIXMONITOR_FILENAME})
-exten => s,2,Set(CDR(amaflags)=billing)
+exten => s,2,Set(CDR(amaflags)=billing){/literal}
 
 [internal_phones]
 {foreach from=$Ext_SipPhones item=Ext_SipPhone}
