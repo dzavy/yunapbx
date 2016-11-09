@@ -4,13 +4,13 @@
 {else}
 [group_{$Group.PK_Group}]
 {/if}
-mode=files
-directory={$Group.Folder}
-format=alaw
+mode = files
+directory = {$Group.Folder}
+format = alaw
 {if $Group.Ordered}
-sort=alpha
+sort = alpha
 {else}
-sort=random
+sort = random
 {/if}
 
 {/foreach}
