@@ -76,7 +76,7 @@
 {else}
     <p class="warning_message">
         There are no VoIP providers defined on this system. 
-        Use the <em>System / VoIP Providers</em> page to define one.
+        Use the <em>Connectivity / VoIP Providers</em> page to define one.
     </p>
 {/if}
 
@@ -144,8 +144,8 @@
     </table>
 {else}
     <p class="warning_message">
-        There are no 3G dongles defined on this system. 
-        Use the <em>System / VoIP Providers</em> page to define one.
+        There are no 3G Songles defined on this system. 
+        Use the <em>Connectivity / 3G Dongles</em> page to define one.
     </p>
 {/if}
 
