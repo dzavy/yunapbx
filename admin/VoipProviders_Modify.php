@@ -129,7 +129,7 @@ function formdata_from_default() {
         'AlwaysTrust' => '1',
         'SendEarlyMedia' => '0',
         'ApplyIncomingRules' => '1',
-        'Qualify' => '0',
+        'Qualify' => '1',
         'UserEqPhone' => '0',
         'LocalAddrFrom' => '0',
         'Rules' => array()
