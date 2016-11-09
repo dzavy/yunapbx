@@ -1083,7 +1083,7 @@ CREATE TABLE `Version` (
 /*!50003 DROP FUNCTION IF EXISTS `ValidTimeInterval` */;
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` FUNCTION `ValidTimeInterval`(id_interval INT) RETURNS int(11)
+/*!50003 CREATE DEFINER=CURRENT_USER FUNCTION `ValidTimeInterval`(id_interval INT) RETURNS int(11)
     DETERMINISTIC
 BEGIN
  
