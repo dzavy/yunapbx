@@ -1,5 +1,5 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
@@ -245,7 +245,7 @@ function formdata_save($data) {
 function formdata_validate($data) {
     global $mysqli;
     $errors = array();
-    if ($data['SipProvider'] == '') {
+    if ($data['PK_SipProvider'] == '') {
         $create_new = true;
     }
 
@@ -263,7 +263,7 @@ function formdata_validate($data) {
     }
 
     // Check if password is 1-32 chars long
-    if (strlen($data['Password']) < 1 || strlen($data['Password']) > 32) {
+    if ($create_new && (strlen($data['Password']) < 1 || strlen($data['Password']) > 32)) {
         $errors['Password']['Invalid'] = true;
     }
 

@@ -1,14 +1,14 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
-include_once(dirname(__FILE__) . '/../include/config.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Recordings_DeleteRule() {
     global $mysqli;
-    include(dirname(__FILE__) . '/../include/config.inc.php');
+    global $conf;
+    
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
     $path = $conf['dirs']['moh'];
 

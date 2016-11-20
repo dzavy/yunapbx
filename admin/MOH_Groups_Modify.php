@@ -1,9 +1,8 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
-include_once(dirname(__FILE__) . '/../include/config.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Groups_Modify() {
@@ -78,6 +77,8 @@ function formdata_from_post() {
 
 function formdata_save($data) {
     global $mysqli;
+    global $conf;
+    
     if ($data['PK_Group'] == "") {
         $query = "INSERT INTO Moh_Groups() VALUES()";
         $mysqli->query($query) or die($mysqli->error . $query);
@@ -85,7 +86,6 @@ function formdata_save($data) {
 
         $bigPK_Group = str_pad($data['PK_Group'], 10, "0", STR_PAD_LEFT);
 
-        include(dirname(__FILE__) . '/../include/config.inc.php');
         mkdir($conf['dirs']['moh'] . "/group_" . $bigPK_Group, 0755, true);
     }
 

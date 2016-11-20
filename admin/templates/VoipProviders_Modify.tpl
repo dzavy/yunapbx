@@ -119,7 +119,7 @@
                 Password
             </td>
             <td>
-                <input type="password" name="Password" value="{$Provider.Password}" {if $Errors.Password}class="error"{/if} />
+                <input type="password" name="Password" value="" {if $Errors.Password}class="error"{/if} />
             </td>
         </tr>
 

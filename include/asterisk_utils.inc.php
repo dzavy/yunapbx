@@ -1,12 +1,16 @@
 <?php
+include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
 
 function asterisk_UpdateConf($file) {
+    global $conf;
+    global $mysqli;
+    
     require(dirname(__FILE__) . "/../generator/$file.php");
 }
 
 function asterisk_Cmd($cmd) {
-    include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
-    include(dirname(__FILE__) . "/config.inc.php");
+    global $conf;
+    
     $manager = new AsteriskManager();
     $manager->Connect($conf['astman']['user'], $conf['astman']['password']);
 
@@ -14,8 +18,7 @@ function asterisk_Cmd($cmd) {
 }
 
 function asterisk_Reload() {
-    include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
-    include(dirname(__FILE__) . "/config.inc.php");
+    global $conf;
 
     $manager = new AsteriskManager();
     $manager->Connect($conf['astman']['user'], $conf['astman']['password']);
@@ -27,8 +30,7 @@ function asterisk_Reload() {
 }
 
 function asterisk_RecordSound($Extension, $Message, $TmpFile) {
-    include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
-    include(dirname(__FILE__) . "/config.inc.php");
+    global $conf;
 
     $manager = new AsteriskManager();
     $manager->Connect($conf['astman']['user'], $conf['astman']['password']);
@@ -46,8 +48,7 @@ function asterisk_RecordSound($Extension, $Message, $TmpFile) {
 }
 
 function asterisk_PlaySound($Extension, $File) {
-    include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
-    include(dirname(__FILE__) . "/config.inc.php");
+    global $conf;
 
     $manager = new AsteriskManager();
     $manager->Connect($conf['astman']['user'], $conf['astman']['password']);

@@ -1,5 +1,5 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
@@ -19,7 +19,7 @@ function Groups_Popup_Create_Param() {
             $id = formdata_save($Group);
 
             return('
-			<script type="text/javascript" src="../script/jquery.selectboxes.js"></script>
+			<script type="text/javascript" src="../static/script/jquery.selectboxes.js"></script>
 			<script>				
 				$("#' . $id_select . '", opener.document).addOption("' . $id . '", "' . $Group['Name'] . '");
 				

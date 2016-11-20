@@ -1,7 +1,5 @@
 <?php
 
-include_once(dirname(__FILE__) . '/../include/config.inc.php');
-
 function delete_file($PK_File) {
     global $mysqli;
     $errors = array();
@@ -249,7 +247,7 @@ function copy_file($PK_File, $dest_PK_Group) {
 
 function moh_filename($PK_File, $PK_Group = '', $Order = '', $Extension = '') {
     global $mysqli;
-    include(dirname(__FILE__) . '/../include/config.inc.php');
+    global $conf;
 
     if ("{$PK_Group}{$Order}{$Extension}" == "") {
         $query = "SELECT * FROM Moh_Files WHERE PK_File = '" . intval($PK_File) . "' LIMIT 1";
@@ -264,7 +262,7 @@ function moh_filename($PK_File, $PK_Group = '', $Order = '', $Extension = '') {
     $filename .= "group_" . str_pad($PK_Group, 10, "0", STR_PAD_LEFT);
     $filename .= "/file_" . str_pad($Order, 6, "0", STR_PAD_LEFT);
     $filename .= "_" . str_pad($PK_File, 9, "0", STR_PAD_LEFT);
-    $filename .= "." . $Extension;
+    $filename .= ".wav";
 
     return $conf['dirs']['moh'] . "/$filename";
 }

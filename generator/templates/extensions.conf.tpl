@@ -2,6 +2,13 @@
 exten => s,1,MixMonitor(${STRFTIME(${EPOCH},,%Y%m%d)}-${CDR(uniqueid)}.wav,W(2),/usr/bin/lame -b16 -c --silent ^{MIXMONITOR_FILENAME} ^{MIXMONITOR_FILENAME:0:-3}mp3 && rm ^{MIXMONITOR_FILENAME})
 exten => s,2,Set(CDR(amaflags)=billing){/literal}
 
+[macro-fix-international-code]{literal}
+exten => s,1,Set(CALLERID(num)=${IF($["${CALLERID(num):0:1}"="+"]?00${CALLERID(num):1}:${CALLERID(num)})})
+exten => s,2,Set(CALLERID(num)=${IF($[$["${CALLERID(num):0:2}"!="00"] & $[${LEN(${CALLERID(num)})}>11]]?00${CALLERID(num)}:${CALLERID(num)})})
+exten => s,3,Set(CALLERID(num)=${IF($["${CALLERID(num):0:4}"="0044"]?0${CALLERID(num):4}:${CALLERID(num)})})
+exten => s,4,Set(CALLERID(ANI-num)=${CALLERID(num)})
+exten => s,5,Set(CALLERID(name)=${CALLERID(num)}){/literal}
+
 [internal_phones]
 {foreach from=$Ext_SipPhones item=Ext_SipPhone}
 include => ext{$Ext_SipPhone.PK_Extension}_egress
@@ -172,11 +179,3 @@ exten => _msgX.,1,DongleSendSMS(dongle{$Dongle.PK_Dongle},{literal}${EXTEN:3}{/l
 exten => _msgX.,n,Hangup()
 
 {/foreach}
-
-
-[macro-fix-international-code]{literal}
-exten => s,1,Set(CALLERID(num)=${IF($["${CALLERID(num):0:1}"="+"]?00${CALLERID(num):1}:${CALLERID(num)})})
-exten => s,2,Set(CALLERID(num)=${IF($[$["${CALLERID(num):0:2}"!="00"] & $[${LEN(${CALLERID(num)})}>11]]?00${CALLERID(num)}:${CALLERID(num)})})
-exten => s,3,Set(CALLERID(num)=${IF($["${CALLERID(num):0:4}"="0044"]?0${CALLERID(num):4}:${CALLERID(num)})})
-exten => s,4,Set(CALLERID(ANI-num)=${CALLERID(num)})
-exten => s,5,Set(CALLERID(name)=${CALLERID(num)}){/literal}

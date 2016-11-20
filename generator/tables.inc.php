@@ -275,6 +275,8 @@ function Get_Ext_ConfCenter_Rooms() {
 
 function Get_Moh_Groups() {
     global $mysqli;
+    global $conf;
+    
     $query = "
 		SELECT
 			*
@@ -284,6 +286,13 @@ function Get_Moh_Groups() {
     $result = $mysqli->query($query) or die($mysqli->error . $query);
 
     while ($row = $result->fetch_assoc()) {
+    	$row['Folder'] = $conf['dirs']['moh'] . "/group_" . str_pad($row['PK_Group'], 10, '0', STR_PAD_LEFT);
+        if ($row['Volume']>=100) {
+            $row['Gain'] = (($row['Volume']-100)*18)/100;
+        } else {
+            $row['Gain'] = ($row['Volume']*50)/100 - 50;
+        }
+
         $Groups[] = $row;
     }
 

@@ -1,14 +1,13 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
-include_once(dirname(__FILE__) . '/../include/config.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Files_Modify() {
     global $mysqli;
-    include(dirname(__FILE__) . '/../include/config.inc.php');
+    global $conf;
 
     $session = &$_SESSION['MOH_Files_Modify'];
     $Message = (isset($_REQUEST['msg'])?$_REQUEST['msg']:"");
@@ -21,22 +20,21 @@ function MOH_Files_Modify() {
         $bigFK_Group = str_pad($FK_Group, 10, "0", STR_PAD_LEFT);
         $uploadPath = $conf['dirs']['moh'] . "/group_" . $bigFK_Group . "/";
 
-        $filename_ext = explode(".", $_FILES['file']['name']['0']);
+        if(is_readable($_FILES['file']['name']['0'])) {
+            $finfo = new finfo(FILEINFO_MIME);
+            $mime_type = $finfo->file($_FILES['file']['name']['0'], FILEINFO_MIME_TYPE);
+            
+            if(in_array($mime_type, array("audio/x-wav", "audio/mpeg"))) {
+                $query = "SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '$FK_Group'";
+                $result = $mysqli->query($query) or die($mysqli->error);
+                $row = $result->fetch_row();
+                $order = $row['0'] + 1;
 
-        $filename = "";
-        for ($i = 0; $i < (count($filename_ext) - 1); $i++) {
-            $filename .= $filename_ext[$i];
+                $Errors = upload_file($uploadPath, $mime_type, $order, $FK_Group);
+            }
+        } else {
+            
         }
-
-        $extension = $filename_ext[count($filename_ext) - 1];
-
-        $query = "SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '$FK_Group'";
-        $result = $mysqli->query($query) or die($mysqli->error);
-        $row = $result->fetch_row();
-        $order = $row['0'] + 1;
-
-        $Errors = upload_file($uploadPath, $filename, $extension, $order, $FK_Group);
-
         if (empty($Errors)) {
             asterisk_UpdateConf('musiconhold.conf');
             asterisk_Reload();
@@ -58,14 +56,9 @@ function MOH_Files_Modify() {
     return $smarty->fetch('MOH_Files_Modify.tpl');
 }
 
-function upload_file($uploadPath, $filename, $extension, $order, $FK_Group) {
+function upload_file($uploadPath, $mime_type, $order, $FK_Group) {
     global $mysqli;
     $errors = array();
-    $extension = strtolower($extension);
-    if (!$filename || !$extension) {
-        $errors['BadFilename'] = true;
-        return $errors;
-    }
 
     if ($_FILES['file']['error'][0] == 1) {
         $errors['FileToBig'] = true;
@@ -77,8 +70,7 @@ function upload_file($uploadPath, $filename, $extension, $order, $FK_Group) {
 		INSERT INTO
 			`Moh_Files`
 		SET
-			`Filename` = '" . $mysqli->escape_string($filename) . "',
-			`Fileext`  = '" . $mysqli->escape_string($extension) . "',
+			`Filename` = '" . $mysqli->escape_string(basename($_FILES['file']['error'][0])) . "',
 			`FK_Group` = " . intval($FK_Group) . ",
 			`Order`    = " . intval($order) . "
 	";
@@ -90,12 +82,22 @@ function upload_file($uploadPath, $filename, $extension, $order, $FK_Group) {
     $PK_File = str_pad($PK_File, 9, "0", STR_PAD_LEFT);
 
     @mkdir($uploadPath, 0755, true);
-    $result = rename($_FILES['file']['tmp_name'][0], "$uploadPath/file_" . $order . "_" . $PK_File . "." . $extension);
-    if ($result == false) {
-        $errors['UploadToDisk'] = true;
-        return $errors;
+    if($mime_type == "audio/x-wav") {
+        $result = rename($_FILES['file']['tmp_name'][0], "$uploadPath/file_" . $order . "_" . $PK_File . ".wav");
+        if ($result == false) {
+            $errors['UploadToDisk'] = true;
+            return $errors;
+        }
+    } else {
+        exec("/usr/bin/madplay \"" . $_FILES['file']['tmp_name'][0] . "\" -Q -1 -R 8000 -o wave:" . $uploadPath . "/file_" . $order . "_" . $PK_File . ".wav", $exec_output, $exec_rc);
+        unlink($_FILES['file']['tmp_name'][0]);
+        if($exec_rc!=0) {
+            $errors['UploadToDisk'] = true;
+            return $errors;
+        }
     }
-    chmod("$uploadPath/file_" . $order . "_" . $PK_File . "." . $extension, 0644);
+
+    chmod("$uploadPath/file_" . $order . "_" . $PK_File . ".wav", 0644);
 }
 
 admin_run('MOH_Files_Modify', 'Admin.tpl');

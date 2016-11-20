@@ -1,11 +1,12 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Recordings_List() {
     global $mysqli;
+    global $conf;
     
     $session = &$_SESSION['Recordings_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -68,8 +69,6 @@ function Recordings_List() {
     $smarty->assign('Message', $Message);
     $smarty->assign('Hilight', (isset($_REQUEST['hilight'])?$_REQUEST['hilight']:""));
 
-
-    include(dirname(__FILE__) . '/../include/config.inc.php');
     $df_output = exec("df -P '" . $conf['dirs']['monitor'] . "' | tail -n 1 | awk '{print \$2,\$3,\$4}'");
     $du_outpt = exec("du -s '" . $conf['dirs']['monitor'] . "' | awk '{print $1}'");
     $df_output = explode(' ', $df_output);

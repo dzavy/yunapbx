@@ -1,8 +1,7 @@
 <?php
-
+include_once(dirname(__FILE__) . '/../config/yunapbx.php');
 include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
-include_once(dirname(__FILE__) . '/../include/config.inc.php');
 
 function Recordings_Download() {
     global $mysqli;
