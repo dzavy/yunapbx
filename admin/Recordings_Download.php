@@ -14,17 +14,11 @@ function Recordings_Download() {
     $result = $mysqli->query($query) or die($mysqli->error . $query);
     $File = $result->fetch_assoc();
 
-//	system("ffmpeg -f wav -i {$GLOBALS['config']['monitor_dir']}/{$File['PK_CallLog']}.wav {$GLOBALS['config']['monitor_dir']}/{$File['PK_CallLog']}.flv");
-//	$Filename = $GLOBALS['config']['monitor_dir']."/{$File['PK_CallLog']}.flv";
-    $Filename = $GLOBALS['config']['monitor_dir'] . "/{$File['FK_CallLog']}.wav";
+    $Filename = $GLOBALS['config']['monitor_dir'] . "/{$File['FK_CallLog']}.mp3";
     if (file_exists($Filename)) {
-        header("Content-type: " . mime_content_type($Filename));
+        header("Content-type: audio/mpeg");
         header("Content-Disposition: attachment; filename=\"" . basename($Filename) . "\"");
-        $handle = fopen($Filename, 'r');
-        while (!feof($handle)) {
-            echo fread($handle, 8192);
-        }
-        fclose($handle);
+        echo file_get_contents($Filename);
     } else {
         echo "File not found.";
     }

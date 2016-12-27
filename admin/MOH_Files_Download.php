@@ -20,11 +20,7 @@ function MOH_Files_Download() {
     if (file_exists($Filename)) {
         //header("Content-type: " . mime_content_type($Filename));
         header("Content-Disposition: attachment; filename=\"" . basename($File['Filename'] . "." . $File['Extension']) . "\"");
-        $handle = fopen($Filename, 'r');
-        while (!feof($handle)) {
-            echo fread($handle, 8192);
-        }
-        fclose($handle);
+        echo file_get_contents($Filename);
     } else {
         echo "File not found.";
     }

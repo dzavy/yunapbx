@@ -39,7 +39,6 @@ function MOH_Files_Modify() {
             asterisk_UpdateConf('musiconhold.conf');
             asterisk_Reload();
             header("Location: MOH_Files_ListGroup.php?PK_Group=$FK_Group");
-            die();
         }
     }
 

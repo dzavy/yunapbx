@@ -109,12 +109,7 @@ function vm_getfile($extension, $folder, $file) {
         header("Content-type: " . mime_content_type($file_and_path));
         //header("Content-type: application/octet-stream");
         header("Content-Disposition: attachment; filename=\"msg{$file}.wav\"");
-        $handle = fopen($file_and_path, "r");
-        while (!feof($handle)) {
-            echo fread($handle, 8192);
-        }
-
-        fclose($handle);
+        echo file_get_contents($file_and_path);
     } else {
         echo "File not found. $file_and_path";
     }
