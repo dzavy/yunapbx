@@ -13,4 +13,5 @@ $conf['dirs']['monitor'] = '/data/monitor';
 
 $conf['output']['dir'] = '/var/yunapbx';
 $conf['output']['perms'] = 0640;
+$conf['output']['sip_channel_type'] = 'pjsip';
 ?>

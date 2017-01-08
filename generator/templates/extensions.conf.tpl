@@ -1,3 +1,7 @@
+    $smarty->assign('SipChannelTypeCall', 'PJSIP');
+    $smarty->assign('SipChannelTypeMessage', 'pjsip');
+
+
 [macro-call-recording]{literal}
 exten => s,1,MixMonitor(${STRFTIME(${EPOCH},,%Y%m%d)}-${CDR(uniqueid)}.wav,W(2),/usr/bin/lame -b16 -c --silent ^{MIXMONITOR_FILENAME} ^{MIXMONITOR_FILENAME:0:-3}mp3 && rm ^{MIXMONITOR_FILENAME})
 exten => s,2,Set(CDR(amaflags)=billing){/literal}
@@ -74,9 +78,9 @@ exten => i,1,Hangup(3)
 exten => {$Ext_SipPhone.Extension},hint,SIP/{$Ext_SipPhone.Extension}
 exten => {$Ext_SipPhone.Extension},1,Noop({literal}${{/literal}DEVICE_STATE(SIP/{$Ext_SipPhone.Extension}){literal}}{/literal})
 exten => {$Ext_SipPhone.Extension},n,Set(YUNA_CALLDIRECTION={literal}${IF($["${YUNA_CALLDIRECTION}"="OUT"]?"LOCAL":"IN")}{/literal})
-exten => {$Ext_SipPhone.Extension},n,Dial(SIP/{$Ext_SipPhone.Extension})
+exten => {$Ext_SipPhone.Extension},n,Dial({$SipChannelTypeCall}/{$Ext_SipPhone.Extension})
 exten => {$Ext_SipPhone.Extension},n,Hangup
-exten => msg{$Ext_SipPhone.Extension},1,MessageSend(sip:{$Ext_SipPhone.Extension},{literal}${MESSAGE(from)}{/literal})
+exten => msg{$Ext_SipPhone.Extension},1,MessageSend({$SipChannelTypeMessage}:{$Ext_SipPhone.Extension},{literal}${MESSAGE(from)}{/literal})
 exten => msg{$Ext_SipPhone.Extension},n,Hangup
 
 {/foreach}
@@ -122,9 +126,9 @@ include => outgoing{$OutgoingRule.PK_OutgoingRule}
 {/if}
 
 [sip{$Provider.PK_SipProvider}_egress]
-exten => _X.,1,Dial(SIP/sip{$Provider.PK_SipProvider}/{literal}${EXTEN}{/literal})
+exten => _X.,1,Dial({$SipChannelTypeCall}/sip{$Provider.PK_SipProvider}/{literal}${EXTEN}{/literal})
 exten => _X.,n,Hangup
-exten => _msgX.,1,MessageSend(sip:{literal}${EXTEN:3}{/literal}@sip{$Provider.PK_SipProvider})
+exten => _msgX.,1,MessageSend({$SipChannelTypeMessage}:{literal}${EXTEN:3}{/literal}@sip{$Provider.PK_SipProvider})
 exten => _msgX.,n,Hangup
 
 {/foreach}
@@ -134,7 +138,7 @@ exten => _msgX.,n,Hangup
 [dongle{$Dongle.PK_Dongle}_ingress]
 exten => sms,1,Macro(fix-international-code)
 exten => sms,n,Set(MESSAGE(body)={literal}${BASE64_DECODE(${SMS_BASE64})}{/literal})
-exten => sms,n,MessageSend(sip:1234,"{literal}${CALLERID(num)}{/literal}" <sip:{literal}${CALLERID(num)}{/literal}@localhost>)
+exten => sms,n,MessageSend({$SipChannelTypeMessage}:1234,"{literal}${CALLERID(num)}{/literal}" <sip:{literal}${CALLERID(num)}{/literal}@localhost>)
 exten => sms,n,Hangup()
 exten => ussd,1,Hangup()
 exten => _+X.,1,Macro(fix-international-code)
