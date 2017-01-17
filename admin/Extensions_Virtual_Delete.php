@@ -32,8 +32,7 @@ function Extensions_Virtual_Delete() {
         $query = "DELETE FROM Extension_Rules WHERE FK_Extension = $PK_Extension";
         $mysqli->query($query) or die($mysqli->error);
 
-        asterisk_UpdateConf('sip.conf');
-        asterisk_UpdateConf('voicemail.conf');
+        asterisk_UpdateConf('extensions.conf');
         asterisk_Reload();
 
         header('Location: Extensions_List.php?msg=DELETE_VIRTUAL_EXTENSION');

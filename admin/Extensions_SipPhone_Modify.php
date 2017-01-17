@@ -70,6 +70,7 @@ function Extensions_SipPhone_Modify() {
         if (count($Errors) == 0) {
             $id = formdata_save($SipPhone);
             asterisk_UpdateConf('sip.conf');
+            asterisk_UpdateConf('pjsip.conf');
             asterisk_UpdateConf('voicemail.conf');
             asterisk_UpdateConf('extensions.conf');
             asterisk_Reload();

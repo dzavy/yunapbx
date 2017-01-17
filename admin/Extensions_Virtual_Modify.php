@@ -37,8 +37,7 @@ function Extensions_Virtual_Modify() {
 
         if (count($Errors) == 0) {
             $id = formdata_save($Extension);
-            asterisk_UpdateConf('sip.conf');
-            asterisk_UpdateConf('voicemail.conf');
+            asterisk_UpdateConf('extensions.conf');
             asterisk_Reload();
             header("Location: Extensions_List.php?msg=MODIFY_VIRTUAL_EXTENSION&hilight={$id}");
             die();

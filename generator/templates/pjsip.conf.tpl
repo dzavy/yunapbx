@@ -2,7 +2,11 @@
 ; SIP_PROVIDER : {$Provider.Name}
 [sip{$Provider.PK_SipProvider}]
 type = endpoint
+{if $Provider.DTMFMode == "rfc2833"}
+dtmf_mode = rfc4733
+{else}
 dtmf_mode = {$Provider.DTMFMode}
+{/if}
 {if $Provider.ProxyHost != ""}outboundproxy={$Provider.ProxyHost}
 {/if}
 {if ! $Provider.LocalAddrFrom}
@@ -59,14 +63,24 @@ retry_interval = 120
 type = endpoint
 accountcode = S{$Extension.Extension}
 callerid = {$Extension.Name} <{$Extension.Extension}>
+{if $Extension.DTMFMode == "rfc2833"}
+dtmf_mode = rfc4733
+{else}
 dtmf_mode = {$Extension.DTMFMode}
+{/if}
 context = ext{$Extension.PK_Extension}_ingress
 message_context = ext{$Extension.PK_Extension}_message
+subscribe_context = internal
 disallow = all
 allow = {$Extension.Codecs}
 {if 'voicemail'|in_array:$Extension.Features }
 mailboxes = {$Extension.Extension}@default
 {/if}
+dtls_setup = actpass
+dtls_cert_file = /var/ssl/asterisk.crt
+dtls_private_key = /var/ssl/asterisk.key
+media_encryption = dtls
+direct_media = no
 aors = {$Extension.Extension}
 auth = {$Extension.Extension}
 

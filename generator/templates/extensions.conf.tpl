@@ -1,7 +1,3 @@
-    $smarty->assign('SipChannelTypeCall', 'PJSIP');
-    $smarty->assign('SipChannelTypeMessage', 'pjsip');
-
-
 [macro-call-recording]{literal}
 exten => s,1,MixMonitor(${STRFTIME(${EPOCH},,%Y%m%d)}-${CDR(uniqueid)}.wav,W(2),/usr/bin/lame -b16 -c --silent ^{MIXMONITOR_FILENAME} ^{MIXMONITOR_FILENAME:0:-3}mp3 && rm ^{MIXMONITOR_FILENAME})
 exten => s,2,Set(CDR(amaflags)=billing){/literal}
@@ -55,7 +51,6 @@ exten => _{$OutgoingRule.BeginWith}{for $i=1 to $digits}X{/for},1,Goto({literal}
 
 {/foreach}
 
-
 {foreach from=$Ext_SipPhones item=Ext_SipPhone}
 [ext{$Ext_SipPhone.PK_Extension}_ingress]
 exten => _X.,1,Set(YUNA_CALLDIRECTION=OUT)
@@ -75,8 +70,8 @@ include => outgoing{$Rule.PK_OutgoingRule}
 exten => i,1,Hangup(3)
 
 [ext{$Ext_SipPhone.PK_Extension}_egress]
-exten => {$Ext_SipPhone.Extension},hint,SIP/{$Ext_SipPhone.Extension}
-exten => {$Ext_SipPhone.Extension},1,Noop({literal}${{/literal}DEVICE_STATE(SIP/{$Ext_SipPhone.Extension}){literal}}{/literal})
+exten => {$Ext_SipPhone.Extension},hint,{$SipChannelTypeCall}/{$Ext_SipPhone.Extension}
+exten => {$Ext_SipPhone.Extension},1,Noop({literal}${{/literal}DEVICE_STATE({$SipChannelTypeCall}/{$Ext_SipPhone.Extension}){literal}}{/literal})
 exten => {$Ext_SipPhone.Extension},n,Set(YUNA_CALLDIRECTION={literal}${IF($["${YUNA_CALLDIRECTION}"="OUT"]?"LOCAL":"IN")}{/literal})
 exten => {$Ext_SipPhone.Extension},n,Dial({$SipChannelTypeCall}/{$Ext_SipPhone.Extension})
 exten => {$Ext_SipPhone.Extension},n,Hangup
@@ -138,7 +133,7 @@ exten => _msgX.,n,Hangup
 [dongle{$Dongle.PK_Dongle}_ingress]
 exten => sms,1,Macro(fix-international-code)
 exten => sms,n,Set(MESSAGE(body)={literal}${BASE64_DECODE(${SMS_BASE64})}{/literal})
-exten => sms,n,MessageSend({$SipChannelTypeMessage}:1234,"{literal}${CALLERID(num)}{/literal}" <sip:{literal}${CALLERID(num)}{/literal}@localhost>)
+exten => sms,n,MessageSend({$SipChannelTypeMessage}:1234,"{literal}${CALLERID(num)}{/literal}" <sip:{literal}${CALLERID(num)}{/literal}>)
 exten => sms,n,Hangup()
 exten => ussd,1,Hangup()
 exten => _+X.,1,Macro(fix-international-code)

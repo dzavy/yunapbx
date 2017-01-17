@@ -48,6 +48,7 @@ function VoipProviders_Modify() {
         if (count($Errors) == 0) {
             $id = formdata_save($Provider);
             asterisk_UpdateConf('sip.conf');
+            asterisk_UpdateConf('pjsip.conf');
             asterisk_UpdateConf('extensions.conf');
             asterisk_Reload();
             header("Location: VoipProviders_List.php?msg=MODIFY_SIP_PROVIDER&hilight={$id}");

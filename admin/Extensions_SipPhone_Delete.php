@@ -36,7 +36,9 @@ function Extensions_SipPhone_Delete() {
         $mysqli->query($query) or die($mysqli->error);
 
         asterisk_UpdateConf('sip.conf');
-        asterisk_UpdateConf('voicemail.conf');
+        asterisk_UpdateConf('pjsip.conf');
+        asterisk_UpdateConf('voicemail.conf');        
+        asterisk_UpdateConf('extensions.conf');
         asterisk_Reload();
 
         header('Location: Extensions_List.php?msg=DELETE_SIPPHONE_EXTENSION');

@@ -33,6 +33,7 @@ function VoipProviders_Delete() {
         $mysqli->query($query) or die($mysqli->error . $query);
 
         asterisk_UpdateConf('sip.conf');
+        asterisk_UpdateConf('pjsip.conf');
         asterisk_UpdateConf('extensions.conf');
         asterisk_Reload();
 
