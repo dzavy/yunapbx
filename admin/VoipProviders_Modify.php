@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function VoipProviders_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['VoipProviders_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -18,25 +18,25 @@ function VoipProviders_Modify() {
 
     // Init Available DTMF Modes (DTMFModes)
     $query = "SELECT PK_DTMFMode, Name, Description FROM DTMFModes";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $DTMFModes = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $DTMFModes[] = $row;
     }
 
     // Init available codecs (Codecs)
     $query = "SELECT PK_Codec, Name, Description, Recomended FROM Codecs";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Codecs = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Codecs[] = $row;
     }
 
     // Init available outgoing rules (Rules)
     $query = "SELECT * FROM OutgoingRules ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Rules = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rules[] = $row;
     }
 
@@ -71,7 +71,7 @@ function VoipProviders_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Init data from 'SipProviders'
     $query = "
 		SELECT
@@ -82,8 +82,8 @@ function formdata_from_db($id) {
 			PK_SipProvider = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     // Init data from 'SipProvider_Codecs'
     $query = "
@@ -94,9 +94,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_SipProvider = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Codecs'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Codecs'][] = $row['FK_Codec'];
     }
 
@@ -109,9 +109,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_SipProvider = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Rules'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
     }
 
@@ -156,12 +156,12 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_SipProvider'] == "") {
         $query = "INSERT INTO SipProviders() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_SipProvider'] = $mysqli->insert_id;
+        $data['PK_SipProvider'] = $db->lastInsertId();
     }
 
     // Update 'Extensions'
@@ -196,7 +196,7 @@ function formdata_save($data) {
 			PK_SipProvider     = " . $mysqli->real_escape_string($data['PK_SipProvider']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update Password if requested and set PhonePassword if it was never set
     if ($data['Password'] != '') {
@@ -209,27 +209,27 @@ function formdata_save($data) {
 				PK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     // Update 'SipProvider_Codecs'
     $query = "DELETE FROM SipProvider_Codecs WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Codecs'])) {
         foreach ($data['Codecs'] as $FK_Codec) {
             $query = "INSERT INTO SipProvider_Codecs (FK_SipProvider, FK_Codec) VALUES ({$data['PK_SipProvider']}, $FK_Codec)";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'SipProvider_Rules'
     $query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = " . $mysqli->real_escape_string($data['PK_SipProvider']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule) {
             if ($FK_OutgoingRule != 0) {
                 $query = "INSERT INTO SipProvider_Rules(FK_SipProvider, FK_OutgoingRule) VALUES ({$data['PK_SipProvider']}, $FK_OutgoingRule)";
-                $mysqli->query($query) or die($mysqli->error);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
             }
         }
     }
@@ -237,14 +237,14 @@ function formdata_save($data) {
     // If we don't apply incoming rules to this provider, make sure we remove existing ones (if exists)
     if ($data['ApplyIncomingRules'] == 0) {
         $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = {$data['PK_SipProvider']}";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     return $data['PK_SipProvider'];
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
     if ($data['PK_SipProvider'] == '') {
         $create_new = true;
@@ -278,7 +278,7 @@ function formdata_validate($data) {
             // Check if extension is valid on the system
         } else {
             $query = "SELECT PK_Extension FROM Extensions WHERE Extension = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             if ($result->num_rows < 1) {
                 $errors['CallbackExtension']['NoMatch'] = true;
             }

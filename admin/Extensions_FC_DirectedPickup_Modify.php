@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_FC_DirectedPickup_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Extensions_FC_DirectedPickup_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -21,9 +21,9 @@ function Extensions_FC_DirectedPickup_Modify() {
 						FC_DirectedPickup_Members
 					WHERE
 						FK_Extension = '" . $mysqli->escape_string($pk_ext) . "' ORDER BY FK_Ext_Member, FK_Ext_Group";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $Members = array();
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $Members[] = $row;
         }
 
@@ -34,9 +34,9 @@ function Extensions_FC_DirectedPickup_Modify() {
 						FC_DirectedPickup_Admins
 					WHERE
 						FK_Extension = '" . $mysqli->escape_string($pk_ext) . "' ORDER BY FK_Ext_Admin, FK_Ext_Group";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $Admins = array();
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $Admins[] = $row;
         }
 
@@ -46,9 +46,9 @@ function Extensions_FC_DirectedPickup_Modify() {
 					FROM
 						FC_DirectedPickup_Admins
 					ORDER BY ConnectionID";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $IDs = array();
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $IDs[] = $row['ConnectionID'];
         }
     }
@@ -60,9 +60,9 @@ function Extensions_FC_DirectedPickup_Modify() {
 
     // Groups
     $query = "SELECT PK_Group, Name FROM Groups";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Groups = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 
@@ -81,9 +81,9 @@ function Extensions_FC_DirectedPickup_Modify() {
 			Extensions.Type IN ('Virtual', 'SipPhone')
 		ORDER BY Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Accounts = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Accounts[] = $row;
     }
 
@@ -143,7 +143,7 @@ function data_rows($master, $slave, $IDs) {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
@@ -154,8 +154,8 @@ function formdata_from_db($id) {
 			FC_DirectedPickup.FK_Extension = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -170,18 +170,18 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     //myprint($data);
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO
 						Extensions(Feature, Type, Extension)
 					VALUES
 						(1, 'FC_DirectedPickup', '" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Extension'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Extension'] = $db->lastInsertId();
 
         $query = "INSERT INTO FC_DirectedPickup(FK_Extension) VALUES({$data['PK_Extension']})";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     // Update 'FC_DirectedPickup_Admins'
@@ -189,7 +189,7 @@ function formdata_save($data) {
 					FC_DirectedPickup_Admins
 		      WHERE
 					FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     foreach (array_keys($data['Admin']) as $connectionId) {
         $ExtOrGroup = array_keys($data['Admin'][$connectionId]);
@@ -210,7 +210,7 @@ function formdata_save($data) {
 						FC_DirectedPickup_Admins (FK_Extension, ConnectionID, FK_Ext_Admin, FK_Ext_Group)
 					VALUES
 						({$data['PK_Extension']}, {$connectionId}, {$FK_Ext_Admin}, {$FK_Ext_Group} )";
-                $mysqli->query($query) or die($mysqli->error . $query);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
             }
         }
     }
@@ -221,7 +221,7 @@ function formdata_save($data) {
 					FC_DirectedPickup_Members
 			   WHERE
 					FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     foreach (array_keys($data['Member']) as $connectionId) {
         $ExtOrGroup = array_keys($data['Member'][$connectionId]);
@@ -239,7 +239,7 @@ function formdata_save($data) {
 						FC_DirectedPickup_Members (FK_Extension, ConnectionID, FK_Ext_Member, FK_Ext_Group)
 					VALUES
 						({$data['PK_Extension']}, {$connectionId}, {$FK_Ext_Member}, {$FK_Ext_Group} )";
-                $mysqli->query($query) or die($mysqli->error . $query);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
             }
         }
     }
@@ -247,7 +247,7 @@ function formdata_save($data) {
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if ($data['PK_Extension'] == '') {
@@ -267,7 +267,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

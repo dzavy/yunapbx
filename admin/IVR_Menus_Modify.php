@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Menus_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Menus_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -38,10 +38,10 @@ function IVR_Menus_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM IVR_Menus WHERE PK_Menu = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -57,11 +57,11 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Menu'] == "") {
         $query = "INSERT INTO IVR_Menus() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Menu'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Menu'] = $db->lastInsertId();
     }
 
     $query = "
@@ -74,7 +74,7 @@ function formdata_save($data) {
 			PK_Menu = {$data['PK_Menu']}
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_Menu'];
 }

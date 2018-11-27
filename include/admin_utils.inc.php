@@ -24,21 +24,21 @@ function admin_run($generator_function, $template = "", $need_auth = true) {
 }
 
 function pbx_var_get($name) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT Value FROM	Settings WHERE Name = '" . $mysqli->real_escape_string($name) . "'";
 
-    $result = $mysqli->query($query) or die(__LINE__ . __FILE__);
+    $result = $db->query($query) or die(__LINE__ . __FILE__);
     $row = $result->fetch_object();
     return $row->Value;
 }
 
 function pbx_var_set($name, $value) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "DELETE FROM Settings WHERE Name='" . $mysqli->real_escape_string($name) . "' LIMIT 1";
-    $mysqli->query($query) or die(__LINE__ . __FILE__);
+    $db->query($query) or die(__LINE__ . __FILE__);
 
     $query = "INSERT INTO Settings (Name,Value) VALUES ('" . $mysqli->real_escape_string($name) . "','" . $mysqli->real_escape_string($value) . "')";
-    $mysqli->query($query) or die(__LINE__ . __FILE__);
+    $db->query($query) or die(__LINE__ . __FILE__);
 }
 
 function get_web_page($url) {

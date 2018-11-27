@@ -29,8 +29,8 @@ if ($agi->request['agi_type'] == 'SIP') {
     $PK_SipProvider = $matches[1];
 
     $query = "SELECT Name FROM SipProviders WHERE PK_SipProvider=$PK_SipProvider LIMIT 1";
-    $result = $mysqli->query($query) or $agi->verbose($mysqli->error . $query);
-    $prov = $result->fetch_assoc();
+    $result = $db->query($query) or $agi->verbose($mysqli->error . $query);
+    $prov = $result->fetch(PDO::FETCH_ASSOC);
 
     $cdr->push_event("INPROVIDER", "SIP,{$prov['Name']}");
 } elseif ($agi->request['agi_type'] == 'IAX2') {
@@ -38,8 +38,8 @@ if ($agi->request['agi_type'] == 'SIP') {
     $PK_IaxProvider = $matches[1];
 
     $query = "SELECT Name FROM IaxProviders WHERE PK_IaxProvider=$PK_IaxProvider LIMIT 1";
-    $result = $mysqli->query($query) or $agi->verbose($mysqli->error . $query);
-    $prov = $result->fetch_assoc();
+    $result = $db->query($query) or $agi->verbose($mysqli->error . $query);
+    $prov = $result->fetch(PDO::FETCH_ASSOC);
 
     $cdr->push_event("INPROVIDER", "IAX,{$prov['Name']}");
 }
@@ -53,7 +53,7 @@ run_callback_extension($agi);
 $agi->exec_goto('internal', '301', 1);
 
 function run_incoming_call_rules($agi) {
-    global $mysqli;
+    $db = DB::getInstance();
     $cid = $agi->parse_callerid();
 
     /* Get the first rule that this call matched */
@@ -82,7 +82,7 @@ function run_incoming_call_rules($agi) {
 			RuleOrder ASC
 		LIMIT 1
 	";
-    $res = $mysqli->query($query) or $agi->verbose($mysqli->error . $query);
+    $res = $db->query($query) or $agi->verbose($mysqli->error . $query);
 
     /* Iterate the matching rules */
     while ($row = $mysqli->fetch_assoc($res)) {
@@ -114,19 +114,19 @@ function run_incoming_call_rules($agi) {
 }
 
 function run_callback_extension($agi) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($agi->request['agi_type'] == 'SIP') {
         preg_match('/^sip_provider_(\d+)/', $agi->request['agi_context'], $matches);
         $PK_SipProvider = $matches[1];
         $query = "SELECT CallbackExtension FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
-        $res = $mysqli->query($query) or die($mysqli->error);
+        $res = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $mysqli->fetch_assoc($res);
         $CallbackExtension = $row['CallbackExtension'];
     } elseif ($agi->request['agi_type'] == 'IAX2') {
         preg_match('/^iax_provider_(\d+)/', $agi->request['agi_context'], $matches);
         $PK_IaxProvider = $matches[1];
         $query = "SELECT CallbackExtension FROM IaxProviders WHERE PK_IaxProvider = $PK_IaxProvider LIMIT 1";
-        $res = $mysqli->query($query) or die($mysqli->error);
+        $res = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $mysqli->fetch_assoc($res);
         $CallbackExtension = $row['CallbackExtension'];
     }

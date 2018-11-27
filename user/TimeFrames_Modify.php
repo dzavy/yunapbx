@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/user_utils.inc.php');
 
 function TimeFrames_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     session_start();
     $session = &$_SESSION['TimeModify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -28,7 +28,7 @@ function TimeFrames_Modify() {
     // Delete if requested
     if (isset($_REQUEST['del'])) {
         $query = "DELETE FROM Timeframe_Intervals WHERE PK_Interval = {$_REQUEST['PK_Interval']} LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
         if ($mysqli->affected_rows) {
             $Message = "DELETE_INTERVAL";
         }
@@ -45,7 +45,7 @@ function TimeFrames_Modify() {
 			AND
 			FK_Extension = '" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     if ($result->num_rows != 1) {
         $ReadOnly = true;
     } else {
@@ -65,9 +65,9 @@ function TimeFrames_Modify() {
 		ORDER BY
 			OrderDummy
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Intervals = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Intervals[] = $row;
     }
 
@@ -186,7 +186,7 @@ function formdata_validate($data) {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     // See if user is alowed to update this timeframe
     $query = "
 		SELECT
@@ -198,14 +198,14 @@ function formdata_save($data) {
 			AND
 			FK_Extension = '" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     if ($result->num_rows != 1) {
         return;
     }
 
     $query = "INSERT INTO Timeframe_Intervals() VALUES()";
-    $mysqli->query($query) or die($mysqli->error . $query);
-    $data['PK_Interval'] = $mysqli->insert_id;
+    $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data['PK_Interval'] = $db->lastInsertId();
 
     $query = "
 		UPDATE
@@ -223,7 +223,7 @@ function formdata_save($data) {
 		WHERE
 			PK_Interval  = {$data['PK_Interval']}
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 }
 
 user_run('TimeFrames_Modify', 'User.tpl');

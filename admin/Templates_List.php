@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Templates_List() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Templates'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -53,8 +53,8 @@ function Templates_List() {
 		ORDER BY 
 			$Sort $Order
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Templates[] = $row;
     }
 
@@ -68,15 +68,15 @@ function Templates_List() {
 }
 
 function create_new_template($Name) {
-    global $mysqli;
+    $db = DB::getInstance();
     
     if ($Name == "") {
         return false;
     }
 
     $query = "INSERT INTO Templates() VALUES()";
-    $mysqli->query($query) or die($mysqli->error);
-    $PK_Template = $mysqli->insert_id;
+    $db->query($query) or die(print_r($db->errorInfo(), true));
+    $PK_Template = $db->lastInsertId();
 
     $query = "
 		UPDATE
@@ -92,13 +92,13 @@ function create_new_template($Name) {
 			PK_Template = $PK_Template
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "INSERT INTO Template_Codecs (FK_Template, FK_Codec) (SELECT $PK_Template, PK_Codec FROM Codecs WHERE Recomended = 1)";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "INSERT INTO Template_Features (FK_Template, FK_Feature) (SELECT $PK_Template, PK_Feature FROM Features WHERE Recomended = 1)";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $PK_Template;
 }

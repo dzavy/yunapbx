@@ -122,7 +122,7 @@ function dial_extension(&$menu, &$step, &$vars, &$key, $param) {
     }
 
     $query = "SELECT * FROM Extensions WHERE Extension = '$ext_to_dial' LIMIT 1";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     if ($mysqli->numrows($result) == '1') {
         $agi->exec('Goto', array('internal', $ext_to_dial, 1));
         die();
@@ -141,7 +141,7 @@ function send_to_voicemail(&$menu, &$step, &$vars, &$key, $param) {
     }
 
     $query = "SELECT * FROM Extensions WHERE Extension = '$mailbox' LIMIT 1";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     if ($mysqli->numrows($result) == '1') {
         $agi->exec('Voicemail', $mailbox);
         die();
@@ -267,7 +267,7 @@ function conditional_clause(&$menu, &$step, &$vars, &$key, $param) {
         $menu = $param['Menu'];
 
         $query = "SELECT `Order` FROM IVR_Actions WHERE FK_Menu='{$param['Menu']}' AND PK_Action='{$param['Action']}'";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         if ($mysqli->numrows($result) == 1) {
             $row = $mysqli->fetch_array($result);
             $step = $row[0];
@@ -285,7 +285,7 @@ function time_clause(&$menu, &$step, &$vars, &$key, $param) {
     $condition = false;
 
     $query = "SELECT COUNT(*) FROM Timeframe_Intervals WHERE ValidTimeInterval(PK_Interval) AND FK_Timeframe = {$param['FK_Timeframe']}";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     $row = $mysqli->fetch_array($result);
     $condition = $row[0];
 
@@ -293,7 +293,7 @@ function time_clause(&$menu, &$step, &$vars, &$key, $param) {
         $menu = $param['Menu'];
 
         $query = "SELECT `Order` FROM IVR_Actions WHERE FK_Menu='{$param['Menu']}' AND PK_Action='{$param['Action']}'";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         if ($mysqli->numrows($result) == 1) {
             $row = $mysqli->fetch_array($result);
             $step = $row[0];
@@ -311,7 +311,7 @@ function goto_context(&$menu, &$step, &$vars, &$key, $param) {
     $menu = $param['Menu'];
 
     $query = "SELECT `Order` FROM IVR_Actions WHERE FK_Menu='{$param['Menu']}' AND PK_Action='{$param['Action']}'";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     if ($mysqli->numrows($result) == 1) {
         $row = $mysqli->fetch_array($result);
         $step = $row[0];
@@ -325,14 +325,14 @@ function ivr_run(&$menu, &$step, &$vars, &$key) {
 
     /* Get Action */
     $query = "SELECT * FROM IVR_Actions WHERE FK_Menu = $menu AND `Order` = $step";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-    $action = $result->fetch_assoc();
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $action = $result->fetch(PDO::FETCH_ASSOC);
 
     /* Get Params for action */
     $param = array();
     $query = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $param[$row['Name']] = $row['Value'];
         $param["__{$row['Name']}"] = $row['Variable'];
     }
@@ -385,17 +385,17 @@ $ext = $agi->request['agi_extension'];
 
 // Get 'Extension' table info
 $query = "SELECT PK_Extension, Extension, Type FROM Extensions WHERE Extension = '$ext' LIMIT 1";
-$result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$Extension = $result->fetch_assoc();
+$result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$Extension = $result->fetch(PDO::FETCH_ASSOC);
 
 // Get Starting Parameters
 $query = "SELECT * FROM Ext_IVR WHERE PK_Extension = '{$Extension['PK_Extension']}' LIMIT 1";
-$result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$Ext_IVR = $result->fetch_assoc();
+$result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$Ext_IVR = $result->fetch(PDO::FETCH_ASSOC);
 
 // Get Starting Order
 $query = "SELECT `Order` FROM IVR_Actions WHERE PK_Action = {$Ext_IVR['FK_Action']} LIMIT 1";
-$result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
 if ($mysqli->numrows($result) == 1) {
     $step = $mysqli->fetch_array($result);
     $step = $step[0];
@@ -412,8 +412,8 @@ $retry = 0;
 
 // Add CDR 'rang' event
 $query = "SELECT * FROM IVR_Menus WHERE PK_Menu = '$menu' LIMIT 1";
-$result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-$IVR_Menu = $result->fetch_assoc();
+$result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+$IVR_Menu = $result->fetch(PDO::FETCH_ASSOC);
 
 // Set CDR called info
 $cdr->set_called($Extension['PK_Extension'], 'IVR', $IVR_Menu['Name'], $Extension['Extension']);
@@ -423,13 +423,13 @@ while ($menu > 0 && $step > 0) {
     ivr_run($menu, $step, $vars, $key); // <- that also modify the $step variable
     // See if there is a next step in this menu
     $query = "SELECT * FROM IVR_Actions WHERE FK_Menu = $menu AND `Order` = $step";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     $next_step_available = $mysqli->num_rows($result);
 
     if (!$next_step_available && $key == '') {
         // Get the timeout for this menu
         $query = "SELECT Timeout FROM IVR_Menus WHERE PK_Menu = '$menu' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         $row = $mysqli->fetch_array($result);
         $timeout = $row[0] * 1000;
 
@@ -447,7 +447,7 @@ while ($menu > 0 && $step > 0) {
 
         // See if extension dialing is enabled in this menu
         $query = "SELECT ExtensionDialing FROM IVR_Menus WHERE PK_Menu = '$menu' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         $row = $mysqli->fetch_array($result);
         $dialing_enabled = $row[0];
 
@@ -464,7 +464,7 @@ while ($menu > 0 && $step > 0) {
 
             // Check if the extension entered is valid to be dialed, if so dial and get out
             $query = "SELECT * FROM Extensions WHERE IVRDial = '1' AND Extension = '$extension_to_dial' LIMIT 1";
-            $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+            $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
             if ($mysqli->num_rows($result)) {
                 $agi->exec('Goto', array('internal', $extension_to_dial, 1));
                 die();
@@ -473,18 +473,18 @@ while ($menu > 0 && $step > 0) {
 
         // Check for requested option
         $query = "SELECT * FROM IVR_Options WHERE FK_Menu= '$menu' AND `Key`='$key' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
 
         // If it's a valid option
         if ($mysqli->num_rows($result)) {
-            $row = $result->fetch_assoc();
+            $row = $result->fetch(PDO::FETCH_ASSOC);
 
             // Get Starting Menus
             $menu = $row['FK_Menu_Entry'];
 
             // Get Starting Order
             $query = "SELECT `Order` FROM IVR_Actions WHERE PK_Action = '{$row['FK_Action_Entry']}' LIMIT 1";
-            $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+            $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
             if ($mysqli->numrows($result) == 1) {
                 $step = $mysqli->fetch_array($result);
                 $step = $step[0];
@@ -499,8 +499,8 @@ while ($menu > 0 && $step > 0) {
         } else {
             // Check for invalid option menu / action
             $query = "SELECT * FROM IVR_Menus WHERE PK_Menu= '$menu' LIMIT 1";
-            $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-            $row = $result->fetch_assoc();
+            $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
 
             // Play invalid sound file
             $file_to_play = SoundFile($row['FK_SoundEntry_Invalid'], $row['FK_SoundLanguage_Invalid']);
@@ -511,7 +511,7 @@ while ($menu > 0 && $step > 0) {
 
             // Set invalid menu order
             $query = "SELECT `Order` FROM IVR_Actions WHERE PK_Action = '{$row['FK_Action_Invalid']}' LIMIT 1";
-            $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+            $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
             if ($mysqli->numrows($result) == 1) {
                 $step = $mysqli->fetch_array($result);
                 $step = $step[0];
@@ -528,8 +528,8 @@ while ($menu > 0 && $step > 0) {
     } elseif (!$next_step_available) {
         // Check for timeout option sound / menu / action 
         $query = "SELECT * FROM IVR_Menus WHERE PK_Menu= '$menu' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-        $row = $result->fetch_assoc();
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
 
         // Play invalid sound file
         $file_to_play = SoundFile($row['FK_SoundEntry_Timeout'], $row['FK_SoundLanguage_Timeout']);
@@ -540,7 +540,7 @@ while ($menu > 0 && $step > 0) {
 
         // Set timeout menu order
         $query = "SELECT `Order` FROM IVR_Actions WHERE PK_Action = '{$row['FK_Action_Timeout']}' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         if ($mysqli->numrows($result) == 1) {
             $step = $mysqli->fetch_array($result);
             $step = $step[0];
@@ -555,15 +555,15 @@ while ($menu > 0 && $step > 0) {
 
     // Get the number of allowed retries for this menu
     $query = "SELECT Retry FROM IVR_Menus WHERE PK_Menu = '$menu' LIMIT 1";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
     $row = $mysqli->fetch_array($result);
     $retries = $row[0];
 
     if ($retries != 0 && $retry >= $retries) {
         // Check for retry option sound / menu / action 
         $query = "SELECT * FROM IVR_Menus WHERE PK_Menu= '$menu' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-        $row = $result->fetch_assoc();
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
 
         // Play invalid sound file
         $file_to_play = SoundFile($row['FK_SoundEntry_Retry'], $row['FK_SoundLanguage_Retry']);
@@ -574,7 +574,7 @@ while ($menu > 0 && $step > 0) {
 
         // Set timeout menu order
         $query = "SELECT `Order` FROM IVR_Actions WHERE PK_Action = '{$row['FK_Action_Retry']}' LIMIT 1";
-        $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+        $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
         if ($mysqli->numrows($result) == 1) {
             $step = $mysqli->fetch_array($result);
             $step = $step[0];

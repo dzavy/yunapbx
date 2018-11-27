@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/user_utils.inc.php');
 
 function Extensions_Popup() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     // Set 'Extensions'
@@ -27,10 +27,10 @@ function Extensions_Popup() {
 		ORDER BY
 			Extension_Pad ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Extensions = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Extensions[] = $row;
     }
 

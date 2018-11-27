@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function OutgoingCalls() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['OutgoingCalls'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -28,9 +28,9 @@ function OutgoingCalls() {
 				Name            = '',
 				Number          = ''
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $HiligthRule = $mysqli->insert_id;
+        $HiligthRule = $db->lastInsertId();
     }
 
     // Outgoing Rules (OutgoingRules)
@@ -86,8 +86,8 @@ function OutgoingCalls() {
 		ORDER BY
 			RuleOrder ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $OutgoingRules[] = $row;
     }
 
@@ -101,8 +101,8 @@ function OutgoingCalls() {
 		ORDER BY
 			Type
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $OutgoingCIDRules[] = $row;
     }
 

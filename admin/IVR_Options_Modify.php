@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Options_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Options_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -34,18 +34,18 @@ function IVR_Options_Modify() {
     // Get available menus
     $Menus = array();
     $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $menu = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-        while ($row2 = $result2->fetch_assoc()) {
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+        while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) {
             $action = $row2;
 
             $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-            $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
-            while ($row3 = $result3->fetch_assoc()) {
+            $result3 = $db->query($query3) or die(print_r($db->errorInfo(), true));
+            while ($row3 = $result3->fetch(PDO::FETCH_ASSOC)) {
                 $action['Param'][$row3['Name']] = $row3['Value'];
                 $action['Var'][$row3['Name']] = $row3['Variable'];
             }
@@ -59,8 +59,8 @@ function IVR_Options_Modify() {
     // Get used keys
     $UsedKeys = array();
     $query = "SELECT `Key` FROM IVR_Options WHERE PK_Option != '{$Option['PK_Option']}' AND FK_Menu={$Option['FK_Menu']}";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $UsedKeys[] = $row['Key'];
     }
 
@@ -72,10 +72,10 @@ function IVR_Options_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM IVR_Options WHERE PK_Option = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -93,11 +93,11 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Option'] == "") {
         $query = "INSERT INTO IVR_Options (FK_Menu) VALUES({$data['FK_Menu']})";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Option'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Option'] = $db->lastInsertId();
     }
 
     $query = "
@@ -112,7 +112,7 @@ function formdata_save($data) {
 			PK_Option = {$data['PK_Option']}
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_Option'];
 }

@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/moh_utils.inc.php');
 
 function MOH_Files_List() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['MOH_Files_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -80,15 +80,15 @@ function MOH_Files_List() {
 			`$Sort` $Order
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Files[] = $row;
     }
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 

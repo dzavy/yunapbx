@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IncomingCalls() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IncomingCalls'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -16,7 +16,7 @@ function IncomingCalls() {
     // Add Incoming Rule
     if (isset($_REQUEST['add_rule']) && ($_REQUEST['Type'] == 'block' || $_REQUEST['Type'] == 'transfer')) {
         $query = "SELECT MAX(RuleOrder) FROM IncomingRules";
-        $result = $mysqli->query($query) or die($mysqli->error);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $result->fetch_row();
         $RuleOrder = $row[0] + 1;
 
@@ -32,9 +32,9 @@ function IncomingCalls() {
 				Extension = '000',
 				FK_Timeframe = 0
 		";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $HiligthRule = $mysqli->insert_id;
+        $HiligthRule = $db->lastInsertId();
     }
 
     // Add Incoming Route
@@ -48,48 +48,48 @@ function IncomingCalls() {
 				Extension    = '0000'
 		";
 
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $HiligthRoute = $mysqli->insert_id;
+        $HiligthRoute = $db->lastInsertId();
     }
 
     // Incoming Rules (IncomingRules)
     $IncomingRules = array();
     $query = "SELECT * FROM IncomingRules ORDER BY RuleOrder ASC";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IncomingRules[] = $row;
     }
 
     // Incoming Routes (IncomingRoutes)
     $IncomingRoutes = array();
     $query = "SELECT * FROM IncomingRoutes ORDER BY RouteOrder DESC";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IncomingRoutes[] = $row;
     }
 
     // Timeframes
     $Timeframes = array();
     $query = "SELECT PK_Timeframe, Name FROM Timeframes WHERE FK_Extension = 0 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Timeframes[] = $row;
     }
 
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders WHERE ApplyIncomingRules = 1 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SipProviders[] = $row;
     }
 
     // IaxProviders
     $Dongles = array();
     $query = "SELECT * FROM Dongles WHERE ApplyIncomingRules = 1 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Dongles[] = $row;
     }
 

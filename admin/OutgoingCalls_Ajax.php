@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function OutgoingCalls_Ajax() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['OutgoingCallsAjax'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -17,23 +17,23 @@ function OutgoingCalls_Ajax() {
     switch ($data['Action']) {
         case 'DeleteRule':
             $query = "DELETE FROM OutgoingRules WHERE PK_OutgoingRule = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM Extension_Rules WHERE FK_OutgoingRule = " . intval($data['ID']) . "";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM Template_Rules WHERE FK_OutgoingRule = " . intval($data['ID']) . "";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM OutgoingCIDRules WHERE FK_OutgoingRule = " . intval($data['ID']) . " ";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $response['ID'] = $data['ID'];
             break;
 
         case 'DeleteCIDRule':
             $query = "DELETE FROM OutgoingCIDRules WHERE PK_OutgoingCIDRule = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $response['ID'] = $data['ID'];
             break;
@@ -46,7 +46,7 @@ function OutgoingCalls_Ajax() {
 
                 $response['test'] .= "$order-$PK_Rule , ";
                 $query = "UPDATE OutgoingRules SET RuleOrder = $order WHERE PK_OutgoingRule = $PK_Rule LIMIT 1";
-                $mysqli->query($query) or die($mysqli->error);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
 
                 $order++;
             }
@@ -97,7 +97,7 @@ function OutgoingCalls_Ajax() {
 					PK_OutgoingCIDRule = " . intval($data['ID']) . "
 				LIMIT 1
 			";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
             $response['ID'] = $data['ID'];
             $response['Errors'] = $errors;
             break;

@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Recordings_List() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     $session = &$_SESSION['Recordings_List'];
@@ -42,7 +42,7 @@ function Recordings_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Rule) FROM RecordingRules;";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $Rules['Total'] = $row[0];
 
@@ -57,8 +57,8 @@ function Recordings_List() {
 			{$Rules['Sort']} {$Rules['Order']}
 		LIMIT {$Rules['Start']}, {$Rules['PageSize']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rules['Fields'][] = $row;
     }
 
@@ -122,7 +122,7 @@ function Recordings_List() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM RecordingLog;";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $Calls['Total'] = $row[0];
 
@@ -138,8 +138,8 @@ function Recordings_List() {
 			{$Calls['Sort']} {$Calls['Order']}
 		LIMIT {$Calls['Start']}, {$Calls['PageSize']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Calls['Fields'][] = $row;
     }
 

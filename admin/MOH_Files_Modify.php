@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Files_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
 
     $session = &$_SESSION['MOH_Files_Modify'];
@@ -26,7 +26,7 @@ function MOH_Files_Modify() {
             
             if(in_array($mime_type, array("audio/x-wav", "audio/mpeg"))) {
                 $query = "SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '$FK_Group'";
-                $result = $mysqli->query($query) or die($mysqli->error);
+                $result = $db->query($query) or die(print_r($db->errorInfo(), true));
                 $row = $result->fetch_row();
                 $order = $row['0'] + 1;
 
@@ -44,8 +44,8 @@ function MOH_Files_Modify() {
 
     // Init available groups (Groups)
     $query = "SELECT * FROM Moh_Groups";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 
@@ -56,7 +56,7 @@ function MOH_Files_Modify() {
 }
 
 function upload_file($uploadPath, $mime_type, $order, $FK_Group) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if ($_FILES['file']['error'][0] == 1) {
@@ -73,8 +73,8 @@ function upload_file($uploadPath, $mime_type, $order, $FK_Group) {
 			`FK_Group` = " . intval($FK_Group) . ",
 			`Order`    = " . intval($order) . "
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $PK_File = $mysqli->insert_id;
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $PK_File = $db->lastInsertId();
 
     //upload to disk
     $order = str_pad($order, 6, "0", STR_PAD_LEFT);

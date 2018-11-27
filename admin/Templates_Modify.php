@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Templates_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Templates_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -15,49 +15,49 @@ function Templates_Modify() {
 
     // Init Available DTMF Modes (DTMFModes)
     $query = "SELECT PK_DTMFMode, Name, Description FROM DTMFModes";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $DTMFModes = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $DTMFModes[] = $row;
     }
 
     // Init available codecs (Codecs)
     $query = "SELECT PK_Codec, Name, Description, Recomended FROM Codecs";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Codecs = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Codecs[] = $row;
     }
 
     // Init available nat types (NATTypes)
     $query = "SELECT PK_NATType, Name, Description FROM NATTypes";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $NATTypes = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $NATTypes[] = $row;
     }
 
     // Init available extension groups (Groups)
     $query = "SELECT PK_Group, Name FROM Groups";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Groups = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 
     // Init available outgoing rules (Rules)
     $query = "SELECT * FROM OutgoingRules ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Rules = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rules[] = $row;
     }
 
     // Init available extension groups (Features)
     $query = "SELECT PK_Feature, Name FROM Features";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Features = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Features[] = $row;
     }
 
@@ -85,7 +85,7 @@ function Templates_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			PK_Template,
@@ -102,8 +102,8 @@ function formdata_from_db($id) {
 			PK_Template = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "
 		SELECT
@@ -113,10 +113,10 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Codecs'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Codecs'][] = $row['FK_Codec'];
     }
 
@@ -128,10 +128,10 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Groups'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Groups'][] = $row['FK_Group'];
     }
 
@@ -143,10 +143,10 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Features'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Features'][] = $row['FK_Feature'];
     }
 
@@ -159,9 +159,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Template = {$data['PK_Template']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Rules'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
     }
 
@@ -174,7 +174,7 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if (!isset($data['PK_Template'])) {
         return;
     }
@@ -194,44 +194,44 @@ function formdata_save($data) {
 			PK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update 'Template_Codecs'
     $query = "DELETE FROM Template_Codecs WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Codecs'])) {
         foreach ($data['Codecs'] as $FK_Codec) {
             $query = "INSERT INTO Template_Codecs (FK_Template, FK_Codec) VALUES ({$data['PK_Template']}, $FK_Codec)";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Template_Groups'
     $query = "DELETE FROM Template_Groups WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Groups'])) {
         foreach ($data['Groups'] as $FK_Group) {
             $query = "INSERT INTO Template_Groups (FK_Template, FK_Group) VALUES ({$data['PK_Template']}, $FK_Group)";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Template_Features'
     $query = "DELETE FROM Template_Features WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Features'])) {
         foreach ($data['Features'] as $FK_Feature) {
             $query = "INSERT INTO Template_Features (FK_Template, FK_Feature) VALUES ({$data['PK_Template']}, $FK_Feature)";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Template_Rules'
     $query = "DELETE FROM Template_Rules WHERE FK_Template = " . $mysqli->real_escape_string($data['PK_Template']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule => $Status) {
@@ -239,7 +239,7 @@ function formdata_save($data) {
                 continue;
             }
             $query = "INSERT INTO Template_Rules (FK_Template, FK_OutgoingRule) VALUES ({$data['PK_Template']}, {$FK_OutgoingRule})";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 }

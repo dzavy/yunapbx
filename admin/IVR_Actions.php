@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Actions() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Actions'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -23,20 +23,20 @@ function IVR_Actions() {
 		ORDER BY
 			`Order` ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $action = $row;
 
         $query2 = "SELECT Name,Value,Variable FROM IVR_Action_Params WHERE FK_Action = '{$action['PK_Action']}'";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-        while ($row2 = $result2->fetch_assoc()) {
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+        while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) {
             $action['Param'][$row2['Name']] = $row2['Value'];
             $action['Var'][$row2['Name']] = $row2['Variable'];
 
             if ($row2['Name'] == 'FK_SoundEntry') {
                 $query_snd_name = "SELECT Name FROM SoundFiles WHERE FK_SoundEntry = '{$row2['Value']}' LIMIT 1";
-                $result_snd_name = $mysqli->query($query_snd_name) or die($mysqli->error . $query_snd_name);
-                $row_snd_name = $result_snd_name->fetch_assoc();
+                $result_snd_name = $db->query($query_snd_name) or die(print_r($db->errorInfo(), true));
+                $row_snd_name = $result_snd_name->fetch(PDO::FETCH_ASSOC);
                 $action['Sound'][$row2['Name']] = $row_snd_name['Name'];
             }
         }

@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function SoundFolders_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_SoundFolder = $_REQUEST['PK_SoundFolder'];
@@ -17,11 +17,7 @@ function SoundFolders_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM SoundFolders WHERE PK_SoundFolder = $PK_SoundFolder LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error);
-
-        if ($mysqli->affected_rows != 1) {
-            return;
-        }
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         header('Location: SoundFolders_List.php?msg=DELETE_FOLDER');
         die();
@@ -29,8 +25,8 @@ function SoundFolders_Delete() {
 
     // Init extension info (Extension)
     $query = "SELECT * FROM SoundFolders WHERE PK_SoundFolder = $PK_SoundFolder LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $SoundFolder = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $SoundFolder = $result->fetch(PDO::FETCH_ASSOC);
 
     $smarty->assign('SoundFolder', $SoundFolder);
 

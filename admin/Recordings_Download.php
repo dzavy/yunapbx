@@ -4,15 +4,15 @@ include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Recordings_Download() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Recordings_Download'];
 
     $ID = $mysqli->real_escape_string($_REQUEST['ID']);
 
     $query = "SELECT * FROM RecordingLog WHERE FK_CallLog = '{$ID}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $File = $result->fetch(PDO::FETCH_ASSOC);
 
     $Filename = $GLOBALS['config']['monitor_dir'] . "/{$File['FK_CallLog']}.mp3";
     if (file_exists($Filename)) {

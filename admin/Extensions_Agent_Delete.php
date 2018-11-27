@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Extensions_Agent_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_Extension = $_REQUEST['PK_Extension'];
@@ -16,24 +16,20 @@ function Extensions_Agent_Delete() {
 
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
-        $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error);
-
-        $query = "DELETE FROM Ext_Agent WHERE PK_Extension = $PK_Extension LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error);
-
-        if ($mysqli->affected_rows != 1) {
-            return;
-        }
-
         $query = "DELETE FROM Extension_Groups WHERE FK_Extension = $PK_Extension";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM Ext_Agent_Features WHERE FK_Extension = $PK_Extension";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM Extension_Rules WHERE FK_Extension = $PK_Extension";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+
+        $query = "DELETE FROM Ext_Agent WHERE PK_Extension = $PK_Extension";
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+
+        $query = "DELETE FROM Extensions WHERE PK_Extension = $PK_Extension";
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         asterisk_UpdateConf('sip.conf');
         asterisk_UpdateConf('voicemail.conf');
@@ -44,18 +40,9 @@ function Extensions_Agent_Delete() {
     }
 
     // Init extension info (Extension)
-    $query = "
-		SELECT
-			PK_Extension,
-			Extension
-		FROM
-			Extensions
-		WHERE
-			PK_Extension = $PK_Extension
-		LIMIT 1
-	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $Extension = $result->fetch_assoc();
+    $query = "SELECT PK_Extension, Extension FROM Extensions WHERE PK_Extension = $PK_Extension";
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $Extension = $result->fetch(PDO::FETCH_ASSOC);
 
     $smarty->assign('Extension', $Extension);
 

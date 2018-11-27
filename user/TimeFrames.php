@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/user_utils.inc.php');
 
 function TimeFrames() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['TimeFrames'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -22,9 +22,9 @@ function TimeFrames() {
 
         if (count($errors) == 0) {
             $query = "INSERT INTO Timeframes(Name, FK_Extension) VALUES('" . $mysqli->real_escape_string($_POST['Name']) . "','" . $mysqli->real_escape_string($_SESSION['_USER']['PK_Extension']) . "')";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
-            $PK_Timeframe = $mysqli->insert_id;
+            $PK_Timeframe = $db->lastInsertId();
             header("Location: TimeFrames_Modify.php?msg=CREATE_TIMEFRAME&FK_Timeframe={$PK_Timeframe}");
             die();
         }
@@ -43,8 +43,8 @@ function TimeFrames() {
 		ORDER BY Name
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Timeframes[] = $row;
     }
 
@@ -61,8 +61,8 @@ function TimeFrames() {
 		ORDER BY Name
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Timeframes_Admin[] = $row;
     }
 

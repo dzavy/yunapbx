@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_List_Agents() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Extensions_List_Agents'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -54,9 +54,9 @@ function Extensions_List_Agents() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Extensions[] = $row;
     }
 

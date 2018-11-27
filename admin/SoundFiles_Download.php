@@ -4,15 +4,15 @@ include_once(dirname(__FILE__) . '/../include/db_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function SoundFiles_Download() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['SoundFilesAjax'];
 
     $PK_SoundFile = $_REQUEST['PK_SoundFile'];
 
     $query = "SELECT Filename FROM SoundFiles WHERE PK_SoundFile = $PK_SoundFile LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $row = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $row = $result->fetch(PDO::FETCH_ASSOC);
     $Filename = $row['Filename'];
 
     if (file_exists($Filename)) {

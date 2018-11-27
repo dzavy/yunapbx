@@ -5,15 +5,15 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/moh_utils.inc.php');
 
 function MOH_Files_Download() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['MOH_Files_Download'];
 
     $PK_File = intval($_REQUEST['PK_File']);
 
     $query = "SELECT * FROM Moh_Files WHERE PK_File = '{$PK_File}' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $File = $result->fetch(PDO::FETCH_ASSOC);
 
     $Filename = moh_filename($PK_File);
 

@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Actions_Ajax() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVRActionAjax'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -16,10 +16,10 @@ function IVR_Actions_Ajax() {
     switch ($data['Action']) {
         case 'DeleteAction':
             $query = "DELETE FROM IVR_Actions WHERE PK_Action = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM IVR_Action_Params WHERE FK_Action = " . intval($data['ID']) . " LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $response['ID'] = $data['ID'];
             break;
@@ -30,7 +30,7 @@ function IVR_Actions_Ajax() {
                 $PK_Action = $PK_Action[1];
 
                 $query = "UPDATE IVR_Actions SET `Order` = $order WHERE PK_Action = $PK_Action LIMIT 1";
-                $mysqli->query($query) or die($mysqli->error);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
 
                 $order++;
             }

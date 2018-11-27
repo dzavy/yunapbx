@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Files_ListGroup_Ajax() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     $path = $conf['dirs']['moh'];
@@ -27,8 +27,8 @@ function MOH_Files_ListGroup_Ajax() {
 						  FROM
 								`Moh_Files`
 						  WHERE `PK_File` = $PK";
-                    $result = $mysqli->query($query) or die($mysqli->error);
-                    $File_src = $result->fetch_assoc();
+                    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+                    $File_src = $result->fetch(PDO::FETCH_ASSOC);
 
                     $PK_Group = $File_src['FK_Group'];
                     $old_order = $File_src['Order'];
@@ -49,7 +49,7 @@ function MOH_Files_ListGroup_Ajax() {
 
                     //db
                     $query = "UPDATE `Moh_Files` SET `Order` = '" . intval($order) . "' WHERE `PK_File` = '" . intval($PK) . "'";
-                    $mysqli->query($query) or die($mysqli->error);
+                    $db->query($query) or die(print_r($db->errorInfo(), true));
 
                     $order++;
                 }

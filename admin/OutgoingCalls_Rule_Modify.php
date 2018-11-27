@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function OutgoingCalls_Rule_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     // Init form data (Rule, Errors)
@@ -38,16 +38,16 @@ function OutgoingCalls_Rule_Modify() {
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SipProviders[] = $row;
     }
 
     // IaxProviders
     $Dongles = array();
     $query = "SELECT * FROM Dongles ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Dongles[] = $row;
     }
 
@@ -60,7 +60,7 @@ function OutgoingCalls_Rule_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $data = $_REQUEST;
     $query = "
 		SELECT
@@ -80,8 +80,8 @@ function formdata_from_db($id) {
 			PK_OutgoingRule = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -91,21 +91,21 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_OutgoingRule'] == "") {
         $query = "SELECT MAX(RuleOrder) FROM OutgoingRules";
-        $result = $mysqli->query($query) or die($mysqli->error);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $result->fetch_row();
         $RuleOrder = $row[0] + 1;
 
         $query = "INSERT INTO OutgoingRules(RuleOrder) VALUES($RuleOrder)";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_OutgoingRule'] = $mysqli->insert_id;
+        $data['PK_OutgoingRule'] = $db->lastInsertId();
         
         if($data['Allow']) {
             $query = "INSERT INTO Extension_Rules SELECT PK_Extension, " . $data['PK_OutgoingRule'] . " FROM Ext_SipPhones";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
@@ -126,7 +126,7 @@ function formdata_save($data) {
 			PK_OutgoingRule = " . $mysqli->real_escape_string($data['PK_OutgoingRule']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_OutgoingRule'];
 }

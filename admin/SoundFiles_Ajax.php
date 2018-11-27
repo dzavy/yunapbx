@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function SoundFiles_Ajax() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['SoundFilesAjax'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -27,7 +27,7 @@ function SoundFiles_Ajax() {
             $Extension = $_REQUEST['Extension'];
 
             $query = "SELECT Filename FROM SoundFiles WHERE PK_SoundFile = $PK_SoundFile LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             $row = $result->fetch_row();
 
             $File = pathinfo($row[0]);

@@ -1,7 +1,7 @@
 <?php
 
 function delete_file($PK_File) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     $query = " 
@@ -16,8 +16,8 @@ function delete_file($PK_File) {
 			PK_File = '" . $mysqli->real_escape_string($PK_File) . "'"
     ;
 
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File_Src = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $File_Src = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "	
 		SELECT 
@@ -28,8 +28,8 @@ function delete_file($PK_File) {
 			`FK_Group` = '" . intval($File_Src['FK_Group']) . "'
 		AND `Order` >" . intval($File_Src['Order'])
     ;
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $src_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'], $row['Fileext']);
         $dst_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'] - 1, $row['Fileext']);
 
@@ -49,7 +49,7 @@ function delete_file($PK_File) {
 		AND  
 			FK_Group = '" . intval($File_Src['FK_Group']) . "'";
 
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $del_file = moh_filename($PK_File, $File_Src['FK_Group'], $File_Src['Order'], $File_Src['Fileext']);
     if (file_exists($del_file)) {
@@ -61,13 +61,13 @@ function delete_file($PK_File) {
     }
 
     $query = "DELETE FROM Moh_Files WHERE PK_File = '" . intval($PK_File) . "'";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $errors;
 }
 
 function move_file($PK_File, $dst_PK_Group) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     $query = " 
@@ -83,8 +83,8 @@ function move_file($PK_File, $dst_PK_Group) {
 			PK_File = '" . $mysqli->real_escape_string($PK_File) . "'"
     ;
 
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File_Src = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $File_Src = $result->fetch(PDO::FETCH_ASSOC);
 
     if ($File_Src['FK_Group'] == $dst_PK_Group) {
         $errors['Move']['InSameGroup'] = true;
@@ -92,7 +92,7 @@ function move_file($PK_File, $dst_PK_Group) {
     }
 
     $query = "SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '" . intval($dst_PK_Group) . "'";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_row();
     $dst_order = $row['0'] + 1;
 
@@ -109,7 +109,7 @@ function move_file($PK_File, $dst_PK_Group) {
 			`FK_Group` = '" . $mysqli->real_escape_string($dst_PK_Group) . "'
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $rec = $result->fetch_row();
     if ($rec['0']) {
         $errors['Move']['DuplicateFile'] = true;
@@ -126,7 +126,7 @@ function move_file($PK_File, $dst_PK_Group) {
 		WHERE 
 			`PK_File` ='" . intval($PK_File) . "'";
 
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "	
 		SELECT 
@@ -137,7 +137,7 @@ function move_file($PK_File, $dst_PK_Group) {
 			`FK_Group` = '" . intval($File_Src['FK_Group']) . "'
 		AND `Order` >'" . intval($File_Src['Order']) . "'"
     ;
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "
 		UPDATE
@@ -148,7 +148,7 @@ function move_file($PK_File, $dst_PK_Group) {
 			`Order` >'" . intval($File_Src['Order']) . "'
 		AND  
 			FK_Group = '" . intval($File_Src['FK_Group']) . "'";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
 
     $src_filename = moh_filename($File_Src['PK_File'], $File_Src['FK_Group'], $File_Src['Order'], $File_Src['Fileext']);
@@ -161,7 +161,7 @@ function move_file($PK_File, $dst_PK_Group) {
         return $errors;
     }
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $src_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'], $row['Fileext']);
         $dst_filename = moh_filename($row['PK_File'], $File_Src['FK_Group'], $row['Order'] - 1, $row['Fileext']);
 
@@ -175,7 +175,7 @@ function move_file($PK_File, $dst_PK_Group) {
 }
 
 function copy_file($PK_File, $dest_PK_Group) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     $query = "
@@ -190,8 +190,8 @@ function copy_file($PK_File, $dest_PK_Group) {
 		WHERE 
 			PK_File = '" . $mysqli->real_escape_string($PK_File) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $File_Src = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $File_Src = $result->fetch(PDO::FETCH_ASSOC);
 
     if ($File_Src['FK_Group'] == $dest_PK_Group) {
         $errors['Copy']['SameDirectory'] = true;
@@ -210,7 +210,7 @@ function copy_file($PK_File, $dest_PK_Group) {
 			AND 
 			`FK_Group` = '" . $mysqli->real_escape_string($dest_PK_Group) . "'
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $rec = $result->fetch_row();
     if ($rec['0']) {
         $errors['Copy']['DuplicateFile'] = true;
@@ -218,7 +218,7 @@ function copy_file($PK_File, $dest_PK_Group) {
     }
 
     $query = " SELECT MAX(`Order`) FROM Moh_Files WHERE FK_Group = '" . $mysqli->real_escape_string($dest_PK_Group) . "'";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_row();
     $copy_order = $row['0'] + 1;
 
@@ -231,8 +231,8 @@ function copy_file($PK_File, $dest_PK_Group) {
 			`FK_Group` = '" . intval($dest_PK_Group) . "',
 			`Order`    = " . intval($copy_order) . "
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $copy_PK_File = $mysqli->insert_id;
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $copy_PK_File = $db->lastInsertId();
 
     $src_filename = moh_filename($File_Src['PK_File'], $File_Src['FK_Group'], $File_Src['Order'], $File_Src['Fileext']);
     $dst_filename = moh_filename($copy_PK_File, $dest_PK_Group, $copy_order, $File_Src['Fileext']);
@@ -246,13 +246,13 @@ function copy_file($PK_File, $dest_PK_Group) {
 }
 
 function moh_filename($PK_File, $PK_Group = '', $Order = '', $Extension = '') {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
 
     if ("{$PK_Group}{$Order}{$Extension}" == "") {
         $query = "SELECT * FROM Moh_Files WHERE PK_File = '" . intval($PK_File) . "' LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
-        $row = $result->fetch_assoc();
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+        $row = $result->fetch(PDO::FETCH_ASSOC);
 
         $PK_Group = $row['FK_Group'];
         $Order = $row['Order'];

@@ -7,7 +7,7 @@ include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/voicemail_utils.inc.php');
 
 function Voicemail() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['User_Voicemail'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -73,7 +73,7 @@ function Voicemail() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Folders = vm_folders($_SESSION['_USER']['Extension']);
     $Messages = vm_files($_SESSION['_USER']['Extension'], $Path);

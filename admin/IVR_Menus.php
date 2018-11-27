@@ -5,15 +5,15 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
-    global $mysqli;
+    $db = DB::getInstance();
     static $VisitedNodes = array();
 
     $VisitedNodes[] = $PK_Menu;
 
     // Get IVR_Tree['Name'|'PK_Menu'|'Description']
     $query = "SELECT PK_Menu, Name, Description FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $row = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $row = $result->fetch(PDO::FETCH_ASSOC);
     $IVR_Tree = $row;
 
     // Get IVR_Tree['Actions']
@@ -28,9 +28,9 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 		ORDER BY
 			`Order` ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $action_disabled = true;
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         if ($row['PK_Action'] == $PK_Action || $PK_Action == 0) {
             $action_disabled = false;
         }
@@ -54,14 +54,14 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 		ORDER BY
 			`Key`
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         if (!in_array($row['FK_Menu_Entry'], $VisitedNodes)) {
             $IVR_Tree['Options'][$row['Key']] = Get_IVR_Tree($row['FK_Menu_Entry'], $row['FK_Action_Entry']);
         } else {
             $query2 = "SELECT PK_Menu, Name, Description FROM IVR_Menus WHERE PK_Menu = {$row['FK_Menu_Entry']} LIMIT 1";
-            $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-            $visited = $result2->fetch_assoc();
+            $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+            $visited = $result2->fetch(PDO::FETCH_ASSOC);
 
             $IVR_Tree['Visited'][$row['Key']] = $visited;
         }
@@ -71,7 +71,7 @@ function Get_IVR_Tree($PK_Menu, $PK_Action = 0) {
 }
 
 function IVR_Menus() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Menus'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -91,8 +91,8 @@ function IVR_Menus() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $menu = $row;
 
         // Get extensions maped to this menu
@@ -106,8 +106,8 @@ function IVR_Menus() {
 			WHERE
 				FK_Menu = {$menu['PK_Menu']}
 		";
-        $result_ext = $mysqli->query($query_ext) or die($mysqli->error . $query_ext);
-        while ($row_ext = $result_ext->fetch_assoc()) {
+        $result_ext = $db->query($query_ext) or die(print_r($db->errorInfo(), true));
+        while ($row_ext = $result_ext->fetch(PDO::FETCH_ASSOC)) {
             $menu['Extensions'][] = $row_ext['Extension'];
         }
         $menu['Extensions'] = implode(' , ', $menu['Extensions']);

@@ -26,10 +26,10 @@ function user_run($generator_function, $template = "", $need_auth = true) {
 }
 
 function user_login($extension) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM Extensions WHERE Extension = " . $mysqli->real_escape_string($extension) . " LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $user = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $user = $result->fetch(PDO::FETCH_ASSOC);
 
     $_SESSION['_USER'] = $user;
 }

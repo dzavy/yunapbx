@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Menus_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Menus_Delete'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -14,8 +14,8 @@ function IVR_Menus_Delete() {
 
     // Get information about this ivr menu
     $query = "SELECT * FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $IVR_Menu = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $IVR_Menu = $result->fetch(PDO::FETCH_ASSOC);
 
 
     // Get a list of ivr actions pointing to this menu
@@ -38,8 +38,8 @@ function IVR_Menus_Delete() {
 			AND
 			IVR_Menu_Parent.PK_Menu != '$PK_Menu'
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IVR_Actions[] = $row;
     }
 
@@ -62,8 +62,8 @@ function IVR_Menus_Delete() {
 		ORDER BY
 			`Key`
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IVR_Options[] = $row;
     }
 
@@ -85,8 +85,8 @@ function IVR_Menus_Delete() {
 		ORDER BY
 			Extension		
 	";
-    $result = $mysqli->query($query) or die($query . $mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IVR_Extensions[] = $row;
     }
 
@@ -95,13 +95,13 @@ function IVR_Menus_Delete() {
         if (@$_REQUEST['submit'] == 'delete_confirm') {
 
             $query = "DELETE FROM IVR_Action_Params WHERE FK_Action IN (SELECT PK_Action FROM IVR_Actions WHERE FK_Menu = $PK_Menu)";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM IVR_Actions WHERE FK_Menu = $PK_Menu";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             $query = "DELETE FROM IVR_Menus WHERE PK_Menu = $PK_Menu LIMIT 1";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
 
             header('Location: IVR_Menus.php');
             die();

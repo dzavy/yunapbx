@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Groups_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -19,7 +19,7 @@ function MOH_Groups_Delete() {
 
         //delete files from database
         $query = "DELETE FROM Moh_Files  WHERE FK_Group = $PK_Group";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         //delete files from hdd
         $handle = @opendir($path . "/group_" . str_pad($PK_Group, 10, "0", STR_PAD_LEFT) . "/");
@@ -35,7 +35,7 @@ function MOH_Groups_Delete() {
 
         //delete directories from database
         $query = "DELETE FROM Moh_Groups WHERE PK_Group = '$PK_Group'";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         asterisk_UpdateConf('musiconhold.conf');
         asterisk_Reload();
@@ -44,9 +44,9 @@ function MOH_Groups_Delete() {
         die();
     }
 
-    $query = "SELECT * FROM Moh_Groups WHERE PK_Group =  $PK_Group;";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $Group = $result->fetch_assoc();
+    $query = "SELECT PK_Group, Name FROM Moh_Groups WHERE PK_Group =  $PK_Group;";
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $Group = $result->fetch(PDO::FETCH_ASSOC);
 
     $smarty->assign('Group', $Group);
 

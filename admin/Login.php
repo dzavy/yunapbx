@@ -27,7 +27,7 @@ function formdata_from_post() {
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     $enc_pw = md5($data['Password']);
@@ -45,7 +45,7 @@ function formdata_validate($data) {
 			LIMIT 1
 		";
 
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
         if ($result->num_rows != 1) {
             $errors['Wrong'] = true;

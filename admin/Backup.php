@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Backup() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Backup'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -41,15 +41,15 @@ function Backup() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(*) FROM Backups";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $Total = $row[0];
 
     // Init table fields (Backups)
     $Backups = array();
     $query = "SELECT PK_Backup, Optionals, Size, Date FROM Backups ORDER BY $Sort $Order LIMIT $Start, $PageSize";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Backups[] = $row;
     }
 

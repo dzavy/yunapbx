@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function VoicemailSettings() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['AgentSettings'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -15,8 +15,8 @@ function VoicemailSettings() {
     // SipProviders
     $SipProviders = array();
     $query = "SELECT * FROM SipProviders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SipProviders[] = $row;
     }
 

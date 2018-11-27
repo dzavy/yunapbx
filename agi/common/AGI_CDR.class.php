@@ -142,7 +142,7 @@ class AGI_CDR {
     }
 
     function save_cdr() {
-        global $mysqli;
+        $db = DB::getInstance();
         // Get cause of hangup
         $resp = $this->agi->get_variable('HANGUPCAUSE');
         $cause = $resp['data'];
@@ -181,15 +181,15 @@ class AGI_CDR {
 				BillSec      = (SELECT billsec FROM CDR WHERE userfield = '{$this->cdr_id}' LIMIT 1),
 				Duration     = (SELECT duration FROM CDR WHERE userfield = '{$this->cdr_id}' LIMIT 1)
 		";
-        $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+        $db->query($query) or $this->agi->verbose($mysqli->error . $query);
     }
 
     function check_transfer() {
-        global $mysqli;
+        $db = DB::getInstance();
         // See if the phone was hung up using a attened transfer
         $query = "SELECT * FROM CDR WHERE userfield = '$this->cdr_id' LIMIT 1";
-        $result = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
-        $cdr_row = $result->fetch_assoc();
+        $result = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
+        $cdr_row = $result->fetch(PDO::FETCH_ASSOC);
 
         $query = "
 			SELECT
@@ -203,11 +203,11 @@ class AGI_CDR {
 					dstchannel = '" . $mysqli->escape_string($cdr_row['dstchannel']) . "'
 				) AND dst = 's'
 			LIMIT 1";
-        $result = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+        $result = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
         if ($mysqli->num_rows($result) != 1) {
             return;
         }
-        $cdr_s_row = $result->fetch_assoc();
+        $cdr_s_row = $result->fetch(PDO::FETCH_ASSOC);
 
         $this->agi->verbose("--------------------------------ATENDED TRANSFER DETECTED-------src:{$cdr_row['src']}-d:src:{$cdr_row['dst']}");
         $this->agi->verbose("--------------------------------ATENDED TRANSFER DETECTED-------src:{$cdr_row['src']}-d:src:{$cdr_row['dst']}");
@@ -238,7 +238,7 @@ class AGI_CDR {
     }
 
     function push_event($event, $data) {
-        global $mysqli;
+        $db = DB::getInstance();
         global $agi;
         $this->agi->verbose("CDR[{$this->cdr_id}] $event $data");
         $query = "
@@ -249,7 +249,7 @@ class AGI_CDR {
 				Event      = '$event',
 				Data       = '$data'
 		";
-        $mysqli->query($query) or $agi->verbose($mysqli->error);
+        $db->query($query) or $agi->verbose($mysqli->error);
     }
 
     function push_hangup() {
@@ -275,7 +275,7 @@ class AGI_CDR {
     }
 
     function monitor_getrules($caller_id, $called_id, $call_date = 0) {
-        global $mysqli;
+        $db = DB::getInstance();
         $ActiveRules = array();
 
         // Get a list with active rules
@@ -289,13 +289,13 @@ class AGI_CDR {
 			ORDER BY
 				DateCreated
 		";
-        $result_rules = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+        $result_rules = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
         while ($Rule = $mysqli->fetch_assoc($result_rules)) {
 
             // Skip rules which have riched the EndCount
             if ($Rule['EndCount'] > 0) {
                 $query = "SELECT COUNT(*) FROM RecordingLog WHERE FK_Rule = {$Rule['PK_Rule']}";
-                $result = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+                $result = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
                 $row = $result->fetch_row();
 
                 if ($row[0] >= $Rule['EndCount']) {
@@ -314,7 +314,7 @@ class AGI_CDR {
 					INNER JOIN Extension_Groups ON Extension_Groups.FK_Group = RecordingRules_Groups.FK_Group
 					WHERE FK_Rule = {$Rule['PK_Rule']}
 			";
-            $result_ids = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+            $result_ids = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
             while ($id = $mysqli->fetch_assoc($result_ids)) {
                 $RecPhones[] = $id['FK_Extension'];
             }
@@ -325,7 +325,7 @@ class AGI_CDR {
 				SELECT FK_Extension FROM RecordingRules_Extensions
 					WHERE FK_Rule = {$Rule['PK_Rule']} AND '{$Rule['Type']}' = 'Queue'
 			";
-            $result_ids = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+            $result_ids = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
             while ($id = $mysqli->fetch_assoc($result_ids)) {
                 $RecQueues[] = $id['FK_Extension'];
             }
@@ -370,7 +370,7 @@ class AGI_CDR {
     }
 
     function monitor_stop() {
-        global $mysqli;
+        $db = DB::getInstance();
         if ($this->monitoring_started) {
 
             // Set the monitoring state flag on false (monitoring_started)
@@ -382,7 +382,7 @@ class AGI_CDR {
 
             // See how long we where talking
             $query = "SELECT billsec FROM CDR WHERE userfield = '{$this->cdr_id}' LIMIT 1";
-            $result = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+            $result = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
             $row = $result->fetch_row();
             $duration = $row[0] + 0;
 
@@ -401,7 +401,7 @@ class AGI_CDR {
                 // Skip rules which have riched the EndCount
                 if (intval($Active['Rule']['EndCount']) > 0) {
                     $query = "SELECT COUNT(*) FROM RecordingLog WHERE FK_Rule = {$Active['Rule']['PK_Rule']}";
-                    $result = $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+                    $result = $db->query($query) or $this->agi->verbose($mysqli->error . $query);
                     $row = $result->fetch_row();
 
                     if ($row[0] >= $Active['Rule']['EndCount']) {
@@ -440,7 +440,7 @@ class AGI_CDR {
 						Duration     = '$duration',
 						Size         = '" . filesize("/{$GLOBALS['config']['monitor_dir']}/{$this->cdr_id}.wav") . "'
 				";
-                $mysqli->query($query) or $this->agi->verbose($mysqli->error . $query);
+                $db->query($query) or $this->agi->verbose($mysqli->error . $query);
             }
         }
 

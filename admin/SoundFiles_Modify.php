@@ -7,7 +7,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 define('SOUND_FILES_FOLDER', '/var/lib/asterisk/sounds/custom/');
 
 function SoundFiles_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['SoundFiles_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -29,14 +29,14 @@ function SoundFiles_Modify() {
     }
 
     $query = "SELECT PK_SoundFolder, Name FROM SoundFolders ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundFolders[] = $row;
     }
 
     $query = "SELECT PK_SoundLanguage, Name FROM SoundLanguages ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundLanguages[] = $row;
     }
 
@@ -54,7 +54,7 @@ function SoundFiles_Modify() {
 
     if ($PK_SoundEntry != "") {
         $query = "SELECT FK_SoundFolder FROM SoundEntries WHERE PK_SoundEntry = $PK_SoundEntry LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $result->fetch_array();
 
         $PK_SoundFolder = $row[0];
@@ -74,10 +74,10 @@ function SoundFiles_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM SoundFiles WHERE PK_SoundFile = $id LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -87,7 +87,7 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Insert 'SoundEntry'
     if (empty($data['FK_SoundEntry'])) {
         $query = "
@@ -97,17 +97,17 @@ function formdata_save($data) {
 				FK_SoundFolder = " . $mysqli->real_escape_string($data['FK_SoundFolder']) . ",
 				Type           = 'User'
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['FK_SoundEntry'] = $mysqli->insert_id;
+        $data['FK_SoundEntry'] = $db->lastInsertId();
     }
 
     // Insert 'SoundFiles'
     if (empty($data['PK_SoundFile'])) {
         $query = "INSERT INTO SoundFiles() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_SoundFile'] = $mysqli->insert_id;
+        $data['PK_SoundFile'] = $db->lastInsertId();
     }
 
     // Move uploaded file
@@ -139,7 +139,7 @@ function formdata_save($data) {
 			PK_SoundFile   = " . $mysqli->real_escape_string($data['PK_SoundFile']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_SoundFile'];
 }

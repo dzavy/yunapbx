@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_List_IVRs() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Extensions_List_IVRs'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -57,14 +57,14 @@ function Extensions_List_IVRs() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $extension = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE PK_Action = {$extension['FK_Action']} LIMIT 1";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-        $extension['Action'] = $result2->fetch_assoc();
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+        $extension['Action'] = $result2->fetch(PDO::FETCH_ASSOC);
 
         $Extensions[] = $extension;
     }

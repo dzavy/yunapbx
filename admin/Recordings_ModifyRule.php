@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Recordings_ModifyRule() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Recordings_ModifyRule'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -48,24 +48,24 @@ function Recordings_ModifyRule() {
 		ORDER BY
 			Extension ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Phones[] = $row;
     }
 
     // Geting a list of extension groups (Groups)
     $Groups = array();
     $query = "SELECT * FROM Groups ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 
     // Geting a list of queues (Queues)
     $Queues = array();
     $query = "SELECT * FROM Ext_Queues INNER JOIN Extensions ON Ext_Queues.PK_Extension = Extensions.PK_Extension ORDER BY Extension ASC";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Queues[] = $row;
     }
 
@@ -79,7 +79,7 @@ function Recordings_ModifyRule() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*,
@@ -90,20 +90,20 @@ function formdata_from_db($id) {
 			PK_Rule = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     $data['Extensions'] = array();
     $query = "SELECT FK_Extension FROM RecordingRules_Extensions WHERE FK_Rule = '$id'";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Extensions'][] = $row['FK_Extension'];
     }
 
     $data['Groups'] = array();
     $query = "SELECT FK_Group FROM RecordingRules_Groups WHERE FK_Rule = '$id'";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Groups'][] = $row['FK_Group'];
     }
 
@@ -139,11 +139,11 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Rule'] == "") {
         $query = "INSERT INTO RecordingRules() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Rule'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Rule'] = $db->lastInsertId();
     }
 
     // Update 'RecordingRules'
@@ -164,25 +164,25 @@ function formdata_save($data) {
 			PK_Rule       = " . $mysqli->real_escape_string($data['PK_Rule']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update 'RecordingRules_Extensions'
     $query = "DELETE FROM RecordingRules_Extensions WHERE FK_Rule = " . $mysqli->real_escape_string($data['PK_Rule']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Extensions'])) {
         foreach ($data['Extensions'] as $FK_Extension) {
             $query = "INSERT INTO RecordingRules_Extensions(FK_Rule, FK_Extension) VALUES (" . $mysqli->real_escape_string($data['PK_Rule']) . ", " . intval($FK_Extension) . ")";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'RecordingRules_Groups'
     $query = "DELETE FROM RecordingRules_Groups WHERE FK_Rule = " . $mysqli->real_escape_string($data['PK_Rule']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Groups'])) {
         foreach ($data['Groups'] as $FK_Group) {
             $query = "INSERT INTO RecordingRules_Groups(FK_Rule, FK_Group) VALUES (" . $mysqli->real_escape_string($data['PK_Rule']) . ", " . intval($FK_Group) . ")";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 

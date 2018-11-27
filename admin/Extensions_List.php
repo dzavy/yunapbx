@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_List() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['Extensions_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -77,11 +77,11 @@ function Extensions_List() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Total = $result->num_rows;
     $entries_allowed = $PageSize;
     //$result->data_seek($Start);
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Extensions[] = $row;
         if (($entries_allowed--) == 1) {
             break;

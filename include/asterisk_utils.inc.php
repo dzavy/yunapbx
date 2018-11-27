@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . "/../lib/AsteriskManager.class.php");
 
 function asterisk_UpdateConf($file) {
     global $conf;
-    global $mysqli;
+    $db = DB::getInstance();
     
     require(dirname(__FILE__) . "/../generator/$file.php");
 }

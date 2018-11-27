@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Groups_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_Group = $_REQUEST['PK_Group'];
@@ -13,25 +13,16 @@ function Groups_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
         $query = "DELETE FROM Groups WHERE PK_Group = $PK_Group LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         header('Location: Groups_List.php?msg=DELETE_GROUP');
         die();
     }
 
     // Init template info (Group)
-    $query = "
-		SELECT
-			PK_Group,
-			Name
-		FROM
-			Groups
-		WHERE
-			PK_Group = $PK_Group
-		LIMIT 1
-	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $Group = $result->fetch_assoc();
+    $query = "SELECT PK_Group, Name	FROM Groups	WHERE PK_Group = $PK_Group LIMIT 1";
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $Group = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "
 		SELECT
@@ -44,10 +35,10 @@ function Groups_Delete() {
 		WHERE
 			FK_Group = $PK_Group
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Group['Extensions'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Group['Extensions'][] = $row;
     }
 

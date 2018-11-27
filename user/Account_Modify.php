@@ -38,7 +38,7 @@ function Account_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Init data from 'Extensions'
     $query = "
 		SELECT
@@ -65,8 +65,8 @@ function formdata_from_db($id) {
 			Extensions.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -76,7 +76,7 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Update 'First Name'
     $query = "
 		UPDATE
@@ -92,7 +92,7 @@ function formdata_save($data) {
 			Name_Editable = 1
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update 'Email'
     $query = "
@@ -108,7 +108,7 @@ function formdata_save($data) {
 			Email_Editable = 1
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update Password if requested
     if ($data['Password'] != '') {
@@ -125,7 +125,7 @@ function formdata_save($data) {
 				Password_Editable = 1
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     return $_SESSION['_USER']['PK_Extension'];

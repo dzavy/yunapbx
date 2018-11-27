@@ -1,21 +1,21 @@
 <?php
 
 function DB_Extension($ext) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM Extensions WHERE Extension = '$ext' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     if ($mysqli->num_rows($result) != '1') {
         return null;
     }
 
-    return $result->fetch_assoc();
+    return $result->fetch(PDO::FETCH_ASSOC);
 }
 
 function DB_Extension_Name($ext) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT PK_Extension, Type FROM Extensions WHERE Extension = '$ext' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $row = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $row = $result->fetch(PDO::FETCH_ASSOC);
     $id = $row['PK_Extension'];
     $type = $row['Type'];
 
@@ -36,29 +36,29 @@ function DB_Extension_Name($ext) {
             break;
     }
 
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_row();
     return $row[0];
 }
 
 function Database_Entry($table, $id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM `$table` WHERE PK_Extension = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     if ($mysqli->num_rows($result) != '1') {
         return null;
     }
 
-    return $result->fetch_assoc();
+    return $result->fetch(PDO::FETCH_ASSOC);
 }
 
 function SoundFile($PK_SoundEntry, $PK_SoundLanguage = 0) {
-    global $mysqli;
+    $db = DB::getInstance();
     global $logger;
 
     $query = "SELECT * FROM SoundFiles WHERE FK_SoundEntry = '{$PK_SoundEntry}' AND FK_SoundLanguage='{$PK_SoundLanguage}' LIMIT 1";
-    $result = $mysqli->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
-    $file = $result->fetch_assoc();
+    $result = $db->query($query) or $logger->error_sql("", $query, __FILE__, __LINE__);
+    $file = $result->fetch(PDO::FETCH_ASSOC);
 
     $file_to_play = pathinfo($file['Filename']);
     $file_to_play = "{$file_to_play['dirname']}/{$file_to_play['filename']}";

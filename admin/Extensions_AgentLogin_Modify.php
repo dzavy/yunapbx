@@ -35,7 +35,7 @@ function Extensions_AgentLogin_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Init data from 'Ext_AgentLogin'
     $query = "
 		SELECT
@@ -48,11 +48,9 @@ function formdata_from_db($id) {
 			Extensions
 			INNER JOIN Ext_AgentLogin ON Ext_AgentLogin.PK_Extension = Extensions.PK_Extension
 		WHERE
-			Extensions.PK_Extension = $id
-		LIMIT 1
-	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+			Extensions.PK_Extension = $id;
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
     return $data;
 }
 
@@ -61,14 +59,14 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Extension,Type) VALUES('" . $mysqli->real_escape_string($data['Extension']) . "', 'AgentLogin')";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Extension'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Extension'] = $db->lastInsertId();
 
         $query = "INSERT INTO Ext_AgentLogin(PK_Extension) VALUES('" . $mysqli->real_escape_string($data['PK_Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     // Update 'Ext_AgentLogin'
@@ -80,16 +78,14 @@ function formdata_save($data) {
 			LoginToggle     = " . ($data['LoginToggle'] ? '1' : '0') . ",
 			EnterExtension  = " . ($data['EnterExtension'] ? '1' : '0') . "
 		WHERE
-			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
-		LIMIT 1
-	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+			PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_Extension'];
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if ($data['PK_Extension'] == '') {
@@ -109,7 +105,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }

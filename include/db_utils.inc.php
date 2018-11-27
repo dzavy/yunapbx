@@ -1,4 +1,5 @@
 <?php
-$mysqli = new mysqli($conf['database']['host'], $conf['database']['user'], $conf['database']['password'], $conf['database']['database']);
-	//$mysqli->select_db($conf['database']['database']);
+include_once(dirname(__FILE__) . "/../lib/rb.php");
+
+R::setup($conf['database']['dsn'], $conf['database']['user'], $conf['database']['password']);
 ?>

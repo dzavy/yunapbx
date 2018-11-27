@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function SoundEntries_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_SoundEntries = $_REQUEST['PK_SoundEntries'];
@@ -15,18 +15,18 @@ function SoundEntries_Delete() {
 
         // Delete Sound Entry
         $query = "DELETE FROM SoundEntries WHERE PK_SoundEntry IN ($PK_SoundEntries)";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         // Delete Sound Files from Disk
         $query = "SELECT PK_SoundFile,Filename FROM SoundFiles WHERE FK_SoundEntry IN ($PK_SoundEntries)";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
-        while ($row = $result->fetch_assoc()) {
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             @unlink($row['Filename']);
         }
 
         // Delete Sound Files from Disk
         $query = "DELETE FROM SoundFiles WHERE FK_SoundEntry IN ($PK_SoundEntries)";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         header('Location: SoundEntries_List.php?msg=DELETE_ENTRY');
         die();
@@ -53,10 +53,10 @@ function SoundEntries_Delete() {
 		GROUP BY
 			PK_SoundEntry
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $SoundEntries = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundEntries[] = $row;
     }
 

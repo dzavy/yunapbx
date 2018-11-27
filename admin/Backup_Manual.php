@@ -27,7 +27,7 @@ function Backup_Manual() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
 
     $VM = ($data['VM'] == 'on' ? 'VM' : '0');
     $VMG = ($data['VMG'] == 'on' ? 'VMG' : '0');
@@ -73,7 +73,7 @@ function formdata_save($data) {
 						'" . $mysqli->real_escape_string($Size) . "',
 					    CURRENT_TIMESTAMP)";
 
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 }
 
 function formdata_from_post() {

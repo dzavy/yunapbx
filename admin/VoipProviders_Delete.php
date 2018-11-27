@@ -6,31 +6,27 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function VoipProviders_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_SipProvider = $_REQUEST['PK_SipProvider'];
 
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
-        $query = "DELETE FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error . $query);
-
-        if ($mysqli->affected_rows != 1) {
-            return;
-        }
-
         $query = "DELETE FROM SipProvider_Codecs WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM SipProvider_Rules WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM SipProvider_Status WHERE FK_SipProvider = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = $PK_SipProvider";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+
+        $query = "DELETE FROM SipProviders WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         asterisk_UpdateConf('sip.conf');
         asterisk_UpdateConf('pjsip.conf');
@@ -42,18 +38,9 @@ function VoipProviders_Delete() {
     }
 
     // Init extension info (Extension)
-    $query = "
-		SELECT
-			PK_SipProvider,
-			Name
-		FROM
-			SipProviders
-		WHERE
-			PK_SipProvider = $PK_SipProvider
-		LIMIT 1
-	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $Provider = $result->fetch_assoc();
+    $query = "SELECT PK_SipProvider, Name FROM SipProviders	WHERE PK_SipProvider = $PK_SipProvider LIMIT 1";
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $Provider = $result->fetch(PDO::FETCH_ASSOC);
 
     $smarty->assign('Provider', $Provider);
 

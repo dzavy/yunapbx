@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Recordings_DeleteRule() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -19,13 +19,13 @@ function Recordings_DeleteRule() {
 
         //delete files from database
         $query = "DELETE FROM RecordingRules WHERE PK_Rule = $PK_Rule";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM RecordingRules_Extensions WHERE FK_Rule = $PK_Rule";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM RecordingRules_Groups WHERE FK_Rule = $PK_Rule";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         asterisk_UpdateConf('musiconhold.conf');
         asterisk_Reload();
@@ -34,9 +34,9 @@ function Recordings_DeleteRule() {
 
     } else {
 
-        $query = "SELECT * FROM RecordingRules WHERE PK_Rule =  $PK_Rule;";
-        $result = $mysqli->query($query) or die($mysqli->error);
-        $RecordingRule = $result->fetch_assoc();
+        $query = "SELECT PK_Rule, Label FROM RecordingRules WHERE PK_Rule =  $PK_Rule;";
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+        $RecordingRule = $result->fetch(PDO::FETCH_ASSOC);
 
         $smarty->assign('RecordingRule', $RecordingRule);
 

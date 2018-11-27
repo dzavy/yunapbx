@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function SoundFolders_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Templates_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -40,8 +40,8 @@ function SoundFolders_Modify() {
 
 function formdata_from_db($id) {
     $query = "SELECT * FROM SoundFolders WHERE PK_SoundFolder = $id	LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     return $data;
 }
@@ -53,9 +53,9 @@ function formdata_from_post() {
 function formdata_save($data) {
     if (empty($data['PK_SoundFolder'])) {
         $query = "INSERT INTO SoundFolders(Type) VALUES('User')";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_SoundFolder'] = $mysqli->insert_id;
+        $data['PK_SoundFolder'] = $db->lastInsertId();
     }
 
     // Update 'SoundFolders'
@@ -69,7 +69,7 @@ function formdata_save($data) {
 			PK_SoundFolder = " . $mysqli->real_escape_string($data['PK_SoundFolder']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_SoundFolder'];
 }

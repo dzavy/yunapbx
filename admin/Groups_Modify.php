@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Groups_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -38,10 +38,10 @@ function Groups_Modify() {
 		ORDER BY
 			Extension ASC
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Extensions = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Extensions[] = $row;
     }
 
@@ -52,7 +52,7 @@ function Groups_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $data = $_REQUEST;
     $query = "
 		SELECT
@@ -64,8 +64,8 @@ function formdata_from_db($id) {
 			PK_Group = {$data['PK_Group']}
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "
 		SELECT
@@ -75,10 +75,10 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Group = {$data['PK_Group']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Extensions'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Extensions'][] = $row['FK_Extension'];
     }
 
@@ -90,12 +90,12 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Group'] == "") {
         $query = "INSERT INTO Groups () VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_Group'] = $mysqli->insert_id;
+        $data['PK_Group'] = $db->lastInsertId();
     }
 
     $query = "
@@ -107,15 +107,15 @@ function formdata_save($data) {
 			PK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "DELETE FROM Extension_Groups WHERE FK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Extensions'])) {
         foreach ($data['Extensions'] as $FK_Extension) {
             $query = "INSERT INTO Extension_Groups (FK_Group, FK_Extension) VALUES ({$data['PK_Group']}, $FK_Extension )";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 

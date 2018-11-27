@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_List_Queues() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Extensions_List_Queues'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -36,7 +36,7 @@ function Extensions_List_Queues() {
 
     // Init total entries (Total)
     $query = "SELECT COUNT(PK_Extension) FROM Extensions;";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -63,13 +63,13 @@ function Extensions_List_Queues() {
 			$Sort $Order
 	";
     // -- LIMIT $Start, $PageSize
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $extension = $row;
 
         $query2 = "SELECT * FROM Ext_Queue_Members WHERE FK_Extension = {$extension['_PK_']}";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
         $extension['Members'] = $result2->num_rows;
 
         $Extensions[] = $extension;

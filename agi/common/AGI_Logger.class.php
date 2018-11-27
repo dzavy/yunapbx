@@ -32,7 +32,7 @@ class AGI_Logger {
     }
 
     function error_sql($message, $query, $file = '', $line = '') {
-        global $mysqli;
+        $db = DB::getInstance();
         $prefix = "ERROR [$file,$line] :";
 
         $this->agi->verbose("{$prefix}{$message}", 1);

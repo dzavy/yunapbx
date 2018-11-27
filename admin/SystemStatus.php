@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function SystemStatus() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['SystemStatus'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -49,8 +49,8 @@ function SystemStatus() {
 		ORDER BY
 			$P_Sort $P_Order
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Providers[] = $row;
     }
 
@@ -93,8 +93,8 @@ function SystemStatus() {
 		ORDER BY
 			$D_Sort $D_Order
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Dongles[] = $row;
     }
 
@@ -131,7 +131,7 @@ function SystemStatus() {
 
     // Init total entries (C_Total)
     $query = "SELECT COUNT(PK_Extension) FROM Ext_SipPhones;";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $C_Total = $row[0];
 
@@ -154,8 +154,8 @@ function SystemStatus() {
 		LIMIT $C_Start, $C_PageSize
 
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Extensions[] = $row;
     }
 
@@ -174,27 +174,27 @@ function SystemStatus() {
 }
 
 function update_provider_statuses() {
-    global $mysqli;
-    $mysqli->query("DELETE FROM SipProvider_Status");
+    $db = DB::getInstance();
+    $db->query("DELETE FROM SipProvider_Status");
     $query = "SELECT * FROM SipProviders";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($provider = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($provider = $result->fetch(PDO::FETCH_ASSOC)) {
         $Status = sip_get_status($provider);
         $query = "INSERT INTO SipProvider_Status SET
 			FK_SipProvider = '" . $mysqli->real_escape_string($Status['FK_SipProvider']) . "',
 			Latency        = '" . $mysqli->real_escape_string($Status['Latency']) . "',
 			Status         = '" . $mysqli->real_escape_string($Status['Status']) . "'
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 }
 
 function update_dongle_statuses() {
-    global $mysqli;
-    $mysqli->query("DELETE FROM Dongle_Status");
+    $db = DB::getInstance();
+    $db->query("DELETE FROM Dongle_Status");
     $query = "SELECT * FROM Dongles";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($dongle = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($dongle = $result->fetch(PDO::FETCH_ASSOC)) {
         $Status = dongle_get_status($dongle);
         $query = "INSERT INTO Dongle_Status SET
 			FK_Dongle      = '" . $mysqli->real_escape_string($Status['FK_Dongle']) . "',
@@ -203,16 +203,16 @@ function update_dongle_statuses() {
             Provider       = '" . $mysqli->real_escape_string($Status['Provider']) . "',
             Mode           = '" . $mysqli->real_escape_string($Status['Mode']) . "'
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 }
 
 function update_Ext_SipPhones_Statuses() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT Extension FROM Extensions WHERE Type = 'SipPhone'";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $response = asterisk_Cmd('sip show peer ' . $row['Extension']);
         $response = explode("\n", $response);
 
@@ -236,7 +236,7 @@ function update_Ext_SipPhones_Statuses() {
         // Status
         if (strpos($status['Status'], "OK") === false) {
             $query2 = "SELECT * FROM Ext_SipPhones_Status WHERE Extension = '" . $mysqli->real_escape_string($Extension) . "' AND Status IN ('OK','TIMEOUT') LIMIT 1";
-            $result2 = $mysqli->query($query2);
+            $result2 = $db->query($query2);
             if ($result2->num_rows == 1) {
                 $Status = "TIMEOUT";
             } else {
@@ -256,13 +256,13 @@ function update_Ext_SipPhones_Statuses() {
 					'" . $mysqli->real_escape_string($Status) . "'
 				)
 			";
-            $mysqli->query("DELETE FROM Ext_SipPhones_Status WHERE Extension = $Extension LIMIT 1");
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query("DELETE FROM Ext_SipPhones_Status WHERE Extension = $Extension LIMIT 1");
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         } else {
-            $mysqli->query("UPDATE Ext_SipPhones_Status SET Status='TIMEOUT' WHERE Extension = $Extension LIMIT 1");
+            $db->query("UPDATE Ext_SipPhones_Status SET Status='TIMEOUT' WHERE Extension = $Extension LIMIT 1");
         }
 
-        $mysqli->query("DELETE FROM Ext_SipPhones_Status WHERE Extension NOT IN (SELECT Extension FROM Extensions WHERE Type = 'SipPhone')");
+        $db->query("DELETE FROM Ext_SipPhones_Status WHERE Extension NOT IN (SELECT Extension FROM Extensions WHERE Type = 'SipPhone')");
     }
 }
 

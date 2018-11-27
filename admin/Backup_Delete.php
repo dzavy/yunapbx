@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Backup_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK = $_REQUEST['PK_Backup'];
@@ -13,15 +13,14 @@ function Backup_Delete() {
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
 
-        $query = "DELETE FROM Backups WHERE PK_Backup = '" . $PK . "' LIMIT 1";
+        $query = $db->prepare("DELETE FROM Backups WHERE PK_Backup = :pk");
+        $query->bindParam(':pk', $PK, PDO::PARAM_INT);
 
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $query->execute() or die(print_r($query->errorInfo(), true));
 
         header('Location: Backup.php?msg=DELETE_BACKUP');
         die();
     }
-
-
 
     $smarty->assign('PK', $PK);
     $smarty->assign('Date', $Date);

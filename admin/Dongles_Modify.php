@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . "/../include/asterisk_utils.inc.php");
 
 function Dongles_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Dongles_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -18,9 +18,9 @@ function Dongles_Modify() {
 
     // Init available outgoing rules (Rules)
     $query = "SELECT * FROM OutgoingRules ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     $Rules = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rules[] = $row;
     }
 
@@ -68,7 +68,7 @@ function Dongles_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Init data from 'SipProviders'
     $query = "
 		SELECT
@@ -79,8 +79,8 @@ function formdata_from_db($id) {
 			PK_Dongle = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     // Init outgoing rules
     $query = "
@@ -91,9 +91,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Dongle = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Rules'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
     }
 
@@ -119,12 +119,12 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Dongle'] == "") {
         $query = "INSERT INTO Dongles() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
-        $data['PK_Dongle'] = $mysqli->insert_id;
+        $data['PK_Dongle'] = $db->lastInsertId();
     }
 
     // Update 'Extensions'
@@ -143,16 +143,16 @@ function formdata_save($data) {
 			PK_Dongle          = " . $mysqli->real_escape_string($data['PK_Dongle']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update 'SipProvider_Rules'
     $query = "DELETE FROM Dongle_Rules WHERE FK_Dongle = " . $mysqli->real_escape_string($data['PK_Dongle']) . " ";
-    $mysqli->query($query) or die($mysqli->error);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule) {
             if ($FK_OutgoingRule != 0) {
                 $query = "INSERT INTO Dongle_Rules(FK_Dongle, FK_OutgoingRule) VALUES ({$data['PK_Dongle']}, $FK_OutgoingRule)";
-                $mysqli->query($query) or die($mysqli->error);
+                $db->query($query) or die(print_r($db->errorInfo(), true));
             }
         }
     }
@@ -160,14 +160,14 @@ function formdata_save($data) {
     // If we don't apply incoming rules to this provider, make sure we remove existing ones (if exists)
     if ($data['ApplyIncomingRules'] == 0) {
         $query = "DELETE FROM IncomingRoutes WHERE ProviderType='SIP' AND ProviderID = {$data['PK_Dongle']}";
-        $mysqli->query($query) or die($mysqli->error);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     return $data['PK_Dongle'];
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
     if ($data['Dongle'] == '') {
         $create_new = true;
@@ -203,7 +203,7 @@ function formdata_validate($data) {
             // Check if extension is valid on the system
         } else {
             $query = "SELECT PK_Extension FROM Extensions WHERE Extension = '" . $mysqli->real_escape_string($data['CallbackExtension']) . "' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             if ($result->num_rows < 1) {
                 $errors['CallbackExtension']['NoMatch'] = true;
             }

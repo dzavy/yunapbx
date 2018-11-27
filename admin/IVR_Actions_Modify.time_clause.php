@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function Extensions_Action_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['IVR_Action_Modify_time_clause'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -27,18 +27,18 @@ function Extensions_Action_Modify() {
     // Get available menus (Menus)
     $Menus = array();
     $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $menu = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-        while ($row2 = $result2->fetch_assoc()) {
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+        while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) {
             $action = $row2;
 
             $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-            $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
-            while ($row3 = $result3->fetch_assoc()) {
+            $result3 = $db->query($query3) or die(print_r($db->errorInfo(), true));
+            while ($row3 = $result3->fetch(PDO::FETCH_ASSOC)) {
                 $action['Param'][$row3['Name']] = $row3['Value'];
                 $action['Var'][$row3['Name']] = $row3['Variable'];
             }
@@ -52,8 +52,8 @@ function Extensions_Action_Modify() {
     // Get available timeframes (Timeframes)
     $Timeframes = array();
     $query = "SELECT * FROM Timeframes WHERE FK_Extension = 0 ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Timeframes[] = $row;
     }
 
@@ -65,14 +65,14 @@ function Extensions_Action_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "SELECT * FROM IVR_Actions WHERE PK_Action = '$id' LIMIT 1";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "SELECT Name,Value,Variable FROM IVR_Action_Params WHERE FK_Action = '$id'";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Param'][$row['Name']] = $row['Value'];
         $data['Var'][$row['Name']] = $row['Variable'];
     }
@@ -93,20 +93,20 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Action'] == "") {
         $query = "SELECT COUNT(*) FROM IVR_Actions WHERE FK_Menu={$data['FK_Menu']}";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $result->fetch_row();
         $data['Order'] = $row[0] + 1;
 
         $query = "INSERT INTO IVR_Actions (FK_Menu, `Order`, Type) VALUES({$data['FK_Menu']}, {$data['Order']}, 'time_clause')";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Action'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Action'] = $db->lastInsertId();
     }
 
     $query = "DELETE FROM IVR_Action_Params WHERE FK_Action = {$data['PK_Action']}";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Param'])) {
         foreach ($data['Param'] as $Name => $Value) {
@@ -118,7 +118,7 @@ function formdata_save($data) {
 					`Value`     = '" . $mysqli->real_escape_string($Value) . "',
 					`FK_Action` = {$data['PK_Action']}
 			";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
@@ -136,7 +136,7 @@ function formdata_save($data) {
 					`Variable`  = '" . $mysqli->real_escape_string($Value) . "',
 					`FK_Action` = {$data['PK_Action']}
 			";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 

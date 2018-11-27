@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function IVR_Options_List() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['IVR_Options_List'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -42,8 +42,8 @@ function IVR_Options_List() {
 		ORDER BY
 			`Key`
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $IVR_Options[] = $row;
     }
 
@@ -57,8 +57,8 @@ function IVR_Options_List() {
 			SoundFolders
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundFolders[] = $row;
     }
 
@@ -73,8 +73,8 @@ function IVR_Options_List() {
 			SoundLanguages
 		ORDER BY Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundLanguages[] = $row;
         if ($row['Default']) {
             $SoundLanguage_Default = $row;
@@ -107,8 +107,8 @@ function IVR_Options_List() {
 			PK_SoundEntry
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $SoundEntry = $row;
 
         foreach ($SoundLanguages as $SoundLanguage) {
@@ -132,18 +132,18 @@ function IVR_Options_List() {
     // Get available menus
     $Menus = array();
     $query = "SELECT PK_Menu, Name FROM IVR_Menus ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $menu = $row;
 
         $query2 = "SELECT * FROM IVR_Actions WHERE FK_Menu = '{$menu['PK_Menu']}' ORDER BY `Order`";
-        $result2 = $mysqli->query($query2) or die($mysqli->error . $query2);
-        while ($row2 = $result2->fetch_assoc()) {
+        $result2 = $db->query($query2) or die(print_r($db->errorInfo(), true));
+        while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) {
             $action = $row2;
 
             $query3 = "SELECT * FROM IVR_Action_Params WHERE FK_Action = {$action['PK_Action']}";
-            $result3 = $mysqli->query($query3) or die($mysqli->error . $query3);
-            while ($row3 = $result3->fetch_assoc()) {
+            $result3 = $db->query($query3) or die(print_r($db->errorInfo(), true));
+            while ($row3 = $result3->fetch(PDO::FETCH_ASSOC)) {
                 $action['Param'][$row3['Name']] = $row3['Value'];
                 $action['Var'][$row3['Name']] = $row3['Variable'];
             }
@@ -178,7 +178,7 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Update 'Ext_IVR'
     $query = "
 		UPDATE
@@ -207,7 +207,7 @@ function formdata_save($data) {
 			PK_Menu                  = " . $mysqli->real_escape_string($data['PK_Menu']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 }
 
 function formdata_validate($data) {
@@ -217,7 +217,7 @@ function formdata_validate($data) {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
@@ -227,8 +227,8 @@ function formdata_from_db($id) {
 			PK_Menu = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
     return $data;
 }
 

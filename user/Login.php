@@ -28,7 +28,7 @@ function formdata_from_post() {
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if (!preg_match('/[0-9]{3,5}/', $data['Extension'])) {
@@ -48,12 +48,12 @@ function formdata_validate($data) {
 				Type IN ('SipPhone', 'Virtual', 'Agent')
 			LIMIT 1
 		";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
         if ($result->num_rows != "1") {
             $errors['Wrong'] = true;
         } else {
-            $Extension = $result->fetch_assoc();
+            $Extension = $result->fetch(PDO::FETCH_ASSOC);
         }
     }
 
@@ -67,7 +67,7 @@ function formdata_validate($data) {
             case 'Agent' : $query = "SELECT Password FROM Ext_Agents    WHERE PK_Extension={$Extension['PK_Extension']} LIMIT 1";
                 break;
         }
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         $row = $result->fetch_row();
 
         if ($data['Password'] != $row[0]) {
@@ -86,7 +86,7 @@ function formdata_validate($data) {
                 break;
         }
 
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
         if ($result->num_rows != "1") {
             $errors['Wrong'] = true;
         }

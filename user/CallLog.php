@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/user_utils.inc.php');
 
 function CallLog() {
-    global $mysqli;
+    $db = DB::getInstance();
     $session = &$_SESSION['CallLog'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
@@ -48,7 +48,7 @@ function CallLog() {
 			AND
 			(CallerID = '" . ($_SESSION['_USER']['PK_Extension']) . "' OR CalledID ='" . ($_SESSION['_USER']['PK_Extension']) . "' )
 	";
-    $result = $mysqli->query($query) or die($mysqli->error);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $row = $result->fetch_array();
     $Total = $row[0];
 
@@ -71,8 +71,8 @@ function CallLog() {
 		LIMIT $Start, $PageSize
 	";
 
-    $result = $mysqli->query($query) or die($mysqli->error);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $CDRs[] = $row;
     }
 

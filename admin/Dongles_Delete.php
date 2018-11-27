@@ -6,25 +6,21 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Dongles_Delete() {
-    global $mysqli;
+    $db = DB::getInstance();
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
 
     $PK_Dongle = $_REQUEST['PK_Dongle'];
 
     // In confirmed, do the actual delete
     if (@$_REQUEST['submit'] == 'delete_confirm') {
-        $query = "DELETE FROM Dongles WHERE PK_Dongle = $PK_Dongle LIMIT 1";
-        $mysqli->query($query) or die($mysqli->error . $query);
-
-        if ($mysqli->affected_rows != 1) {
-            return;
-        }
-
         $query = "DELETE FROM Dongle_Rules WHERE FK_Dongle = $PK_Dongle";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "DELETE FROM Dongle_Status WHERE FK_Dongle = $PK_Dongle";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+
+        $query = "DELETE FROM Dongles WHERE PK_Dongle = $PK_Dongle";
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         asterisk_UpdateConf('dongle.conf');
         asterisk_UpdateConf('extensions.conf');
@@ -44,8 +40,8 @@ function Dongles_Delete() {
 			PK_Dongle = $PK_Dongle
 		LIMIT 1
 	";
-        $result = $mysqli->query($query) or die($mysqli->error);
-        $Dongle = $result->fetch_assoc();
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+        $Dongle = $result->fetch(PDO::FETCH_ASSOC);
 
         $smarty->assign('Dongle', $Dongle);
 

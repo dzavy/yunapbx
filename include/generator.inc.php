@@ -1,7 +1,7 @@
 <?php
 
 function Get_SipProviders() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			SipProviders.*,
@@ -12,15 +12,15 @@ function Get_SipProviders() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $SipProviders = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $provider = $row;
 
         // Get allowed codecs
         $codecs = array();
-        $query_codec = "
+        $query_codecs = "
 			SELECT
 				Name
 			FROM
@@ -29,8 +29,8 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']}
 		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
-        while ($row_codec = $result_codec->fetch_assoc()) {
+        $result_codecs = $db->query($query_codecs) or die(print_r($db->errorInfo(), true));
+        while ($row_codec = $result_codecs->fetch(PDO::FETCH_ASSOC)) {
             $codecs[] = $row_codec['Name'];
         }
         $provider['Codecs'] = implode(',', $codecs);
@@ -47,8 +47,8 @@ function Get_SipProviders() {
 			WHERE
 				FK_SipProvider = {$provider['PK_SipProvider']} ORDER BY RuleOrder
 		";
-        $result_outrules = $mysqli->query($query_outrules) or die($mysqli->error . $query_outrules);
-        while ($row_outrule = $result_outrules->fetch_assoc()) {
+        $result_outrules = $db->query($query_outrules) or die(print_r($db->errorInfo(), true));
+        while ($row_outrule = $result_outrules->fetch(PDO::FETCH_ASSOC)) {
             $provider['OutgoingRules'][] = $row_outrule;
         }
  
@@ -59,7 +59,7 @@ function Get_SipProviders() {
 }
 
 function Get_Dongles() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			Dongles.*
@@ -68,10 +68,10 @@ function Get_Dongles() {
 		ORDER BY
 			Name
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Dongles = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $dongle = $row;
         
         
@@ -84,8 +84,8 @@ function Get_Dongles() {
 			WHERE
 				FK_Dongle = {$dongle['PK_Dongle']} ORDER BY RuleOrder
 		";
-        $result_rules = $mysqli->query($query_rules) or die($mysqli->error . $query_rules);
-        while ($row_rule = $result_rules->fetch_assoc()) {
+        $result_rules = $db->query($query_rules) or die(print_r($db->errorInfo(), true));
+        while ($row_rule = $result_rules->fetch(PDO::FETCH_ASSOC)) {
             $dongle['Rules'][] = $row_rule;
         }
         
@@ -96,17 +96,17 @@ function Get_Dongles() {
 }
 
 function Get_OutgoingRules() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
 		FROM
 			OutgoingRules
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $OutgoingRules = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $OutgoingRules[] = $row;
     }
 
@@ -114,7 +114,7 @@ function Get_OutgoingRules() {
 }
 
 function Get_Ext_SipPhones() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			Ext_SipPhones.PK_Extension AS PK_Extension,
@@ -133,15 +133,15 @@ function Get_Ext_SipPhones() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Extensions = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $exten = $row;
 
         // Get allowed codecs
         $codecs = array();
-        $query_codec = "
+        $query_codecs = "
 			SELECT
 				Name
 			FROM
@@ -150,8 +150,8 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-        $result_codec = $mysqli->query($query_codec) or die($mysqli->error . $query_codec);
-        while ($row_codec = $result_codec->fetch_assoc()) {
+        $result_codecs = $db->query($query_codecs) or die(print_r($db->errorInfo(), true));
+        while ($row_codec = $result_codecs->fetch(PDO::FETCH_ASSOC)) {
             $codecs[] = $row_codec['Name'];
         }
         $exten['Codecs'] = implode(',', $codecs);
@@ -167,8 +167,8 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']}
 		";
-        $result_features = $mysqli->query($query_features) or die($mysqli->error . $query_features);
-        while ($row_feature = $result_features->fetch_assoc()) {
+        $result_features = $db->query($query_features) or die(print_r($db->errorInfo(), true));
+        while ($row_feature = $result_features->fetch(PDO::FETCH_ASSOC)) {
             $exten['Features'][] = $row_feature['ShortName'];
         }
 
@@ -181,8 +181,8 @@ function Get_Ext_SipPhones() {
 			WHERE
 				FK_Extension = {$exten['PK_Extension']} ORDER BY RuleOrder
 		";
-        $result_rules = $mysqli->query($query_rules) or die($mysqli->error . $query_rules);
-        while ($row_rule = $result_rules->fetch_assoc()) {
+        $result_rules = $db->query($query_rules) or die(print_r($db->errorInfo(), true));
+        while ($row_rule = $result_rules->fetch(PDO::FETCH_ASSOC)) {
             $exten['Rules'][] = $row_rule;
         }
         
@@ -196,7 +196,7 @@ function Get_Ext_SipPhones() {
 }
 
 function Get_Ext_Queues() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			Extensions.PK_Extension,
@@ -224,10 +224,10 @@ function Get_Ext_Queues() {
 		ORDER BY
 			Extension
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $Queues = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $queue = $row;
 
         $query = "
@@ -240,8 +240,8 @@ function Get_Ext_Queues() {
 			WHERE
 				FK_Extension = {$queue['PK_Extension']}
 		";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
-        while ($member = $result->fetch_assoc()) {
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+        while ($member = $result->fetch(PDO::FETCH_ASSOC)) {
             $queue['Members'][] = $member;
         }
 
@@ -257,16 +257,16 @@ function Get_Ext_Queues() {
 }
 
 function Get_Ext_ConfCenter_Rooms() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
 		FROM
 			Ext_ConfCenter_Rooms
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rooms[] = $row;
     }
 
@@ -274,7 +274,7 @@ function Get_Ext_ConfCenter_Rooms() {
 }
 
 function Get_Moh_Groups() {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     $query = "
@@ -283,9 +283,9 @@ function Get_Moh_Groups() {
 		FROM
 			Moh_Groups
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     	$row['Folder'] = $conf['dirs']['moh'] . "/group_" . str_pad($row['PK_Group'], 10, '0', STR_PAD_LEFT);
         if ($row['Volume']>=100) {
             $row['Gain'] = (($row['Volume']-100)*18)/100;
@@ -300,16 +300,16 @@ function Get_Moh_Groups() {
 }
 
 function Get_Settings() {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
 		FROM
 			Settings
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         if (in_array($row['Name'], array('Network_Additional_LAN', 'Network_Interfaces_LAN'))) {
             $Settings[$row['Name']] = explode(';', $row['Value']);
         } else {

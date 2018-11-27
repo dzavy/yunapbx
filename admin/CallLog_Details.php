@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../include/smarty_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 
 function CallLog_Details() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['CallLog_Details'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -24,8 +24,8 @@ function CallLog_Details() {
 		ORDER BY
 			Date
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    while ($row = $result->fetch_assoc()) {
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $row['Data_CSV'] = $row['Data'];
         $row['Data'] = explode(',', $row['Data_CSV']);
         $Details[] = $row;

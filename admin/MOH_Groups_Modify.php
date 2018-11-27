@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function MOH_Groups_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['MOH_Groups_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -45,7 +45,7 @@ function MOH_Groups_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			*
@@ -55,8 +55,8 @@ function formdata_from_db($id) {
 			PK_Group = '$id'
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
     return $data;
 }
 
@@ -76,13 +76,13 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     global $conf;
     
     if ($data['PK_Group'] == "") {
         $query = "INSERT INTO Moh_Groups() VALUES()";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Group'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Group'] = $db->lastInsertId();
 
         $bigPK_Group = str_pad($data['PK_Group'], 10, "0", STR_PAD_LEFT);
 
@@ -102,7 +102,7 @@ function formdata_save($data) {
 			Protected = 0
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $query = "
 		UPDATE
@@ -114,20 +114,20 @@ function formdata_save($data) {
 			PK_Group = " . $mysqli->real_escape_string($data['PK_Group']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_Group'];
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if (strlen($data['Name']) < 1 || strlen($data['Name']) > 15) {
         $errors['Name']['Invalid'] = true;
     } else {
         $query = "SELECT * FROM Moh_Groups WHERE Name = '" . ($mysqli->escape_string($data['Name'])) . "' AND NOT PK_Group = '" . intval($data['PK_Group']) . "' LIMIT 1";
-        $result = $mysqli->query($query) or die($mysqli->error . $query);
+        $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
         if ($result->num_rows != 0) {
             $errors['Name']['Duplicate'] = 1;

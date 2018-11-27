@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../include/admin_utils.inc.php');
 include_once(dirname(__FILE__) . '/../include/asterisk_utils.inc.php');
 
 function Extensions_SipPhone_Modify() {
-    global $mysqli;
+    $db = DB::getInstance();
     
     $session = &$_SESSION['Extensions_Sip_Modify'];
     $smarty = smarty_init(dirname(__FILE__) . '/templates');
@@ -16,49 +16,49 @@ function Extensions_SipPhone_Modify() {
 
     // Init Available DTMF Modes (DTMFModes)
     $query = "SELECT PK_DTMFMode, Name, Description FROM DTMFModes";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $DTMFModes = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $DTMFModes[] = $row;
     }
 
     // Init available codecs (Codecs)
     $query = "SELECT PK_Codec, Name, Description, Recomended FROM Codecs";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Codecs = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Codecs[] = $row;
     }
 
     // Init available nat types (NATTypes)
     $query = "SELECT PK_NATType, Name, Description FROM NATTypes";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $NATTypes = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $NATTypes[] = $row;
     }
 
     // Init available extension groups (Groups)
     $query = "SELECT PK_Group, Name FROM Groups";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Groups = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Groups[] = $row;
     }
 
     // Init available outgoing rules (Rules)
     $query = "SELECT * FROM OutgoingRules ORDER BY Name";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Rules = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Rules[] = $row;
     }
 
     // Init available extension groups (Features)
     $query = "SELECT PK_Feature, Name FROM Features";
-    $result = $mysqli->query($query) or die($mysqli->errno());
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $Features = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $Features[] = $row;
     }
 
@@ -97,7 +97,7 @@ function Extensions_SipPhone_Modify() {
 }
 
 function formdata_from_db($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     // Init data from 'Extensions'
     $query = "
 		SELECT
@@ -119,8 +119,8 @@ function formdata_from_db($id) {
 			Ext_SipPhones.PK_Extension = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     // Init data from 'Extension_Codecs'
     $query = "
@@ -131,9 +131,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = {$data['PK_Extension']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Codecs'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Codecs'][] = $row['FK_Codec'];
     }
 
@@ -146,9 +146,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = {$data['PK_Extension']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Groups'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Groups'][] = $row['FK_Group'];
     }
 
@@ -161,9 +161,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = {$data['PK_Extension']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Features'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Features'][] = $row['FK_Feature'];
     }
 
@@ -176,9 +176,9 @@ function formdata_from_db($id) {
 		WHERE
 			FK_Extension = {$data['PK_Extension']}
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
     $data['Rules'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
     }
 
@@ -186,7 +186,7 @@ function formdata_from_db($id) {
 }
 
 function formdata_from_template($id) {
-    global $mysqli;
+    $db = DB::getInstance();
     $query = "
 		SELECT
 			PK_Template,
@@ -202,8 +202,8 @@ function formdata_from_template($id) {
 			PK_Template = $id
 		LIMIT 1
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
-    $data = $result->fetch_assoc();
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
+    $data = $result->fetch(PDO::FETCH_ASSOC);
 
     $query = "
 		SELECT
@@ -213,10 +213,10 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Codecs'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Codecs'][] = $row['FK_Codec'];
     }
 
@@ -228,10 +228,10 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Groups'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Groups'][] = $row['FK_Group'];
     }
 
@@ -243,10 +243,10 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Features'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Features'][] = $row['FK_Feature'];
     }
 
@@ -258,10 +258,10 @@ function formdata_from_template($id) {
 		WHERE
 			FK_Template = $id
 	";
-    $result = $mysqli->query($query) or die($mysqli->error . $query);
+    $result = $db->query($query) or die(print_r($db->errorInfo(), true));
 
     $data['Rules'] = array();
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $data['Rules'][] = $row['FK_OutgoingRule'];
     }
 
@@ -273,18 +273,18 @@ function formdata_from_post() {
 }
 
 function formdata_save($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     if ($data['PK_Extension'] == "") {
         $query = "INSERT INTO Extensions(Type, Extension) VALUES('SipPhone','" . $mysqli->real_escape_string($data['Extension']) . "')";
-        $mysqli->query($query) or die($mysqli->error . $query);
-        $data['PK_Extension'] = $mysqli->insert_id;
+        $db->query($query) or die(print_r($db->errorInfo(), true));
+        $data['PK_Extension'] = $db->lastInsertId();
 
         $query = "INSERT INTO Ext_SipPhones(PK_Extension) VALUES({$data['PK_Extension']})";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     $query = "UPDATE Extensions SET Name = '". $mysqli->real_escape_string($data['Name']) . "' WHERE PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']);
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update 'Extensions'
     $query = "
@@ -301,7 +301,7 @@ function formdata_save($data) {
 			PK_Extension       = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 		LIMIT 1
 	";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     // Update Password if requested and set PhonePassword if it was never set
     if ($data['Password'] != '') {
@@ -314,7 +314,7 @@ function formdata_save($data) {
 				PK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
 
         $query = "
 			UPDATE
@@ -327,7 +327,7 @@ function formdata_save($data) {
 				PhonePassword = ''
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     // Update PhonePassword if requested
@@ -341,43 +341,43 @@ function formdata_save($data) {
 				PK_Extension  = " . $mysqli->real_escape_string($data['PK_Extension']) . "
 			LIMIT 1
 		";
-        $mysqli->query($query) or die($mysqli->error . $query);
+        $db->query($query) or die(print_r($db->errorInfo(), true));
     }
 
     // Update 'Ext_SipPhones_Codecs'
     $query = "DELETE FROM Ext_SipPhones_Codecs WHERE FK_Extension = {$data['PK_Extension']} ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Codecs'])) {
         foreach ($data['Codecs'] as $FK_Codec) {
             $query = "INSERT INTO Ext_SipPhones_Codecs (FK_Extension, FK_Codec) VALUES ({$data['PK_Extension']}, $FK_Codec)";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Extension_Groups'
     $query = "DELETE FROM Extension_Groups WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
     if (is_array($data['Groups'])) {
         foreach ($data['Groups'] as $FK_Group) {
             $query = "INSERT INTO Extension_Groups (FK_Extension, FK_Group) VALUES ({$data['PK_Extension']}, $FK_Group)";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Ext_SipPhones_Features'
     $query = "DELETE FROM Ext_SipPhones_Features WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Features'])) {
         foreach ($data['Features'] as $FK_Feature) {
             $query = "INSERT INTO Ext_SipPhones_Features (FK_Extension, FK_Feature) VALUES ({$data['PK_Extension']}, $FK_Feature)";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'Extension_Rules'
     $query = "DELETE FROM Extension_Rules WHERE FK_Extension = " . $mysqli->real_escape_string($data['PK_Extension']) . " ";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     if (is_array($data['Rules'])) {
         foreach ($data['Rules'] as $FK_OutgoingRule => $Status) {
@@ -385,19 +385,19 @@ function formdata_save($data) {
                 continue;
             }
             $query = "INSERT INTO Extension_Rules (FK_Extension, FK_OutgoingRule) VALUES ({$data['PK_Extension']}, {$FK_OutgoingRule})";
-            $mysqli->query($query) or die($mysqli->error . $query);
+            $db->query($query) or die(print_r($db->errorInfo(), true));
         }
     }
 
     // Update 'IVRDial"
     $query = "UPDATE Extensions SET IVRDial = " . ($data['IVRDial'] == 1 ? '1' : '0') . " WHERE PK_Extension = {$data['PK_Extension']}";
-    $mysqli->query($query) or die($mysqli->error . $query);
+    $db->query($query) or die(print_r($db->errorInfo(), true));
 
     return $data['PK_Extension'];
 }
 
 function formdata_validate($data) {
-    global $mysqli;
+    $db = DB::getInstance();
     $errors = array();
 
     if ($data['PK_Extension'] == '') {
@@ -417,7 +417,7 @@ function formdata_validate($data) {
             // Check if extension in unique
         } else {
             $query = "SELECT Extension FROM Extensions WHERE Extension = '{$data['Extension']}' LIMIT 1";
-            $result = $mysqli->query($query) or die($mysqli->error . $query);
+            $result = $db->query($query) or die(print_r($db->errorInfo(), true));
             if ($result->num_rows > 0) {
                 $errors['Extension']['Duplicate'] = true;
             }
